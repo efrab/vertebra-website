@@ -1,7 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "astro",
-  "installCommand": "npm install",
+  "installCommand": "cd .. && npm install",
+  "buildCommand": "npm run build",
   "redirects": [
     {"source": "/old-home", "destination": "/es/", "permanent": true},
     {"source": "/modulos-old", "destination": "/es/modulos", "permanent": true},
