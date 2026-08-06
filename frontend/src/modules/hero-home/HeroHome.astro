@@ -33,7 +33,7 @@ interface Props {
   pressLabel?: string
   pressLogos?: PressLogo[]
   investorLogos?: InvestorLogo[]
-  /** @deprecated kept for Sanity/fixtures compatibility */
+  /** Optimized hero video (preferred over GIF) */
   videoSrc?: string
   posterSrc?: string
   partnerLogos?: {name: string; src?: string}[]
@@ -49,10 +49,13 @@ const {
   pressLabel,
   pressLogos = [],
   investorLogos = [],
+  videoSrc = '/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd.mp4',
+  posterSrc = '/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster.jpg',
 } = Astro.props
 
 const boldPart = headingBold ?? heading
 const lightPart = headingLight
+const webmSrc = videoSrc.replace(/\.mp4$/, '.webm')
 
 const MARK_SRC = '/assets/webflow/images/icon_title.svg'
 ---
@@ -70,6 +73,7 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                 class="vf-title-page__icon"
                 width="40"
                 height="40"
+                decoding="async"
               />
               <h1 class="vf-title-page__h1">
                 {boldPart}
@@ -90,7 +94,34 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
           </div>
 
           <div class="vf-heroh__gif" data-vf-reveal="30">
-            <img src={gifSrc} alt="" class="hero_gif-img" width="1024" height="640" loading="eager" />
+            {
+              videoSrc ? (
+                <video
+                  class="hero_gif-img"
+                  width="960"
+                  height="784"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  poster={posterSrc}
+                >
+                  <source src={webmSrc} type="video/webm" />
+                  <source src={videoSrc} type="video/mp4" />
+                </video>
+              ) : (
+                <img
+                  src={gifSrc}
+                  alt=""
+                  class="hero_gif-img"
+                  width="1024"
+                  height="640"
+                  loading="eager"
+                  decoding="async"
+                />
+              )
+            }
             <div class="vf-heroh__overlay"></div>
           </div>
         </div>
@@ -99,20 +130,40 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
   </div>
 
   <div class="vf-heroh__bg" aria-hidden="true">
-    <img
-      src="/assets/webflow/images/trama.webp"
-      srcset="/assets/webflow/images/trama-p-1600.png 1600w, /assets/webflow/images/trama.png 1954w"
-      sizes="100vw"
-      alt=""
-      class="vf-heroh__fondo"
-    />
-    <img
-      src="/assets/webflow/images/Group-1000005376.webp"
-      srcset="/assets/webflow/images/Group-1000005376-p-1080.png 1080w, /assets/webflow/images/Group-1000005376.png 1479w"
-      sizes="100vw"
-      alt=""
-      class="vf-heroh__colors"
-    />
+    <picture>
+      <source
+        type="image/avif"
+        srcset="/assets/optimized/trama-p-800.avif 800w, /assets/optimized/trama-p-1200.avif 1200w, /assets/optimized/trama-p-1600.avif 1600w"
+        sizes="100vw"
+      />
+      <source
+        type="image/webp"
+        srcset="/assets/optimized/trama-p-800.webp 800w, /assets/optimized/trama-p-1200.webp 1200w, /assets/optimized/trama-p-1600.webp 1600w"
+        sizes="100vw"
+      />
+      <img
+        src="/assets/optimized/trama-p-800.webp"
+        alt=""
+        class="vf-heroh__fondo"
+        width="800"
+        height="450"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
+    <picture>
+      <source type="image/avif" srcset="/assets/optimized/Group-1000005376.avif" />
+      <source type="image/webp" srcset="/assets/optimized/Group-1000005376.webp" />
+      <img
+        src="/assets/optimized/Group-1000005376.webp"
+        alt=""
+        class="vf-heroh__colors"
+        width="1479"
+        height="800"
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
   </div>
 </section>
 
@@ -139,6 +190,7 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                         alt={logo.name}
                         class:list={['heroh_logo', logo.small && 'ismall']}
                         loading="lazy"
+                        decoding="async"
                       />
                     </a>
                   ))}
@@ -171,6 +223,7 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                           width="36"
                           height="12"
                           loading="lazy"
+                          decoding="async"
                         />
                         <span class="logos_item-lockup-text">{logo.label}</span>
                       </div>
@@ -183,7 +236,13 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                       class="logos_item w-inline-block"
                       aria-label={logo.name}
                     >
-                      <img src={logo.src} alt={logo.name} class="logos_item-img" loading="lazy" />
+                      <img
+                        src={logo.src}
+                        alt={logo.name}
+                        class="logos_item-img"
+                        loading="lazy"
+                        decoding="async"
+                      />
                     </a>
                   ),
                 )}

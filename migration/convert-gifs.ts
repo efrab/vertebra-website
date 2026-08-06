@@ -54,11 +54,11 @@ async function convert(file: string) {
     '-pix_fmt',
     'yuv420p',
     '-vf',
-    'scale=trunc(iw/2)*2:trunc(ih/2)*2',
+    "scale='min(960,iw)':-2",
     '-c:v',
     'libx264',
     '-crf',
-    '26',
+    '23',
     '-an',
     mp4,
   ])
@@ -66,16 +66,20 @@ async function convert(file: string) {
     '-y',
     '-i',
     input,
+    '-pix_fmt',
+    'yuv420p',
+    '-vf',
+    "scale='min(960,iw)':-2",
     '-c:v',
     'libvpx-vp9',
     '-b:v',
     '0',
     '-crf',
-    '32',
+    '30',
     '-an',
     webm,
   ])
-  await run('ffmpeg', ['-y', '-i', input, '-frames:v', '1', '-q:v', '3', poster])
+  await run('ffmpeg', ['-y', '-i', input, '-frames:v', '1', '-update', '1', '-q:v', '2', poster])
 }
 
 async function main() {

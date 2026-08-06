@@ -2,13 +2,6 @@
 import {VisualEditing} from '@sanity/astro/visual-editing'
 import {stegaClean} from '@sanity/client/stega'
 import '../styles/global.css'
-import '../styles/webflow-home.css'
-import '../styles/webflow-sections.css'
-import '../styles/webflow-modulos.css'
-import '../styles/webflow-beneficios.css'
-import '../styles/webflow-pages.css'
-import '../styles/webflow-forms.css'
-import '../styles/webflow-help-blog.css'
 import type {Locale} from '../i18n/routes'
 import {defaultLocale} from '../i18n/routes'
 import Header from '../components/Header.astro'
@@ -109,11 +102,19 @@ const structuredData = buildPageStructuredData({
 })
 
 const lcpPreloadSrcset =
-  lcpImage && lcpImage.includes('-480.')
-    ? `${lcpImage} 480w, ${lcpImage.replace('-480.', '-640.')} 640w, ${lcpImage.replace('-480.', '-1024.')} 1024w`
-    : lcpImage && lcpImage.includes('-640.')
-      ? `${lcpImage} 640w, ${lcpImage.replace('-640.', '-1024.')} 1024w`
-      : undefined
+  lcpImage && lcpImage.includes('trama-p-800.')
+    ? '/assets/optimized/trama-p-800.avif 800w, /assets/optimized/trama-p-1200.avif 1200w, /assets/optimized/trama-p-1600.avif 1600w'
+    : lcpImage && lcpImage.includes('-480.')
+      ? `${lcpImage} 480w, ${lcpImage.replace('-480.', '-640.')} 640w, ${lcpImage.replace('-480.', '-1024.')} 1024w`
+      : lcpImage && lcpImage.includes('-640.')
+        ? `${lcpImage} 640w, ${lcpImage.replace('-640.', '-1024.')} 1024w`
+        : undefined
+
+const lcpPreloadType = lcpImage?.endsWith('.avif')
+  ? 'image/avif'
+  : lcpImage?.endsWith('.webp')
+    ? 'image/webp'
+    : undefined
 ---
 
 <!doctype html>
@@ -128,8 +129,12 @@ const lcpPreloadSrcset =
         as="image"
         href={lcpImage}
         fetchpriority="high"
+        {...(lcpPreloadType ? {type: lcpPreloadType} : {})}
         {...(lcpPreloadSrcset
-          ? {imagesrcset: lcpPreloadSrcset, imagesizes: '(max-width: 480px) 100vw, (max-width: 640px) 100vw, 1024px'}
+          ? {
+              imagesrcset: lcpPreloadSrcset,
+              imagesizes: '(max-width: 800px) 100vw, (max-width: 1200px) 100vw, 1600px',
+            }
           : {})}
       />
     )}
