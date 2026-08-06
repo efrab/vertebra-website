@@ -1,0 +1,19 @@
+0 verbose cli /Users/efrainbriceno/.nvm/versions/node/v22.23.2/bin/node /Users/efrainbriceno/.nvm/versions/node/v22.23.2/bin/npm
+1 info using npm@10.9.8
+2 info using node@v22.23.2
+3 silly config load:file:/Users/efrainbriceno/.nvm/versions/node/v22.23.2/lib/node_modules/npm/npmrc
+4 info config found workspace root at /Users/efrainbriceno/vertebra-website
+5 silly config load:file:/Users/efrainbriceno/vertebra-website/.npmrc
+6 silly config load:file:/Users/efrainbriceno/vertebra-website/frontend/public/assets/home/.npmrc
+7 silly config load:file:/Users/efrainbriceno/.nvm/versions/node/v22.23.2/etc/npmrc
+8 verbose title npm run check
+9 verbose argv "run" "check"
+10 verbose logfile logs-max:10 dir:/Users/efrainbriceno/vertebra-website/frontend/public/assets/home/.npm/_logs/2026-08-06T21_57_34_702Z-
+11 verbose logfile /Users/efrainbriceno/vertebra-website/frontend/public/assets/home/.npm/_logs/2026-08-06T21_57_34_702Z-debug-0.log
+12 silly logfile done cleaning log files
+13 verbose cwd /Users/efrainbriceno/vertebra-website/frontend
+14 verbose os Darwin 25.5.0
+15 verbose node v22.23.2
+16 verbose npm  v10.9.8
+17 verbose exit 0
+18 info ok

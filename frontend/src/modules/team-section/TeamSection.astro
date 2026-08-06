@@ -1,0 +1,82 @@
+---
+interface Member {
+  name: string
+  role: string
+  bio?: string
+  imageSrc?: string
+  imageSrcSet?: string
+  linkedinUrl?: string
+}
+
+interface Props {
+  heading: string
+  members: Member[]
+}
+
+const {heading, members} = Astro.props
+---
+
+<section class="regular">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="padding-section-medium">
+        <div class="regular_wrp">
+          <div class="title_component">
+            <div class="title_wrapper">
+              <img
+                src="/assets/webflow/images/title-recurso.svg"
+                loading="lazy"
+                alt=""
+                class="title_img"
+              />
+              <h2 words-slide-from-right text-split>{heading}</h2>
+            </div>
+          </div>
+          <div class="layout-3" data-vf-reveal="30">
+            {
+              members.map((member) => (
+                <div class="card_linkedin">
+                  {member.imageSrc && (
+                    <img
+                      src={member.imageSrc}
+                      srcset={member.imageSrcSet}
+                      sizes="100vw"
+                      loading="lazy"
+                      alt={member.name}
+                      class="card_linkedin-img"
+                    />
+                  )}
+                  <div class="card_linkedin-body">
+                    <div class="card_linkedin-info">
+                      <h4>{member.name}</h4>
+                      <div>{member.role}</div>
+                      {member.bio && <p class="text-size-small">{member.bio}</p>}
+                    </div>
+                    {member.linkedinUrl && (
+                      <a
+                        href={member.linkedinUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="card_linkedin-link w-inline-block"
+                        aria-label={`${member.name} LinkedIn`}
+                      >
+                        <img
+                          src="/assets/webflow/images/iconin.svg"
+                          loading="lazy"
+                          alt=""
+                          class="card_linkedin-icon"
+                          width="48"
+                          height="48"
+                        />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

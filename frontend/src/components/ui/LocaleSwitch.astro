@@ -1,0 +1,33 @@
+---
+import type {Locale} from '../../i18n/routes'
+import {getAlternateLocalePath, getPathAfterLocale} from '../../i18n/routes'
+
+interface Props {
+  locale: Locale
+  /** Extra class for contexts outside the dark vf-menu */
+  class?: string
+  /** Visual tone: dark nav (default) or light surfaces */
+  tone?: 'dark' | 'light'
+}
+
+const {locale, class: className = '', tone = 'dark'} = Astro.props
+const pathAfterLocale = getPathAfterLocale(Astro.url.pathname, locale)
+const alternatePath = getAlternateLocalePath(locale, pathAfterLocale)
+const nextLocale: Locale = locale === 'es' ? 'en' : 'es'
+const label = nextLocale.toUpperCase()
+const title = nextLocale === 'es' ? 'Español' : 'English'
+---
+
+<a
+  href={alternatePath}
+  hreflang={nextLocale}
+  class:list={[
+    'vf-locale-switch',
+    tone === 'light' && 'vf-locale-switch--light',
+    className,
+  ]}
+  title={title}
+  aria-label={title}
+>
+  {label}
+</a>

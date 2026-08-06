@@ -1,0 +1,121 @@
+---
+import type {Locale} from '../i18n/routes'
+import {getLocalizedPath} from '../i18n/routes'
+import {t} from '../i18n'
+import ChevronIcon from './ui/ChevronIcon.astro'
+import LocaleSwitch from './ui/LocaleSwitch.astro'
+
+interface Props {
+  locale: Locale
+  appearance?: 'auto' | 'overlay' | 'solid' | 'webflow'
+}
+
+const {locale} = Astro.props
+
+const links = [
+  {key: 'modules' as const, label: t(locale, 'nav.modules'), external: false},
+  {key: 'benefits' as const, label: t(locale, 'nav.benefits'), external: false},
+  {key: 'ai' as const, label: t(locale, 'nav.ai'), external: false},
+  {key: 'about' as const, label: t(locale, 'nav.about'), external: false},
+]
+
+const helpHref = 'https://app.vertebra.co/ayuda'
+const loginHref = 'https://app.vertebra.co/users/sign_in'
+const ctaHref = getLocalizedPath(locale, 'agenda')
+const homeHref = getLocalizedPath(locale, 'home')
+---
+
+<header class="vf-menu">
+  <div class="vf-padding-global">
+    <div class="vf-container-large">
+      <div class="vf-menu__wrp">
+        <a href={homeHref} class="shrink-0 no-underline" aria-label="Vertebra">
+          <img
+            src="/assets/webflow/brand/logo-vf.svg"
+            alt="Vertebra"
+            width="192"
+            height="40"
+            class="vf-menu__logo"
+          />
+        </a>
+
+        <nav class="vf-menu__nav" aria-label="Primary">
+          {
+            links.map((link) => (
+              <a href={getLocalizedPath(locale, link.key)} class="vf-menu__link">
+                {link.label}
+              </a>
+            ))
+          }
+          <a href={helpHref} class="vf-menu__link" target="_blank" rel="noopener noreferrer">
+            {t(locale, 'nav.help')}
+          </a>
+          <div class="vf-menu__actions">
+            <LocaleSwitch locale={locale} />
+            <a
+              href={loginHref}
+              class="vf-btn vf-btn--ghost"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>{t(locale, 'nav.login')}</span>
+              <ChevronIcon />
+            </a>
+            <a href={ctaHref} class="vf-btn vf-btn--blue">
+              <span>{t(locale, 'nav.cta')}</span>
+              <ChevronIcon />
+            </a>
+          </div>
+        </nav>
+
+        <button
+          type="button"
+          class="vf-menu__burger"
+          data-mobile-nav-toggle
+          aria-expanded="false"
+          aria-controls="vf-mobile-nav"
+          aria-label="Menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M4 7h16M4 12h16M4 17h16"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div id="vf-mobile-nav" class="vf-menu__mobile" data-mobile-nav>
+        {
+          links.map((link) => (
+            <a href={getLocalizedPath(locale, link.key)} class="vf-menu__link">
+              {link.label}
+            </a>
+          ))
+        }
+        <a href={helpHref} class="vf-menu__link" target="_blank" rel="noopener noreferrer">
+          {t(locale, 'nav.help')}
+        </a>
+        <a href={loginHref} class="vf-btn vf-btn--ghost" target="_blank" rel="noopener noreferrer">
+          <span>{t(locale, 'nav.login')}</span>
+          <ChevronIcon />
+        </a>
+        <a href={ctaHref} class="vf-btn vf-btn--blue">
+          <span>{t(locale, 'nav.cta')}</span>
+          <ChevronIcon />
+        </a>
+        <LocaleSwitch locale={locale} />
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector('[data-mobile-nav-toggle]')
+  const panel = document.querySelector('[data-mobile-nav]')
+  toggle?.addEventListener('click', () => {
+    const open = panel?.classList.toggle('is-open') === true
+    toggle.setAttribute('aria-expanded', String(open))
+  })
+</script>

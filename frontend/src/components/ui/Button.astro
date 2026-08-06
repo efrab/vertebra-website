@@ -1,0 +1,77 @@
+---
+/**
+ * Vertebra button
+ * primary → brand blue fill
+ * secondary → outline dark-blue / white
+ * accent → green accent CTA
+ * ghost → text-only
+ */
+interface Props {
+  href?: string
+  variant?: 'primary' | 'secondary' | 'brand' | 'accent' | 'ghost'
+  tone?: 'dark' | 'light'
+  type?: 'button' | 'submit' | 'reset'
+  class?: string
+  external?: boolean
+  size?: 'md' | 'lg'
+}
+
+const {
+  href,
+  variant = 'primary',
+  tone = 'light',
+  type = 'button',
+  class: className = '',
+  external = false,
+  size = 'md',
+} = Astro.props
+
+const base = [
+  'group/btn relative inline-flex items-center justify-center gap-2.5 overflow-hidden',
+  'rounded-[var(--radius-button)] text-base font-medium leading-none no-underline',
+  'transition-[color,background-color,border-color,transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]',
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand',
+  'active:scale-[0.98]',
+].join(' ')
+
+const sizes = {
+  md: 'min-h-11 h-11 px-5',
+  lg: 'min-h-12 h-12 px-6',
+}
+
+const variants = {
+  primary:
+    'border border-brand bg-brand !text-white hover:bg-brand-800 hover:border-brand-800 hover:-translate-y-px hover:shadow-[0_10px_28px_rgba(0,66,241,0.35)]',
+  brand:
+    'border border-brand bg-brand !text-white hover:bg-brand-800 hover:border-brand-800 hover:-translate-y-px hover:shadow-[0_10px_28px_rgba(0,66,241,0.35)]',
+  accent:
+    'border border-accent bg-accent !text-dark-blue hover:brightness-95 hover:-translate-y-px',
+  secondary:
+    tone === 'dark'
+      ? 'border border-white bg-transparent !text-white hover:bg-white hover:!text-dark-blue hover:-translate-y-px'
+      : 'border border-dark-blue bg-transparent !text-dark-blue hover:bg-dark-blue hover:!text-white hover:-translate-y-px',
+  ghost:
+    tone === 'dark'
+      ? 'bg-transparent !text-white hover:!text-accent'
+      : 'bg-transparent !text-brand hover:!text-brand-800',
+}
+
+const classes = [base, sizes[size], variants[variant], className].filter(Boolean).join(' ')
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class={classes}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={classes}>
+      <slot />
+    </button>
+  )
+}

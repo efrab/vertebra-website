@@ -1,0 +1,93 @@
+---
+interface Props {
+  variant?: 'base' | 'interna'
+  heading: string
+  iconSrc?: string
+  personSrc?: string
+  personSrcSet?: string
+  bgSrc?: string
+  bgSrcSet?: string
+  /** @deprecated unused in Webflow port */
+  eyebrow?: string
+  description?: string
+  imageSrc?: string
+}
+
+const DEFAULT_BG = '/assets/webflow/images/background-1.png'
+const DEFAULT_BG_SRCSET =
+  '/assets/webflow/images/background-1-p-500.png 500w, /assets/webflow/images/background-1-p-800.png 800w, /assets/webflow/images/background-1-p-1080.png 1080w, /assets/webflow/images/background-1.png 1440w'
+
+const {
+  variant = 'base',
+  heading,
+  iconSrc = '/assets/webflow/images/Frame-1000005709.svg',
+  personSrc,
+  personSrcSet,
+  bgSrc = DEFAULT_BG,
+  bgSrcSet = DEFAULT_BG_SRCSET,
+  imageSrc,
+} = Astro.props
+
+const resolvedPerson = personSrc || imageSrc
+const isInterna = variant === 'interna'
+const resolvedBgSrcSet = bgSrc === DEFAULT_BG ? bgSrcSet || DEFAULT_BG_SRCSET : bgSrcSet
+---
+
+<section
+  class:list={[
+    'header-interna-component',
+    isInterna && 'w-variant-576de604-d99a-8cca-8ac1-d5295aa97b97',
+  ]}
+  data-wf--header-interna-component--variant={isInterna ? 'interna' : 'base'}
+>
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="header-interna_wrp">
+        <div
+          class:list={[
+            'header-interna_content',
+            isInterna && 'w-variant-576de604-d99a-8cca-8ac1-d5295aa97b97',
+          ]}
+          data-vf-reveal="30"
+        >
+          <img
+            src={iconSrc}
+            loading="eager"
+            alt=""
+            class="header-interna_icon"
+            width="40"
+            height="40"
+          />
+          <h1 class="header_title">{heading}</h1>
+        </div>
+        {
+          !isInterna && resolvedPerson && (
+            <img
+              src={resolvedPerson}
+              srcset={personSrcSet}
+              sizes="100vw"
+              loading="eager"
+              alt=""
+              class="header-interna_person"
+              data-vf-reveal="30"
+              style="--vf-reveal-delay: 0.12s"
+            />
+          )
+        }
+      </div>
+    </div>
+  </div>
+  <div class="header-interna_bg" aria-hidden="true">
+    <img
+      src={bgSrc}
+      srcset={resolvedBgSrcSet}
+      sizes="(max-width: 1200px) 100vw, 1200px"
+      loading="eager"
+      fetchpriority="high"
+      alt=""
+      class="header-interna_bg-img"
+      width="1440"
+      height="400"
+    />
+  </div>
+</section>

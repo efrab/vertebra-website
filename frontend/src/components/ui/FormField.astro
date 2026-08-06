@@ -1,0 +1,20 @@
+---
+import {formFieldClass, formHintClass, formLabelClass, type FormTone} from '../../lib/forms'
+
+interface Props {
+  tone?: FormTone
+  label?: string
+  hint?: string
+  htmlFor?: string
+  class?: string
+  labelClass?: string
+}
+
+const {tone = 'dark', label, hint, htmlFor, class: className = '', labelClass = ''} = Astro.props
+---
+
+<label class={formFieldClass(className)} {...(htmlFor ? {for: htmlFor} : {})}>
+  {label && <span class={formLabelClass(tone, labelClass)}>{label}</span>}
+  <slot />
+  {hint && <span class={formHintClass(tone)}>{hint}</span>}
+</label>

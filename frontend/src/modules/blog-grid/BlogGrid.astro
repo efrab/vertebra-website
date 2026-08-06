@@ -1,0 +1,79 @@
+---
+interface Post {
+  slug: string
+  title: string
+  excerpt?: string
+  href: string
+  imageSrc?: string
+  imageSrcSet?: string
+  tags?: string[]
+}
+
+interface Props {
+  heading?: string
+  posts: Post[]
+}
+
+const {heading, posts} = Astro.props
+const WF = '/assets/webflow/images'
+---
+
+<section class="regular">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="padding-section-medium">
+        <div class="regular_wrp">
+          {
+            heading && (
+              <div class="title_component">
+                <div class="title_wrapper">
+                  <img
+                    src={`${WF}/title-recurso.svg`}
+                    loading="lazy"
+                    alt=""
+                    class="title_img"
+                  />
+                  <h2 words-slide-from-right text-split>
+                    {heading}
+                  </h2>
+                </div>
+              </div>
+            )
+          }
+          <div class="blog_grid" data-vf-reveal="1.875em">
+            {
+              posts.map((post) => (
+                <a href={post.href} class="card-blog w-inline-block">
+                  <div class="card-blog_head">
+                    <img
+                      loading="lazy"
+                      src={post.imageSrc || `${WF}/Frame-1000005716-1.png`}
+                      srcset={
+                        post.imageSrcSet ||
+                        `${WF}/Frame-1000005716-1-p-500.png 500w, ${WF}/Frame-1000005716-1.png 560w`
+                      }
+                      sizes="(max-width: 358px) 100vw, 358px"
+                      alt=""
+                      class="card-blog_img"
+                    />
+                    {post.tags && post.tags.length > 0 && (
+                      <div class="card-blog_etiquetas">
+                        {post.tags.map((tag) => (
+                          <div class="tag-dscto">{tag}</div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div class="card-blog_body">
+                    <h3 class="heading-style-h5">{post.title}</h3>
+                    {post.excerpt && <p>{post.excerpt}</p>}
+                  </div>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

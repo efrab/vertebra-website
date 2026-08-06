@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "modules": "Modules",
+    "benefits": "Benefits",
+    "ai": "AI",
+    "about": "About",
+    "help": "Help",
+    "blog": "Blog",
+    "pricing": "Pricing",
+    "login": "Sign in",
+    "cta": "Free Vertebra trial",
+    "demo": "Request a free demo"
+  },
+  "footer": {
+    "tagline": "The digital backbone of your properties",
+    "product": "Product",
+    "company": "Company",
+    "resources": "Resources",
+    "helpCenter": "Help center",
+    "apiDocs": "API Docs",
+    "rights": "All rights reserved.",
+    "madeIn": "Made with love in Mexico",
+    "terms": "Terms of use",
+    "privacy": "Privacy notice"
+  },
+  "cookie": {
+    "message": "We use cookies to improve your experience and measure performance. You can accept or reject non-essential cookies.",
+    "accept": "Accept",
+    "reject": "Reject"
+  },
+  "form": {
+    "name": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "properties": "Number of properties",
+    "message": "Comments",
+    "submit": "Submit",
+    "privacy": "I accept the privacy notice",
+    "success": "Thanks! We'll be in touch soon.",
+    "error": "Something went wrong. Please try again."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or was moved.",
+    "cta": "Back to home"
+  }
+}

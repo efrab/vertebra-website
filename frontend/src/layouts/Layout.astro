@@ -1,0 +1,214 @@
+---
+import {VisualEditing} from '@sanity/astro/visual-editing'
+import {stegaClean} from '@sanity/client/stega'
+import '../styles/global.css'
+import '../styles/webflow-home.css'
+import '../styles/webflow-sections.css'
+import '../styles/webflow-modulos.css'
+import '../styles/webflow-beneficios.css'
+import '../styles/webflow-pages.css'
+import '../styles/webflow-forms.css'
+import '../styles/webflow-help-blog.css'
+import type {Locale} from '../i18n/routes'
+import {defaultLocale} from '../i18n/routes'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import JsonLd from '../components/seo/JsonLd.astro'
+import CookieConsent from '../components/CookieConsent.astro'
+import Analytics from '../components/Analytics.astro'
+import {loadQuery} from '../lib/sanity/loadQuery'
+import {siteSettingsQuery} from '../lib/sanity/queries/settings'
+import type {SiteSettings} from '../lib/sanity/types'
+import {
+  buildCanonicalUrl,
+  buildHreflangAlternates,
+  ogLocale,
+  ogLocaleAlternates,
+} from '../lib/seo/hreflang'
+import {buildPageStructuredData} from '../lib/seo/structuredData'
+import type {LayoutSeoProps} from '../lib/seo/types'
+import {getSiteUrl} from '../lib/seo/siteUrl'
+
+interface Props extends LayoutSeoProps {
+  locale?: Locale
+  title: string
+  description?: string
+  image?: string
+  lcpImage?: string
+  headerAppearance?: 'auto' | 'overlay' | 'solid'
+}
+
+const {
+  locale = defaultLocale,
+  title,
+  description,
+  image,
+  lcpImage,
+  headerAppearance = 'auto',
+  noindex = false,
+  ogType = 'website',
+  publishedTime,
+  modifiedTime,
+  routeKey,
+  alternateSlugs,
+  breadcrumbs,
+  faqItems,
+  includeGlobalSchema = false,
+  pageType,
+  article,
+  service,
+} = Astro.props
+
+const siteUrl = getSiteUrl(Astro.url.origin)
+const pathname = Astro.url.pathname
+const canonicalURL = buildCanonicalUrl({pathname, siteUrl})
+const draftMode = Astro.locals.draftMode
+const perspectiveCookie = Astro.locals.perspectiveCookie
+
+let siteSettings: SiteSettings | null = null
+
+try {
+  siteSettings = await loadQuery<SiteSettings | null>(
+    siteSettingsQuery,
+    {locale},
+    {perspectiveCookie},
+  )
+} catch {
+  // i18n fallbacks in Header/Footer
+}
+
+const cleanTitle = stegaClean(title)
+const cleanDescription = description ? stegaClean(description) : undefined
+const fullTitle = cleanTitle.includes('Vertebra') || cleanTitle.includes('Vértebra')
+  ? cleanTitle
+  : `${cleanTitle} · Vertebra`
+
+const hreflangAlternates = buildHreflangAlternates({
+  locale,
+  pathname,
+  siteUrl,
+  routeKey,
+  alternateSlugs,
+})
+
+const resolvedOgType = pageType === 'article' ? 'article' : ogType
+const robotsContent = noindex || draftMode ? 'noindex, nofollow' : 'index, follow'
+
+const structuredData = buildPageStructuredData({
+  locale,
+  pathname,
+  title: cleanTitle,
+  description: cleanDescription,
+  image,
+  siteSettings,
+  includeGlobal: includeGlobalSchema || pageType === 'home',
+  breadcrumbs,
+  faqItems,
+  article: pageType === 'article' ? article : undefined,
+  service: pageType === 'service' ? service : undefined,
+})
+
+const lcpPreloadSrcset =
+  lcpImage && lcpImage.includes('-480.')
+    ? `${lcpImage} 480w, ${lcpImage.replace('-480.', '-640.')} 640w, ${lcpImage.replace('-480.', '-1024.')} 1024w`
+    : lcpImage && lcpImage.includes('-640.')
+      ? `${lcpImage} 640w, ${lcpImage.replace('-640.', '-1024.')} 1024w`
+      : undefined
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    {lcpImage && (
+      <link
+        rel="preload"
+        as="image"
+        href={lcpImage}
+        fetchpriority="high"
+        {...(lcpPreloadSrcset
+          ? {imagesrcset: lcpPreloadSrcset, imagesizes: '(max-width: 480px) 100vw, (max-width: 640px) 100vw, 1024px'}
+          : {})}
+      />
+    )}
+    <meta name="generator" content={Astro.generator} />
+    <meta name="robots" content={robotsContent} />
+
+    <link rel="canonical" href={canonicalURL} />
+    {hreflangAlternates.map((alt) => (
+      <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+    ))}
+
+    {cleanDescription && <meta name="description" content={cleanDescription} />}
+
+    <meta property="og:type" content={resolvedOgType} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:site_name" content="Vertebra" />
+    <meta property="og:locale" content={ogLocale(locale)} />
+    {ogLocaleAlternates(locale).map((altLocale) => (
+      <meta property="og:locale:alternate" content={altLocale} />
+    ))}
+    {cleanDescription && <meta property="og:description" content={cleanDescription} />}
+    {image && <meta property="og:image" content={image} />}
+
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+
+    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={fullTitle} />
+    {cleanDescription && <meta name="twitter:description" content={cleanDescription} />}
+    {image && <meta name="twitter:image" content={image} />}
+
+    <title>{fullTitle}</title>
+
+    <JsonLd data={structuredData} />
+
+    <script is:inline>
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.addEventListener('DOMContentLoaded', () => {
+          document.querySelectorAll('.header-item').forEach((element) => {
+            element.classList.add('is-header-visible')
+          })
+
+          for (const trigger of document.querySelectorAll('[data-reveal-on="load"]')) {
+            trigger.querySelectorAll('[data-reveal]').forEach((element) => {
+              element.classList.add('is-revealed')
+            })
+            if (trigger.matches('[data-reveal]')) {
+              trigger.classList.add('is-revealed')
+            }
+          }
+        })
+      }
+    </script>
+    <noscript>
+      <style>
+        [data-reveal] {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      </style>
+    </noscript>
+  </head>
+  <body class="flex min-h-screen flex-col font-sans antialiased">
+    {draftMode && <VisualEditing enabled={draftMode} />}
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:bg-brand focus:px-4 focus:py-2 focus:text-white">
+      Skip to content
+    </a>
+    <Header locale={locale} appearance={headerAppearance} />
+    <main id="main-content" class="flex-1 overflow-x-clip bg-white text-ink">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+    <CookieConsent locale={locale} />
+    <Analytics />
+    <script>
+      import '../scripts/motion'
+      import '../scripts/webflow-home'
+      import '../scripts/webflow-modulos'
+    </script>
+  </body>
+</html>

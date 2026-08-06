@@ -1,0 +1,134 @@
+---
+interface Props {
+  variant?: 'default' | 'roomy'
+  title?: string
+  items: {question: string; answer: string}[]
+}
+
+const {variant = 'default', title, items} = Astro.props
+
+const faqEase = 'cubic-bezier(0.16, 1, 0.3, 1)'
+---
+
+<section
+  class:list={[
+    'bg-black px-6 text-white sm:px-[42px]',
+    variant === 'roomy' ? 'pb-[119px] pt-[118px]' : 'py-[86px]',
+  ]}
+>
+  <div class="mx-auto max-w-[898px]">
+    {title && <h2 class="mb-[58px] mt-0 text-center text-[42px] leading-none uppercase" data-reveal="text">{title}</h2>}
+    <div data-faq data-reveal-group="70">
+      {
+        items.map((item, index) => (
+          <details
+            class:list={[
+              'faq-item group border-b transition-[background-color,border-color] duration-500 hover:bg-white/[0.03] focus-within:bg-white/[0.03] open:border-magenta open:bg-white/[0.03]',
+              index === 0 ? 'border-b-2 border-magenta pt-0' : 'border-white/15',
+            ]}
+            style={`--faq-ease: ${faqEase}`}
+            open={index === 0}
+            data-reveal
+          >
+            <summary class="faq-summary flex min-h-[106px] w-full cursor-pointer list-none items-center justify-between gap-4 px-4 py-7 text-xl marker:content-none [&::-webkit-details-marker]:hidden">
+              <span>{item.question}</span>
+              <span class="faq-chevron relative flex h-6 w-6 shrink-0 items-center justify-center">
+                <img
+                  src="/assets/figma/home/chevron-down.svg"
+                  alt=""
+                  class="h-6 w-6 max-w-none"
+                  width="24"
+                  height="24"
+                  aria-hidden="true"
+                />
+              </span>
+            </summary>
+            <div class="faq-panel grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-[var(--faq-ease)] group-open:grid-rows-[1fr]">
+              <div class="overflow-hidden">
+                <p class="faq-answer mb-8 mt-0 px-4 text-base leading-5 text-white/75">{item.answer}</p>
+              </div>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-faq]').forEach((root) => {
+    const items = Array.from(root.querySelectorAll<HTMLDetailsElement>('.faq-item'))
+
+    items.forEach((details) => {
+      const summary = details.querySelector('summary')
+      summary?.addEventListener('click', (event) => {
+        event.preventDefault()
+        const willOpen = !details.open
+
+        if (willOpen) {
+          items.forEach((other) => {
+            if (other !== details) other.open = false
+          })
+        }
+
+        details.open = willOpen
+      })
+    })
+  })
+</script>
+
+<style>
+  .faq-summary {
+    transition: background-color 300ms var(--ease-out), color 300ms var(--ease-out);
+  }
+
+  .faq-summary:hover {
+    background-color: rgb(255 255 255 / 0.025);
+  }
+
+  .faq-summary:focus-visible {
+    background-color: rgb(255 255 255 / 0.04);
+    outline: 2px solid var(--color-magenta);
+    outline-offset: -2px;
+  }
+
+  .faq-chevron {
+    transition: transform 500ms var(--faq-ease, cubic-bezier(0.16, 1, 0.3, 1));
+    transform: rotate(0deg);
+  }
+
+  .faq-item[open] .faq-chevron {
+    transform: rotate(-180deg);
+  }
+
+  .faq-answer {
+    opacity: 0.65;
+    transform: translateY(-0.35rem);
+    transition:
+      opacity 420ms var(--faq-ease, cubic-bezier(0.16, 1, 0.3, 1)) 40ms,
+      transform 500ms var(--faq-ease, cubic-bezier(0.16, 1, 0.3, 1)) 40ms;
+  }
+
+  .faq-item[open] .faq-answer {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-panel,
+    .faq-chevron,
+    .faq-answer,
+    .faq-item {
+      transition: none;
+    }
+
+    .faq-answer {
+      opacity: 1;
+      transform: none;
+    }
+
+    .faq-item[open] .faq-chevron {
+      transform: rotate(-180deg);
+    }
+  }
+</style>

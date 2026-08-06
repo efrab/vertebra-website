@@ -1,0 +1,197 @@
+---
+import ChevronIcon from '../../components/ui/ChevronIcon.astro'
+
+interface PressLogo {
+  name: string
+  src: string
+  href?: string
+  small?: boolean
+}
+
+interface InvestorLogo {
+  name: string
+  /** Image logo; omit when using `label` text lockup */
+  src?: string
+  /** Text lockup (green mark + label) instead of an image */
+  label?: string
+  href?: string
+}
+
+interface Cta {
+  label?: string
+  href?: string
+}
+
+interface Props {
+  eyebrow?: string
+  heading: string
+  headingBold?: string
+  headingLight?: string
+  subheading?: string
+  primaryCta?: Cta
+  gifSrc?: string
+  pressLabel?: string
+  pressLogos?: PressLogo[]
+  investorLogos?: InvestorLogo[]
+  /** @deprecated kept for Sanity/fixtures compatibility */
+  videoSrc?: string
+  posterSrc?: string
+  partnerLogos?: {name: string; src?: string}[]
+}
+
+const {
+  heading,
+  headingBold,
+  headingLight,
+  subheading,
+  primaryCta,
+  gifSrc = '/assets/webflow/images/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd.gif',
+  pressLabel,
+  pressLogos = [],
+  investorLogos = [],
+} = Astro.props
+
+const boldPart = headingBold ?? heading
+const lightPart = headingLight
+
+const MARK_SRC = '/assets/webflow/images/icon_title.svg'
+---
+
+<section class="vf-heroh">
+  <div class="vf-padding-global">
+    <div class="vf-container-large">
+      <div class="vf-padding-section-medium vf-heroh__inner">
+        <div class="vf-heroh__info">
+          <div class="vf-title-page">
+            <div class="vf-title-page__header">
+              <img
+                src="/assets/webflow/images/icon_title.svg"
+                alt=""
+                class="vf-title-page__icon"
+                width="40"
+                height="40"
+              />
+              <h1 class="vf-title-page__h1">
+                {boldPart}
+                {lightPart && <span class="is-light"> {lightPart}</span>}
+              </h1>
+            </div>
+            <div class="vf-title-page__content">
+              {subheading && <p class="vf-title-page__sub">{subheading}</p>}
+              {
+                primaryCta?.href && (
+                  <a href={primaryCta.href} class="vf-btn vf-btn--green">
+                    <span>{primaryCta.label}</span>
+                    <ChevronIcon />
+                  </a>
+                )
+              }
+            </div>
+          </div>
+
+          <div class="vf-heroh__gif" data-vf-reveal="30">
+            <img src={gifSrc} alt="" class="hero_gif-img" width="1024" height="640" loading="eager" />
+            <div class="vf-heroh__overlay"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="vf-heroh__bg" aria-hidden="true">
+    <img
+      src="/assets/webflow/images/trama.webp"
+      srcset="/assets/webflow/images/trama-p-1600.png 1600w, /assets/webflow/images/trama.png 1954w"
+      sizes="100vw"
+      alt=""
+      class="vf-heroh__fondo"
+    />
+    <img
+      src="/assets/webflow/images/Group-1000005376.webp"
+      srcset="/assets/webflow/images/Group-1000005376-p-1080.png 1080w, /assets/webflow/images/Group-1000005376.png 1479w"
+      sizes="100vw"
+      alt=""
+      class="vf-heroh__colors"
+    />
+  </div>
+</section>
+
+{
+  pressLogos.length > 0 && (
+    <section class="encuentranos-section">
+      <div class="padding-global">
+        <div class="container-large is-modulos">
+          <div class="padding-section-small">
+            <div class="heroh_wrp">
+              <div class="heroh_contlogos" data-vf-reveal="1.875em">
+                {pressLabel && <div class="text-letter-spacing">{pressLabel}</div>}
+                <div class="heroh_logos">
+                  {pressLogos.map((logo) => (
+                    <a
+                      href={logo.href || '#'}
+                      class="heroh_logos-link w-inline-block"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={logo.name}
+                    >
+                      <img
+                        src={logo.src}
+                        alt={logo.name}
+                        class:list={['heroh_logo', logo.small && 'ismall']}
+                        loading="lazy"
+                      />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+{
+  investorLogos.length > 0 && (
+    <section class="logos">
+      <div class="padding-global">
+        <div class="container-large">
+          <div class="logos_wrp" data-vf-reveal="30">
+            {[investorLogos.slice(0, 2), investorLogos.slice(2, 4)].map((group) => (
+              <div class="logos_box">
+                {group.map((logo) =>
+                  logo.label ? (
+                    <div class="logos_item logos_item--text">
+                      <div class="logos_item-lockup">
+                        <img
+                          src={MARK_SRC}
+                          alt=""
+                          class="logos_item-lockup-icon"
+                          width="38"
+                          height="12"
+                          loading="lazy"
+                        />
+                        <span class="logos_item-lockup-text">{logo.label}</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <a
+                      href={logo.href || '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="logos_item w-inline-block"
+                      aria-label={logo.name}
+                    >
+                      <img src={logo.src} alt={logo.name} class="logos_item-img" loading="lazy" />
+                    </a>
+                  ),
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

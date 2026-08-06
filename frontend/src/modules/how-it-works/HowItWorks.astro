@@ -1,0 +1,64 @@
+---
+interface Step {
+  number: string
+  title: string
+  description: string
+}
+
+interface Props {
+  eyebrow?: string
+  heading: string
+  steps: Step[]
+}
+
+const {eyebrow, heading, steps} = Astro.props
+---
+
+<section class="pasos">
+  <div class="vf-padding-global padding-global">
+    <div class="vf-container-large container-large">
+      <div class="padding-section-medium">
+        <div class="layout-2">
+          <div class="pasos_wrp" data-vf-reveal="30">
+            <img
+              src="/assets/webflow/images/icon-pasos.svg"
+              loading="lazy"
+              alt=""
+              class="icon-3-5"
+            />
+            <div class="pasos_title">
+              {
+                eyebrow && (
+                  <div class="text-size-medium text-color-blue text-weight-semibold">{eyebrow}</div>
+                )
+              }
+              <div class="heading-style-h3 text-weight-semibold">{heading}</div>
+            </div>
+          </div>
+          <div class="pasos_content">
+            {
+              steps.map((step, index) => (
+                <div
+                  class="pasos_item"
+                  data-vf-reveal="30"
+                  style={`--vf-reveal-delay: ${(0.12 * (index + 1)).toFixed(2)}s`}
+                >
+                  <div class="pasos_number-wrp">
+                    <div class="pasos_number">
+                      <div>{step.number}</div>
+                    </div>
+                    {index < steps.length - 1 && <div class="pasos_line" />}
+                  </div>
+                  <div class="pasos_info">
+                    <div class="heading-style-h5 text-color-bluedark">{step.title}</div>
+                    <div>{step.description}</div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

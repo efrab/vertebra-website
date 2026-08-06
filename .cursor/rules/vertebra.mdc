@@ -1,0 +1,20 @@
+---
+description: Vertebra website conventions (Astro + Sanity monorepo)
+globs:
+  - frontend/**
+  - studio/**
+  - docs/**
+alwaysApply: true
+---
+
+# Vertebra conventions
+
+- Monorepo: `frontend/` (Astro) + `studio/` (Sanity). Pattern from Growth Lab / `@astro-sanity-starter`.
+- Import direction: `pages/views → modules → components/ui|cards`. Never invert.
+- 1 Sanity page-builder object = 1 Astro module. Variants via `layout`/`variant`.
+- Locales: `es` (default), `en`. Routes in `frontend/src/i18n/routes.ts`.
+- Webflow export lives in `docs/reference/webflow/` — reference only, not deployable routes.
+- URL scope: see `docs/URL_MAP.md`. Do not rebuild legacy pages; use 301 redirects.
+- Legal pages stay on `app.vertebra.co`.
+- Prefer fixtures when Sanity is unavailable.
+- Run `npm run check` after substantive frontend changes.

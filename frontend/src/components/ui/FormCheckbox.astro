@@ -1,0 +1,40 @@
+---
+import {
+  formCheckboxBoxClass,
+  formCheckboxInputClass,
+  formCheckboxLabelClass,
+  type FormTone,
+} from '../../lib/forms'
+
+interface Props {
+  tone?: FormTone
+  name?: string
+  value?: string
+  required?: boolean
+  class?: string
+  inputClass?: string
+}
+
+const {
+  tone = 'dark',
+  name = 'consent',
+  value = 'on',
+  required = false,
+  class: className = '',
+  inputClass = '',
+} = Astro.props
+---
+
+<label class={formCheckboxLabelClass(tone, className)}>
+  <input
+    type="checkbox"
+    name={name}
+    value={value}
+    required={required}
+    class:list={[formCheckboxInputClass(), inputClass]}
+  />
+  <span class={formCheckboxBoxClass(tone)} aria-hidden="true"></span>
+  <span class="min-w-0 flex-1 text-sm leading-[1.35]">
+    <slot />
+  </span>
+</label>

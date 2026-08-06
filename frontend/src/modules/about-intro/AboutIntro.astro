@@ -1,0 +1,52 @@
+---
+interface Logo {
+  name: string
+  src: string
+}
+
+interface Props {
+  heading: string
+  description?: string
+  logos?: Logo[]
+}
+
+const {heading, description, logos = []} = Astro.props
+---
+
+<section class="regular">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="padding-section-medium">
+        <div class="regular_wrp">
+          <div class="title_component">
+            <div class="title_wrapper">
+              <img
+                src="/assets/webflow/images/title-recurso.svg"
+                loading="lazy"
+                alt=""
+                class="title_img"
+              />
+              <h2 words-slide-from-right text-split>{heading}</h2>
+              {
+                description && (
+                  <div class="title_prf" data-vf-reveal="30">
+                    <p>{description}</p>
+                  </div>
+                )
+              }
+            </div>
+          </div>
+          {
+            logos.length > 0 && (
+              <div class="regular-flex" data-vf-reveal="1.875em">
+                {logos.map((logo) => (
+                  <img src={logo.src} loading="lazy" alt={logo.name} class="confian_logo" />
+                ))}
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

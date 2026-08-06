@@ -1,0 +1,146 @@
+---
+import type {Locale} from '../i18n/routes'
+import {getLocalizedPath} from '../i18n/routes'
+import {t} from '../i18n'
+
+interface Props {
+  locale: Locale
+}
+
+const {locale} = Astro.props
+const year = new Date().getFullYear()
+const isEn = locale === 'en'
+---
+
+<footer class="footer-component">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="footer_wrp">
+        <div class="footer_grid">
+          <div class="footer_col">
+            <div class="footer_head">
+              <img
+                src="/assets/webflow/images/logo-vf.svg"
+                loading="lazy"
+                alt="Vertebra"
+                class="footer_logo"
+              />
+              <div class="text-size-small">{t(locale, 'footer.tagline')}</div>
+            </div>
+            <div class="footer_content">
+              <div class="footer_rs">
+                <a
+                  href="https://www.linkedin.com/company/vertebra-capital/posts/?feedView=all"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="brand_rs w-inline-block"
+                  aria-label="LinkedIn"
+                >
+                  <img src="/assets/webflow/images/icon-in.svg" loading="lazy" alt="" />
+                </a>
+                <a
+                  href="https://www.youtube.com/@vertebramex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="brand_rs w-inline-block"
+                  aria-label="YouTube"
+                >
+                  <img src="/assets/webflow/images/icon-yt.svg" loading="lazy" alt="" />
+                </a>
+                <a
+                  href="https://www.facebook.com/vertebramex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="brand_rs w-inline-block"
+                  aria-label="Facebook"
+                >
+                  <img src="/assets/webflow/images/icon-fc.svg" loading="lazy" alt="" />
+                </a>
+                <a
+                  href="https://www.instagram.com/vertebramex/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="brand_rs w-inline-block"
+                  aria-label="Instagram"
+                >
+                  <img src="/assets/webflow/images/icon-insta.svg" loading="lazy" alt="" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer_col">
+            <div class="footer_head">
+              <div><strong>{t(locale, 'footer.product')}</strong></div>
+            </div>
+            <div class="footer_content">
+              <a href={getLocalizedPath(locale, 'modules')} class="footer_litem-link"
+                >{t(locale, 'nav.modules')}</a
+              >
+              <a href="#soluciones" class="footer_litem-link">{isEn ? 'Solutions' : 'Soluciones'}</a>
+              <a
+                href="https://app.vertebra.co/ayuda"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer_litem-link">{t(locale, 'nav.help')}</a
+              >
+            </div>
+          </div>
+
+          <div class="footer_col">
+            <div class="footer_head">
+              <div><strong>{t(locale, 'footer.company')}</strong></div>
+            </div>
+            <div class="footer_content">
+              <a href={getLocalizedPath(locale, 'about')} class="footer_litem-link"
+                >{isEn ? 'About us' : 'Sobre nosotros'}</a
+              >
+              <a href={getLocalizedPath(locale, 'agenda')} class="footer_litem-link"
+                >{isEn ? 'Contact' : 'Contacto'}</a
+              >
+            </div>
+          </div>
+
+          <div class="footer_col">
+            <div class="footer_head">
+              <div><strong>{t(locale, 'footer.resources')}</strong></div>
+            </div>
+            <div class="footer_content">
+              <a
+                href="https://app.vertebra.co/ayuda"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer_litem-link">{t(locale, 'footer.helpCenter')}</a
+              >
+              <a
+                href="https://app.vertebra.co"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer_litem-link">{t(locale, 'footer.apiDocs')}</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="footer_politicas">
+          <a href="#" class="footer_text-gris"
+            >© {year} Vértebra | {t(locale, 'footer.rights')}</a
+          >
+          <a
+            href="https://app.vertebra.co/terms_and_conditions"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer_text-gris">{t(locale, 'footer.terms')}</a
+          >
+          <a
+            href="https://app.vertebra.co/privacy_policy"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer_text-gris">{t(locale, 'footer.privacy')}</a
+          >
+          <a href="#" class="footer_text-gris">{t(locale, 'footer.madeIn')}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

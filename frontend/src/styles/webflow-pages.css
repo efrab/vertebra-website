@@ -1,0 +1,123 @@
+/* Shared page modules: AI / Nosotros */
+.card-v1 {
+  height: 100%;
+  min-height: 19rem;
+  padding: var(--_spacing---tw-8);
+  grid-column-gap: var(--_spacing---tw-4);
+  grid-row-gap: var(--_spacing---tw-4);
+  border-radius: var(--_spacing---tw-6);
+  background-color: var(--_brands---neutral-50);
+  text-align: left;
+  flex-flow: column;
+  display: flex;
+}
+
+.icon-4-5 {
+  width: 4rem;
+  height: 4rem;
+}
+
+.layout-4 {
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-auto-columns: 1fr;
+  display: grid;
+}
+
+.eva_wrp {
+  grid-column-gap: 1rem;
+  grid-row-gap: 1rem;
+  text-align: center;
+  flex-flow: column;
+  display: flex;
+}
+
+.regular_wrp {
+  grid-column-gap: 2rem;
+  grid-row-gap: 2rem;
+  color: var(--_brands---dark-blue);
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.regular-flex {
+  grid-column-gap: 2rem;
+  grid-row-gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.card_linkedin {
+  flex-flow: column;
+  display: flex;
+}
+
+.card_linkedin-img {
+  vertical-align: sub;
+  object-fit: cover;
+  border-radius: 17rem;
+  width: 8rem;
+  height: 8rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card_linkedin-body {
+  padding: var(--_spacing---tw-3);
+  grid-column-gap: 1rem;
+  grid-row-gap: 1rem;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.card_linkedin-info {
+  grid-column-gap: .5rem;
+  grid-row-gap: .5rem;
+  text-align: center;
+  flex-flow: column;
+  display: flex;
+}
+
+.card_linkedin-icon {
+  width: 3rem;
+}
+
+@media screen and (max-width: 767px) {
+.layout-4 {
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 1fr;
+  }
+
+.regular_wrp {
+    align-items: stretch;
+  }
+
+.regular-flex {
+    flex-flow: wrap;
+  }
+}
+
+@media screen and (max-width: 479px) {
+.layout-4 {
+    flex-flow: column;
+    width: 100%;
+    display: flex;
+  }
+
+.regular_wrp {
+    color: var(--_brands---dark-blue);
+  }
+
+.card_linkedin-body {
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

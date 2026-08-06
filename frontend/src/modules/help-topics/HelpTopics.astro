@@ -1,0 +1,109 @@
+---
+interface Topic {
+  title: string
+  items: string[]
+  tip?: string
+  iconSrc?: string
+}
+
+interface Props {
+  heading: string
+  searchPlaceholder?: string
+  searchAction?: string
+  topics: Topic[]
+}
+
+const {
+  heading,
+  searchPlaceholder = 'Buscar...',
+  searchAction = '#',
+  topics,
+} = Astro.props
+---
+
+<section class="regular">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="padding-section-medium">
+        <div class="regular_wrp">
+          <div class="title_component">
+            <div class="title_wrapper">
+              <img
+                src="/assets/webflow/images/title-recurso.svg"
+                loading="lazy"
+                alt=""
+                class="title_img"
+              />
+              <h2 words-slide-from-right text-split>{heading}</h2>
+            </div>
+          </div>
+          <div class="buscador_block w-form" data-vf-reveal="30">
+            <form
+              action={searchAction}
+              method="get"
+              class="buscador_form"
+              role="search"
+            >
+              <div class="buscador">
+                <img
+                  src="/assets/webflow/images/search.svg"
+                  loading="lazy"
+                  alt=""
+                  class="buscador_icon"
+                />
+                <input
+                  class="buscador_fields w-input"
+                  maxlength="256"
+                  name="q"
+                  placeholder={searchPlaceholder}
+                  type="search"
+                />
+                <img
+                  src="/assets/webflow/images/Vector-3.svg"
+                  loading="lazy"
+                  alt=""
+                  class="buscador_icon"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="buscador_grilla" data-vf-reveal="1.875em">
+            {
+              topics.map((topic) => (
+                <div class="card-v5">
+                  <img
+                    loading="lazy"
+                    src={topic.iconSrc || '/assets/webflow/images/almuerzo-cohete-1-1.svg'}
+                    alt=""
+                    class="icon-1x1-extralarge"
+                  />
+                  <div class="heading-style-h5">
+                    <strong>{topic.title}</strong>
+                  </div>
+                  <ul role="list" class="list-component">
+                    {topic.items.map((item) => (
+                      <li class="list_item">
+                        <div>{item}</div>
+                      </li>
+                    ))}
+                  </ul>
+                  {topic.tip && (
+                    <div class="flex_idea">
+                      <img
+                        src="/assets/webflow/images/light-bulb-on.svg"
+                        loading="lazy"
+                        alt=""
+                        class="icon-1x1-medium"
+                      />
+                      <div>{topic.tip}</div>
+                    </div>
+                  )}
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

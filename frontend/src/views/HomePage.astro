@@ -1,0 +1,59 @@
+---
+import type {Locale} from '../i18n/routes'
+import Layout from '../layouts/Layout.astro'
+import PageBuilder from '../components/PageBuilder.astro'
+import {homeFixtures, type PageSection} from '../modules/fixtures'
+import {loadQuery} from '../lib/sanity/loadQuery'
+import {homePageQuery} from '../lib/sanity/queries/home'
+import {resolvePageSeo, type PageSeo} from '../lib/seo/resolvePageSeo'
+import {singletonBreadcrumbs} from '../lib/seo/breadcrumbs'
+
+interface Props {
+  locale: Locale
+}
+
+const {locale} = Astro.props
+const perspectiveCookie = Astro.locals.perspectiveCookie
+
+let sections: PageSection[] = homeFixtures(locale)
+let title = 'Vertebra'
+let description =
+  locale === 'es'
+    ? 'Automatiza la administración de tus propiedades comerciales e industriales con nuestra inteligencia artificial'
+    : 'Automate commercial and industrial property management with our artificial intelligence'
+
+let seo: PageSeo | undefined
+
+try {
+  const data = await loadQuery<{
+    title?: string
+    seo?: PageSeo
+    pageBuilder?: PageSection[]
+  } | null>(homePageQuery, {locale}, {perspectiveCookie})
+
+  if (data?.pageBuilder?.length) {
+    sections = data.pageBuilder
+    seo = data.seo
+    title = data.seo?.metaTitle || data.title || title
+    description = data.seo?.metaDescription || description
+  }
+} catch {
+  // fixtures
+}
+
+const meta = resolvePageSeo({seo, title, description, origin: Astro.url.origin})
+---
+
+<Layout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  image={meta.image}
+  lcpImage="/assets/webflow/images/trama.webp"
+  pageType="home"
+  includeGlobalSchema
+  routeKey="home"
+  breadcrumbs={singletonBreadcrumbs(locale, meta.title, Astro.url.pathname)}
+>
+  <PageBuilder locale={locale} sections={sections} />
+</Layout>

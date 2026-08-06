@@ -1,0 +1,226 @@
+---
+import type {Locale} from '../i18n/routes'
+import type {PageSection} from '../modules/fixtures'
+import HeroHome from '../modules/hero-home/HeroHome.astro'
+import BenefitsGrid from '../modules/benefits-grid/BenefitsGrid.astro'
+import RoiStats from '../modules/roi-stats/RoiStats.astro'
+import SolutionsByRole from '../modules/solutions-by-role/SolutionsByRole.astro'
+import HowItWorks from '../modules/how-it-works/HowItWorks.astro'
+import Testimonials from '../modules/testimonials/Testimonials.astro'
+import TrustLogos from '../modules/trust-logos/TrustLogos.astro'
+import SecurityFeatures from '../modules/security-features/SecurityFeatures.astro'
+import TeamSection from '../modules/team-section/TeamSection.astro'
+import HeaderInternal from '../modules/header-internal/HeaderInternal.astro'
+import BenefitsRoles from '../modules/benefits-roles/BenefitsRoles.astro'
+import ModuleShowcase from '../modules/module-showcase/ModuleShowcase.astro'
+import FormSection from '../modules/form-section/FormSection.astro'
+import CtaBanner from '../modules/cta-banner/CtaBanner.astro'
+import EvaFeatures from '../modules/eva-features/EvaFeatures.astro'
+import AboutIntro from '../modules/about-intro/AboutIntro.astro'
+import PricingTable from '../modules/pricing-table/PricingTable.astro'
+import ThanksHero from '../modules/thanks-hero/ThanksHero.astro'
+import HelpTopics from '../modules/help-topics/HelpTopics.astro'
+
+interface Props {
+  locale: Locale
+  sections: PageSection[]
+}
+
+const {locale, sections} = Astro.props
+---
+
+{
+  sections.map((section) => {
+    switch (section._type) {
+      case 'heroHome':
+        return (
+          <HeroHome
+            eyebrow={section.eyebrow}
+            heading={section.heading}
+            headingBold={section.headingBold}
+            headingLight={section.headingLight}
+            subheading={section.subheading}
+            primaryCta={section.primaryCta}
+            gifSrc={section.gifSrc}
+            pressLabel={section.pressLabel}
+            pressLogos={section.pressLogos}
+            investorLogos={section.investorLogos}
+            videoSrc={section.videoSrc}
+            posterSrc={section.posterSrc}
+            partnerLogos={section.partnerLogos}
+          />
+        )
+      case 'benefitsGrid':
+        return (
+          <BenefitsGrid eyebrow={section.eyebrow} heading={section.heading} items={section.items} />
+        )
+      case 'roiStats':
+        return (
+          <RoiStats
+            heading={section.heading}
+            roiValue={section.roiValue}
+            roiLabel={section.roiLabel}
+            description={section.description}
+            stats={section.stats}
+          />
+        )
+      case 'solutionsByRole':
+        return (
+          <SolutionsByRole eyebrow={section.eyebrow} heading={section.heading} roles={section.roles} />
+        )
+      case 'howItWorks':
+        return <HowItWorks eyebrow={section.eyebrow} heading={section.heading} steps={section.steps} />
+      case 'testimonials':
+        return (
+          <Testimonials eyebrow={section.eyebrow} heading={section.heading} items={section.items} />
+        )
+      case 'trustLogos':
+        return (
+          <TrustLogos
+            eyebrow={section.eyebrow}
+            heading={section.heading}
+            moreLabel={section.moreLabel}
+            logos={section.logos}
+            tone={section.tone}
+          />
+        )
+      case 'securityFeatures':
+        return (
+          <SecurityFeatures
+            heading={section.heading}
+            subheading={section.subheading}
+            items={section.items}
+          />
+        )
+      case 'teamSection':
+        return <TeamSection heading={section.heading} members={section.members} />
+      case 'headerInternal':
+        return (
+          <HeaderInternal
+            variant={section.variant}
+            heading={section.heading}
+            iconSrc={section.iconSrc}
+            personSrc={section.personSrc}
+            personSrcSet={section.personSrcSet}
+            bgSrc={section.bgSrc}
+            bgSrcSet={section.bgSrcSet}
+            eyebrow={section.eyebrow}
+            description={section.description}
+            imageSrc={section.imageSrc}
+          />
+        )
+      case 'benefitsRoles':
+        return (
+          <BenefitsRoles
+            heading={section.heading}
+            subheading={section.subheading}
+            cards={section.cards}
+          />
+        )
+      case 'moduleShowcase':
+        return (
+          <ModuleShowcase
+            heading={section.heading}
+            headerIconSrc={section.headerIconSrc}
+            headerBgSrc={section.headerBgSrc}
+            headerBgSrcSet={section.headerBgSrcSet}
+            tabs={section.tabs}
+            cta={section.cta}
+            modules={section.modules}
+          />
+        )
+      case 'formSection':
+        return (
+          <FormSection
+            locale={locale}
+            heading={section.heading}
+            description={section.description}
+            formId={section.formId}
+            variant={section.variant}
+            redirectTo={section.redirectTo}
+            formTitle={section.formTitle}
+            formSubtitle={section.formSubtitle}
+            submitLabel={section.submitLabel}
+            sideHeading={section.sideHeading}
+            sideDescription={section.sideDescription}
+            contactLinks={section.contactLinks}
+            showSchedule={section.showSchedule}
+            requiredNote={section.requiredNote}
+          />
+        )
+      case 'pricingTable':
+        return (
+          <PricingTable
+            heading={section.heading}
+            subheading={section.subheading}
+            price={section.price}
+            priceSuffix={section.priceSuffix}
+            annualPrice={section.annualPrice}
+            annualNote={section.annualNote}
+            badge={section.badge}
+            paymentNote={section.paymentNote}
+            primaryCta={section.primaryCta}
+            secondaryCta={section.secondaryCta}
+            featuresHeading={section.featuresHeading}
+            features={section.features}
+          />
+        )
+      case 'thanksHero':
+        return (
+          <ThanksHero
+            heading={section.heading}
+            highlight={section.highlight}
+            description={section.description}
+            backHref={section.backHref}
+            backLabel={section.backLabel}
+            imageSrc={section.imageSrc}
+            imageSrcSet={section.imageSrcSet}
+            primaryCta={section.primaryCta}
+            secondaryCta={section.secondaryCta}
+          />
+        )
+      case 'ctaBanner':
+        return (
+          <CtaBanner
+            heading={section.heading}
+            subheading={section.subheading}
+            cta={section.cta}
+            secondaryCta={section.secondaryCta}
+            bgSrc={section.bgSrc}
+            bgSrcSet={section.bgSrcSet}
+            wrapped={section.wrapped}
+          />
+        )
+      case 'faqSection':
+        return null
+      case 'evaFeatures':
+        return (
+          <EvaFeatures
+            heading={section.heading}
+            subheading={section.subheading}
+            introLabel={section.introLabel}
+            items={section.items}
+          />
+        )
+      case 'aboutIntro':
+        return (
+          <AboutIntro
+            heading={section.heading}
+            description={section.description}
+            logos={section.logos}
+          />
+        )
+      case 'helpTopics':
+        return (
+          <HelpTopics
+            heading={section.heading}
+            searchPlaceholder={section.searchPlaceholder}
+            searchAction={section.searchAction}
+            topics={section.topics}
+          />
+        )
+      default:
+        return null
+    }
+  })
+}

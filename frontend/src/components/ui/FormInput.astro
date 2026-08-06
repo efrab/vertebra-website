@@ -1,0 +1,14 @@
+---
+import {formControlClass, type FormSize, type FormTone} from '../../lib/forms'
+
+interface Props {
+  tone?: FormTone
+  size?: FormSize
+  class?: string
+  [key: string]: unknown
+}
+
+const {tone = 'dark', size = 'md', class: className = '', ...rest} = Astro.props
+---
+
+<input class={formControlClass(tone, size, className)} {...rest} />

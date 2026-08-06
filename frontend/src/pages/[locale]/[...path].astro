@@ -1,0 +1,55 @@
+---
+import {isLocale, resolveRoute} from '../../i18n/routes'
+import HomePage from '../../views/HomePage.astro'
+import MarketingPage from '../../views/MarketingPage.astro'
+import BlogPage from '../../views/BlogPage.astro'
+
+const {locale: raw, path} = Astro.params
+
+if (!raw || !isLocale(raw)) {
+  return new Response(null, {status: 404, statusText: 'Not Found'})
+}
+
+const locale = raw
+const segments = (path || '')
+  .split('/')
+  .map((s) => s.trim())
+  .filter(Boolean)
+
+const route = resolveRoute(locale, segments)
+
+if (route.kind === 'notFound') {
+  return new Response(null, {status: 404, statusText: 'Not Found'})
+}
+
+const marketingKeys = [
+  'modules',
+  'benefits',
+  'ai',
+  'about',
+  'helpCenter',
+  'howCanWeHelp',
+  'howCanWeHelpSearch',
+  'agenda',
+  'thanksDemo',
+  'contact',
+  'pricing',
+  'welcome',
+  'freeTrial',
+  'landingContracts',
+  'landingServices',
+  'thankYou',
+] as const
+
+type MarketingKey = (typeof marketingKeys)[number]
+const isMarketing = (marketingKeys as readonly string[]).includes(route.kind)
+---
+
+{route.kind === 'home' && <HomePage locale={locale} />}
+{route.kind === 'blog' && <BlogPage locale={locale} />}
+{route.kind === 'blogPost' && <BlogPage locale={locale} slug={route.slug} />}
+{
+  isMarketing && (
+    <MarketingPage locale={locale} routeKey={route.kind as MarketingKey} />
+  )
+}

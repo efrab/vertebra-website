@@ -1,0 +1,122 @@
+---
+import type {Locale} from '../i18n/routes'
+import {getLocalizedPath} from '../i18n/routes'
+import Layout from '../layouts/Layout.astro'
+import HeaderInternal from '../modules/header-internal/HeaderInternal.astro'
+import BlogGrid from '../modules/blog-grid/BlogGrid.astro'
+import Container from '../components/ui/Container.astro'
+import Section from '../components/ui/Section.astro'
+
+interface Props {
+  locale: Locale
+  slug?: string
+}
+
+const {locale, slug} = Astro.props
+const isEn = locale === 'en'
+const WF = '/assets/webflow/images'
+
+const posts = [
+  {
+    slug: 'automatiza-cobranza',
+    title: isEn ? 'Automate rent collection' : 'Automatiza la cobranza de rentas',
+    excerpt: isEn
+      ? 'How property teams cut late payments with Vertebra.'
+      : 'Cómo los equipos reducen pagos tardíos con Vertebra.',
+    tags: isEn ? ['Operations'] : ['Operación'],
+  },
+  {
+    slug: 'ia-en-proptech',
+    title: isEn ? 'AI in proptech' : 'IA en proptech',
+    excerpt: isEn
+      ? 'Practical ways AI improves portfolio decisions.'
+      : 'Formas prácticas en que la IA mejora decisiones de portafolio.',
+    tags: isEn ? ['AI'] : ['IA'],
+  },
+  {
+    slug: 'contratos-sin-caos',
+    title: isEn ? 'Contracts without chaos' : 'Contratos sin caos',
+    excerpt: isEn
+      ? 'Centralize renewals, increases and legal documents.'
+      : 'Centraliza renovaciones, incrementos y documentos legales.',
+    tags: isEn ? ['Contracts'] : ['Contratos'],
+  },
+]
+
+const post = slug
+  ? posts.find((p) => p.slug === slug) || {slug, title: slug, excerpt: '', tags: [] as string[]}
+  : null
+
+const gridPosts = posts.map((item) => ({
+  ...item,
+  href: getLocalizedPath(locale, 'blogPost', item.slug),
+  imageSrc: `${WF}/Frame-1000005716-1.png`,
+  imageSrcSet: `${WF}/Frame-1000005716-1-p-500.png 500w, ${WF}/Frame-1000005716-1.png 560w`,
+}))
+---
+
+{
+  post ? (
+    <Layout
+      locale={locale}
+      title={post.title}
+      description={post.excerpt}
+      routeKey="blogPost"
+      pageType="article"
+    >
+      <HeaderInternal
+        variant="interna"
+        heading={post.title}
+        bgSrc={`${WF}/background-1.png`}
+        bgSrcSet={`${WF}/background-1-p-500.png 500w, ${WF}/background-1-p-800.png 800w, ${WF}/background-1-p-1080.png 1080w, ${WF}/background-1.png 1440w`}
+      />
+      <Section tone="default">
+        <Container narrow>
+          <a
+            href={getLocalizedPath(locale, 'blog')}
+            class="btn_retro w-inline-block"
+            style="margin-bottom: 1.5rem"
+          >
+            <img src={`${WF}/Vector-5.svg`} loading="lazy" alt="" />
+            <div>
+              <strong>{isEn ? 'Back to blog' : 'Volver al blog'}</strong>
+            </div>
+          </a>
+          {post.excerpt && <p class="text-size-medium" style="margin-bottom: 1.5rem">{post.excerpt}</p>}
+          <div class="prose prose-slate max-w-none">
+            <p>
+              {isEn
+                ? 'This article will be managed from Sanity CMS. Content migrated from Webflow blog posts will appear here.'
+                : 'Este artículo se gestionará desde Sanity CMS. El contenido migrado del blog de Webflow aparecerá aquí.'}
+            </p>
+          </div>
+        </Container>
+      </Section>
+    </Layout>
+  ) : (
+    <Layout
+      locale={locale}
+      title={isEn ? 'Blog' : 'Blog'}
+      description={
+        isEn
+          ? 'Ideas, guides and news from the proptech world.'
+          : 'Ideas, guías y novedades del mundo proptech.'
+      }
+      routeKey="blog"
+      lcpImage={`${WF}/background-1.png`}
+    >
+      <HeaderInternal
+        variant="base"
+        heading="Blog"
+        personSrc={`${WF}/image-3_2.png`}
+        personSrcSet={`${WF}/image-3_2-p-500.png 500w, ${WF}/image-3_2.png 631w`}
+        bgSrc={`${WF}/background-1.png`}
+        bgSrcSet={`${WF}/background-1-p-500.png 500w, ${WF}/background-1-p-800.png 800w, ${WF}/background-1-p-1080.png 1080w, ${WF}/background-1.png 1440w`}
+      />
+      <BlogGrid
+        heading={isEn ? 'Latest articles' : 'Últimos artículos'}
+        posts={gridPosts}
+      />
+    </Layout>
+  )
+}

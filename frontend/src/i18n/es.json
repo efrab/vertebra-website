@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "modules": "Módulos",
+    "benefits": "Beneficios",
+    "ai": "IA",
+    "about": "Nosotros",
+    "help": "Ayuda",
+    "blog": "Blog",
+    "pricing": "Precios",
+    "login": "Iniciar sesión",
+    "cta": "Prueba gratis Vértebra",
+    "demo": "Solicita una demo gratis"
+  },
+  "footer": {
+    "tagline": "La columna vertebral digital de tus propiedades",
+    "product": "Producto",
+    "company": "Empresa",
+    "resources": "Recursos",
+    "helpCenter": "Centro de ayuda",
+    "apiDocs": "API Docs",
+    "rights": "Todos los derechos reservados.",
+    "madeIn": "Hecho con amor en México",
+    "terms": "Términos y condiciones de uso",
+    "privacy": "Aviso de privacidad"
+  },
+  "cookie": {
+    "message": "Usamos cookies para mejorar tu experiencia y medir el rendimiento. Puedes aceptar o rechazar las cookies no esenciales.",
+    "accept": "Aceptar",
+    "reject": "Rechazar"
+  },
+  "form": {
+    "name": "Nombre",
+    "lastName": "Apellidos",
+    "email": "Correo electrónico",
+    "phone": "Celular",
+    "properties": "Número de propiedades",
+    "message": "Comentarios",
+    "submit": "Enviar",
+    "privacy": "Acepto el aviso de privacidad",
+    "success": "¡Gracias! Te contactaremos pronto.",
+    "error": "Algo salió mal. Intenta de nuevo."
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o fue movida.",
+    "cta": "Volver al inicio"
+  }
+}

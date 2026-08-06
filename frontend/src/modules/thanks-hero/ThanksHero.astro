@@ -1,0 +1,103 @@
+---
+interface Props {
+  heading: string
+  highlight?: string
+  description?: string
+  backHref?: string
+  backLabel?: string
+  imageSrc?: string
+  imageSrcSet?: string
+  primaryCta?: {label: string; href: string}
+  secondaryCta?: {label: string; href: string}
+}
+
+const {
+  heading,
+  highlight,
+  description,
+  backHref = '/',
+  backLabel = 'Volver',
+  imageSrc = '/assets/webflow/images/Group-1000005378.png',
+  imageSrcSet =
+    '/assets/webflow/images/Group-1000005378-p-500.png 500w, /assets/webflow/images/Group-1000005378.png 591w',
+  primaryCta,
+  secondaryCta,
+} = Astro.props
+
+const titleParts =
+  highlight && heading.includes(highlight)
+    ? heading.split(highlight)
+    : [heading, '']
+---
+
+<section class="herotyp">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="herotyp_wrp">
+        <div class="herotyp_info" data-vf-reveal="30">
+          <a href={backHref} class="btn_retro w-inline-block">
+            <img src="/assets/webflow/images/Vector-5.svg" loading="lazy" alt="" />
+            <div><strong>{backLabel}</strong></div>
+          </a>
+          <div class="title-page is-left">
+            <div class="title-page_header is-left">
+              <img
+                loading="lazy"
+                src="/assets/webflow/images/icon_title.svg"
+                alt=""
+                class="title-page_icon blue-4"
+              />
+              <h1 class="heading-style-h2 blue-5">
+                <strong>
+                  {
+                    highlight ? (
+                      <>
+                        {titleParts[0]}
+                        <span class="text-color-green">{highlight}</span>
+                        {titleParts[1]}
+                      </>
+                    ) : (
+                      heading
+                    )
+                  }
+                </strong>
+              </h1>
+            </div>
+            {
+              description && (
+                <div class="title-page_content is-left">
+                  <div class="text-size-medium text-align-left">{description}</div>
+                </div>
+              )
+            }
+            {
+              (primaryCta || secondaryCta) && (
+                <div class="agenda_btns" style="margin-top: 1.5rem">
+                  {primaryCta && (
+                    <a href={primaryCta.href} class="button-blue is-icon w-inline-block">
+                      <div>{primaryCta.label}</div>
+                    </a>
+                  )}
+                  {secondaryCta && (
+                    <a href={secondaryCta.href} class="button-outline is-icon w-inline-block">
+                      <div>{secondaryCta.label}</div>
+                    </a>
+                  )}
+                </div>
+              )
+            }
+          </div>
+        </div>
+        <img
+          class="herotyp_img"
+          src={imageSrc}
+          srcset={imageSrcSet}
+          sizes="(max-width: 591px) 100vw, 591px"
+          alt=""
+          loading="lazy"
+          data-vf-reveal="1.875em"
+        />
+      </div>
+    </div>
+  </div>
+</section>

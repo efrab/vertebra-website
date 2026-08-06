@@ -1,0 +1,28 @@
+---
+import {formControlClass, type FormSize, type FormTone} from '../../lib/forms'
+
+interface Props {
+  tone?: FormTone
+  size?: FormSize
+  class?: string
+  [key: string]: unknown
+}
+
+const {tone = 'dark', size = 'md', class: className = '', ...rest} = Astro.props
+---
+
+<div class="relative">
+  <select class={formControlClass(tone, size, `appearance-none pr-10 ${className}`.trim())} {...rest}>
+    <slot />
+  </select>
+  <img
+    src="/assets/figma/contact/chevron-down.svg"
+    alt=""
+    class:list={[
+      'pointer-events-none absolute right-4 top-1/2 h-[6px] w-[11px] -translate-y-1/2 transition-opacity duration-300',
+      tone === 'dark' ? 'opacity-80' : 'opacity-60',
+    ]}
+    width="11"
+    height="6"
+  />
+</div>

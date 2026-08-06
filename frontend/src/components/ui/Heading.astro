@@ -1,0 +1,23 @@
+---
+interface Props {
+  as?: "h1" | "h2" | "h3" | "h4";
+  size?: "display" | "h2" | "h3";
+  class?: string;
+}
+
+const { as: Tag = "h2", size, class: className = "" } = Astro.props;
+
+const resolvedSize: "display" | "h2" | "h3" =
+  size ?? (Tag === "h1" ? "display" : Tag === "h3" || Tag === "h4" ? "h3" : "h2");
+
+const sizes: Record<"display" | "h2" | "h3", string> = {
+  display:
+    "font-display text-[length:var(--text-display)] leading-[var(--leading-tight)] tracking-[var(--tracking-display)] text-inherit",
+  h2: "font-display text-[length:var(--text-h2)] leading-[var(--leading-snug)] tracking-[var(--tracking-display)] text-inherit",
+  h3: "font-display text-[length:var(--text-h3)] leading-[var(--leading-snug)] text-inherit",
+};
+---
+
+<Tag class:list={[sizes[resolvedSize], className]}>
+  <slot />
+</Tag>

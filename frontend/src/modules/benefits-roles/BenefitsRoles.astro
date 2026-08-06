@@ -1,0 +1,80 @@
+---
+interface RoleCard {
+  title: string
+  description: string
+  items: string[]
+  iconSrc?: string
+}
+
+interface Props {
+  heading: string
+  subheading?: string
+  cards: RoleCard[]
+}
+
+const {
+  heading,
+  subheading,
+  cards,
+} = Astro.props
+---
+
+<section class="beneficios">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="padding-section-medium">
+        <div class="beneficios_wrp">
+          <div
+            class="title_component w-variant-168a084f-62a0-6703-1b29-2446442ca17e"
+            data-wf--title-section--variant="w---small"
+          >
+            <div class="title_wrapper">
+              <img
+                src="/assets/webflow/images/title-recurso.svg"
+                loading="lazy"
+                alt=""
+                class="title_img"
+              />
+              <h2 words-slide-from-right text-split>{heading}</h2>
+              {
+                subheading && (
+                  <div class="title_prf" data-vf-reveal="30">
+                    <p>{subheading}</p>
+                  </div>
+                )
+              }
+            </div>
+          </div>
+
+          <div class="layout-3" data-vf-reveal="30">
+            {
+              cards.map((card) => (
+                <article class="card-v3">
+                  <div class="card_header">
+                    <img
+                      src={card.iconSrc || '/assets/webflow/images/icon-v3.svg'}
+                      loading="lazy"
+                      alt=""
+                      class="icon-3-5"
+                      width="52"
+                      height="52"
+                    />
+                    <div class="heading-style-h5">{card.title}</div>
+                  </div>
+                  <div>{card.description}</div>
+                  <ul role="list" class="list-component">
+                    {card.items.map((item) => (
+                      <li class="list_item">
+                        <div>{item}</div>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro'
+import {t} from '../i18n'
+import {getLocalizedPath} from '../i18n/routes'
+---
+
+<Layout locale="es" title={t('es', 'notFound.title')} noindex>
+  <section class="utility-page_component">
+    <div class="utility-page_form-block w-form">
+      <img
+        src="https://d3e54v103j8qbb.cloudfront.net/static/page-not-found.211a85e40c.svg"
+        alt=""
+        class="utility-page_image"
+      />
+      <h1 class="heading-style-h2">{t('es', 'notFound.title')}</h1>
+      <div class="utility-page_form">
+        <p>{t('es', 'notFound.description')}</p>
+        <a href={getLocalizedPath('es', 'home')} class="button-blue is-icon w-inline-block">
+          <div>{t('es', 'notFound.cta')}</div>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

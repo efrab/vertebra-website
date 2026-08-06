@@ -1,0 +1,95 @@
+---
+interface Item {
+  title: string
+  description: string
+  iconSrc?: string
+}
+
+interface Props {
+  eyebrow?: string
+  heading: string
+  items: Item[]
+}
+
+const {eyebrow, heading, items} = Astro.props
+const defaultIcon = '/assets/webflow/images/icon-card.v1.svg'
+---
+
+<section class="beneficios">
+  <div class="padding-section-medium">
+    <div class="beneficios_wrp">
+      <div class="title_component">
+        <div class="title_wrapper">
+          <img
+            src="/assets/webflow/images/title-recurso.svg"
+            loading="lazy"
+            alt=""
+            class="title_img"
+          />
+          {eyebrow && <div class="text-size-medium">{eyebrow}</div>}
+          <h2 words-slide-from-right text-split>{heading}</h2>
+        </div>
+      </div>
+
+      <div
+        class="deslizante"
+        data-vf-slider
+        data-vf-reveal="1.875em"
+        data-vf-duration="800"
+        data-vf-infinite="true"
+      >
+        <div class="deslizante_mask" data-vf-slider-track>
+          {
+            items.map((item) => (
+              <div class="deslizante_slide">
+                <div class="card-v1">
+                  <div class="card_header">
+                    <img
+                      src={item.iconSrc || defaultIcon}
+                      loading="lazy"
+                      alt=""
+                      class="icon-4-5"
+                    />
+                    <div class="heading-style-h5">{item.title}</div>
+                  </div>
+                  <div>{item.description}</div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+        <button
+          type="button"
+          class="deslizante_arrow w-slider-arrow-left"
+          data-vf-slider-prev
+          aria-label="Anterior"
+        >
+          <img
+            src="/assets/webflow/images/Frame-1000005655.svg"
+            loading="lazy"
+            alt=""
+            class="testimonios_arrow-icon"
+            width="86"
+            height="87"
+          />
+        </button>
+        <button
+          type="button"
+          class="deslizante_arrow is-right w-slider-arrow-right"
+          data-vf-slider-next
+          aria-label="Siguiente"
+        >
+          <img
+            src="/assets/webflow/images/Frame-1000005656.svg"
+            loading="lazy"
+            alt=""
+            class="testimonios_arrow-icon"
+            width="86"
+            height="87"
+          />
+        </button>
+        <div class="deslizante_nav w-slider-nav w-round w-num" data-vf-slider-nav></div>
+      </div>
+    </div>
+  </div>
+</section>

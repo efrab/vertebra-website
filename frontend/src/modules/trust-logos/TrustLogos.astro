@@ -1,0 +1,49 @@
+---
+interface Logo {
+  name: string
+  src?: string
+}
+
+interface Props {
+  eyebrow?: string
+  heading: string
+  moreLabel?: string
+  logos: Logo[]
+  tone?: 'default' | 'white'
+}
+
+const {eyebrow, heading, moreLabel, logos, tone = 'default'} = Astro.props
+---
+
+<section class:list={['confian', tone === 'white' && 'background-color-white']}>
+  <div class="vf-padding-global padding-global">
+    <div class="vf-container-large container-large">
+      <div class="padding-section-medium">
+        <div class="confian_wrp">
+          <div class="title_component">
+            <div class="title_wrapper">
+              <img
+                src="/assets/webflow/images/title-recurso.svg"
+                loading="lazy"
+                alt=""
+                class="title_img"
+              />
+              {eyebrow && <div class="text-size-medium">{eyebrow}</div>}
+              <h2 words-slide-from-right text-split>{heading}</h2>
+            </div>
+          </div>
+          <div class="confian_flex" data-vf-reveal="30">
+            {
+              logos.map((logo) =>
+                logo.src ? (
+                  <img src={logo.src} loading="lazy" alt={logo.name} class="confian_logo" />
+                ) : null,
+              )
+            }
+            {moreLabel && <div class="text-size-medium">{moreLabel}</div>}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

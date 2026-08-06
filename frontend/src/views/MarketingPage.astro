@@ -1,0 +1,137 @@
+---
+import type {Locale, PathnameKey} from '../i18n/routes'
+import Layout from '../layouts/Layout.astro'
+import PageBuilder from '../components/PageBuilder.astro'
+import {marketingPageFixtures, pageMeta} from '../modules/marketingPageFixtures'
+import {modulesFixtures, modulesPageMeta} from '../modules/modulesFixtures'
+import {benefitsFixtures, benefitsPageMeta} from '../modules/benefitsFixtures'
+import {aiFixtures, aiPageMeta} from '../modules/aiFixtures'
+import {aboutFixtures, aboutPageMeta} from '../modules/aboutFixtures'
+import {
+  agendaFixtures,
+  contactFixtures,
+  pricingFixtures,
+  landingFixtures,
+  thanksFixtures,
+  conversionPageMeta,
+} from '../modules/conversionFixtures'
+import {
+  helpCenterFixtures,
+  howCanWeHelpFixtures,
+  howCanWeHelpSearchFixtures,
+  helpPageMeta,
+} from '../modules/helpFixtures'
+import {singletonBreadcrumbs} from '../lib/seo/breadcrumbs'
+import type {PageSection} from '../modules/fixtures'
+
+interface Props {
+  locale: Locale
+  routeKey: Exclude<PathnameKey, 'home' | 'blogPost'>
+}
+
+const {locale, routeKey} = Astro.props
+
+type PageBundle = {
+  sections: PageSection[]
+  meta: {title: string; description: string}
+  lcpImage?: string
+}
+
+const registry: Partial<Record<Exclude<PathnameKey, 'home' | 'blogPost'>, () => PageBundle>> = {
+  modules: () => ({
+    sections: modulesFixtures(locale),
+    meta: modulesPageMeta(locale),
+    lcpImage: '/assets/webflow/images/Frame-1000005625.png',
+  }),
+  benefits: () => ({
+    sections: benefitsFixtures(locale),
+    meta: benefitsPageMeta(locale),
+    lcpImage: '/assets/webflow/images/background-1.png',
+  }),
+  ai: () => ({
+    sections: aiFixtures(locale),
+    meta: aiPageMeta(locale),
+    lcpImage: '/assets/webflow/images/background-1.png',
+  }),
+  about: () => ({
+    sections: aboutFixtures(locale),
+    meta: aboutPageMeta(locale),
+    lcpImage: '/assets/webflow/images/background-1.png',
+  }),
+  agenda: () => ({
+    sections: agendaFixtures(locale),
+    meta: conversionPageMeta(locale, 'agenda'),
+    lcpImage: '/assets/webflow/images/background-1.png',
+  }),
+  contact: () => ({
+    sections: contactFixtures(locale),
+    meta: conversionPageMeta(locale, 'contact'),
+    lcpImage: '/assets/webflow/images/background-1.png',
+  }),
+  pricing: () => ({
+    sections: pricingFixtures(locale),
+    meta: conversionPageMeta(locale, 'pricing'),
+  }),
+  welcome: () => ({
+    sections: landingFixtures(locale, 'welcome'),
+    meta: conversionPageMeta(locale, 'welcome'),
+    lcpImage: '/assets/webflow/images/background-1.png',
+  }),
+  freeTrial: () => ({
+    sections: landingFixtures(locale, 'freeTrial'),
+    meta: conversionPageMeta(locale, 'freeTrial'),
+    lcpImage: '/assets/webflow/images/background-1.png',
+  }),
+  landingContracts: () => ({
+    sections: landingFixtures(locale, 'landingContracts'),
+    meta: conversionPageMeta(locale, 'landingContracts'),
+    lcpImage: '/assets/webflow/images/background-1.png',
+  }),
+  landingServices: () => ({
+    sections: landingFixtures(locale, 'landingServices'),
+    meta: conversionPageMeta(locale, 'landingServices'),
+    lcpImage: '/assets/webflow/images/background-1.png',
+  }),
+  thanksDemo: () => ({
+    sections: thanksFixtures(locale, 'thanksDemo'),
+    meta: conversionPageMeta(locale, 'thanksDemo'),
+    lcpImage: '/assets/webflow/images/Group-1000005378.png',
+  }),
+  thankYou: () => ({
+    sections: thanksFixtures(locale, 'thankYou'),
+    meta: conversionPageMeta(locale, 'thankYou'),
+    lcpImage: '/assets/webflow/images/Group-1000005378.png',
+  }),
+  helpCenter: () => ({
+    sections: helpCenterFixtures(locale),
+    meta: helpPageMeta(locale, 'helpCenter'),
+    lcpImage: '/assets/webflow/images/background-1.png',
+  }),
+  howCanWeHelp: () => ({
+    sections: howCanWeHelpFixtures(locale),
+    meta: helpPageMeta(locale, 'howCanWeHelp'),
+    lcpImage: '/assets/webflow/images/background-1.png',
+  }),
+  howCanWeHelpSearch: () => ({
+    sections: howCanWeHelpSearchFixtures(locale),
+    meta: helpPageMeta(locale, 'howCanWeHelpSearch'),
+    lcpImage: '/assets/webflow/images/background-1.png',
+  }),
+}
+
+const bundled = registry[routeKey]?.()
+const sections = bundled?.sections ?? marketingPageFixtures(locale, routeKey)
+const meta = bundled?.meta ?? pageMeta(locale, routeKey)
+const lcpImage = bundled?.lcpImage
+---
+
+<Layout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  routeKey={routeKey}
+  lcpImage={lcpImage}
+  breadcrumbs={singletonBreadcrumbs(locale, meta.title, Astro.url.pathname)}
+>
+  <PageBuilder locale={locale} sections={sections} />
+</Layout>

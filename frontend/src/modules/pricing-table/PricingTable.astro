@@ -1,0 +1,181 @@
+---
+interface Feature {
+  label: string
+}
+
+interface Props {
+  heading: string
+  subheading?: string
+  price: string
+  priceSuffix?: string
+  annualPrice?: string
+  annualNote?: string
+  badge?: string
+  paymentNote?: string
+  primaryCta: {label: string; href: string}
+  secondaryCta?: {label: string; href: string}
+  featuresHeading?: string
+  features: Feature[]
+}
+
+const {
+  heading,
+  subheading,
+  price,
+  priceSuffix = '/mes',
+  annualPrice,
+  annualNote,
+  badge,
+  paymentNote,
+  primaryCta,
+  secondaryCta,
+  featuresHeading = 'Funciones',
+  features,
+} = Astro.props
+---
+
+<section class="hero-interna">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="hero-interna_wrapper">
+        <div class="title_component is-princing">
+          <div class="title_wrapper large">
+            <img src="/assets/webflow/images/title-recurso.svg" loading="lazy" alt="" class="title_img" />
+            <h1 words-slide-from-right text-split>{heading}</h1>
+            {
+              subheading && (
+                <div class="title_prf space-v" data-vf-reveal="30">
+                  <h3>{subheading}</h3>
+                </div>
+              )
+            }
+          </div>
+        </div>
+        <div class="card" data-vf-reveal="1.875em">
+          <div class="pricing-grid-wrap">
+            <div class="w-layout-grid pricing-grid-2-top">
+              <div class="pricing-block-2-top choose">
+                <img
+                  alt=""
+                  loading="lazy"
+                  src="/assets/webflow/images/free-medal.svg"
+                  class="pricing_icon"
+                />
+                {paymentNote && <p class="text-size-medium" set:html={paymentNote} />}
+              </div>
+              <div class="pricing-block-2-top">
+                {
+                  badge && (
+                    <div class="pricing_title">
+                      <div class="tag-dscto">{badge}</div>
+                    </div>
+                  )
+                }
+                <div class="mes-anual">
+                  <h3 class="pricing-heading-3">
+                    <span>{price}</span>
+                    <span class="heading-5">{priceSuffix}</span>
+                  </h3>
+                  {
+                    annualPrice && (
+                      <div class="anual_box">
+                        <h6 class="anual_box-text">
+                          {annualPrice}
+                          <span class="anual_box-text-small">/año</span>
+                        </h6>
+                        {annualNote && <div class="tag-dscto">{annualNote}</div>}
+                      </div>
+                    )
+                  }
+                </div>
+                <div class="mes-anual_btn">
+                  <a
+                    href={primaryCta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="button-2 pricing w-inline-block"
+                  >
+                    <div>{primaryCta.label}</div>
+                  </a>
+                  {
+                    secondaryCta && (
+                      <a href={secondaryCta.href} class="button-2 pricing outline w-inline-block">
+                        <div>{secondaryCta.label}</div>
+                      </a>
+                    )
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="w-layout-grid pricing-grid-2">
+              <div class="pricing-title-cell is-center">
+                <div class="heading-style-h3 text-color-green">{featuresHeading}</div>
+              </div>
+              {
+                features.map((feature, index) => (
+                  <div class:list={['pricing-cell', index % 2 === 0 && 'background left']}>
+                    <h6 class="table-heading">{feature.label}</h6>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+          <div class="pricing_mobile-content">
+            <div class="pricing-block-2-top">
+              {
+                badge && (
+                  <div class="pricing_title">
+                    <div class="tag-dscto">{badge}</div>
+                  </div>
+                )
+              }
+              <div class="mes-anual">
+                <h3 class="pricing-heading-3">
+                  <span class="text-span">{price}</span>
+                  <span class="heading-5">{priceSuffix}</span>
+                </h3>
+                {
+                  annualPrice && (
+                    <div class="anual_box">
+                      <h6 class="anual_box-text">
+                        {annualPrice}
+                        <span class="anual_box-text-small">/año</span>
+                      </h6>
+                      {annualNote && <div class="tag-dscto">{annualNote}</div>}
+                    </div>
+                  )
+                }
+              </div>
+              <div class="mes-anual_btn">
+                <a
+                  href={primaryCta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="button-2 pricing w-inline-block"
+                >
+                  <div>{primaryCta.label}</div>
+                </a>
+                {
+                  secondaryCta && (
+                    <a href={secondaryCta.href} class="button-2 pricing outline w-inline-block">
+                      <div>{secondaryCta.label}</div>
+                    </a>
+                  )
+                }
+              </div>
+            </div>
+            <div class="w-layout-grid pricing-grid-2-mobile">
+              {
+                features.map((feature) => (
+                  <div class="pricing-cell background left">
+                    <h6 class="table-heading">{feature.label}</h6>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

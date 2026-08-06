@@ -1,0 +1,31 @@
+{
+  "name": "vertebra-website",
+  "description": "Vertebra — bilingual proptech marketing site (Astro + Sanity)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=frontend\" \"npm run dev --workspace=studio\"",
+    "build": "npm run build --workspace=studio && npm run build --workspace=frontend",
+    "check": "npm run check --workspace=frontend",
+    "lint": "npm run lint --workspace=frontend",
+    "format": "prettier --write \"frontend/src/**/*.{ts,astro,css,json}\" \"studio/src/**/*.{ts,tsx}\"",
+    "test:e2e": "playwright test",
+    "typegen": "cd studio && npx sanity@latest schema extract --path=../frontend/schema.json --force && npx sanity@latest typegen generate",
+    "optimize:images": "tsx migration/optimize-images.ts",
+    "optimize:gifs": "tsx migration/convert-gifs.ts"
+  },
+  "workspaces": [
+    "studio",
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.0",
+    "concurrently": "^9.2.1",
+    "prettier": "^3.8.2",
+    "prettier-plugin-astro": "^0.14.1",
+    "tsx": "^4.23.5"
+  }
+}

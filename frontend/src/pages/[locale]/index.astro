@@ -1,0 +1,13 @@
+---
+import {isLocale} from '../../i18n/routes'
+import HomePage from '../../views/HomePage.astro'
+
+const {locale: raw} = Astro.params
+if (!raw || !isLocale(raw)) {
+  return new Response(null, {status: 404, statusText: 'Not Found'})
+}
+
+const locale = raw
+---
+
+<HomePage locale={locale} />

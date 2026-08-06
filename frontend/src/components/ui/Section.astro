@@ -1,0 +1,27 @@
+---
+interface Props {
+  id?: string
+  class?: string
+  tone?: 'default' | 'ghost' | 'dark' | 'brand' | 'cream' | 'navy' | 'teal' | 'black'
+}
+
+const {id, class: className = '', tone = 'default'} = Astro.props
+
+const tones: Record<string, string> = {
+  default: 'bg-white text-ink',
+  ghost: 'bg-ghost text-dark-blue',
+  dark: 'bg-dark-blue text-white',
+  brand: 'bg-brand text-white',
+  cream: 'bg-ghost text-dark-blue',
+  black: 'bg-ink text-white',
+  navy: 'bg-dark-blue text-white',
+  teal: 'bg-brand text-white',
+}
+---
+
+<section
+  id={id}
+  class:list={['py-[var(--space-section-y)]', tones[tone] || tones.default, className]}
+>
+  <slot />
+</section>

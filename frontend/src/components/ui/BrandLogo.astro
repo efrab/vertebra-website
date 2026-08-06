@@ -1,0 +1,38 @@
+---
+interface Props {
+  class?: string
+  label?: string
+}
+
+const {class: className = '', label = 'Growth Lab'} = Astro.props
+const glyphs = [
+  ['logo-g.svg', '4.23% 87.62% 0 0'],
+  ['logo-r.svg', '27.13% 80.18% 1.11% 14.65%'],
+  ['logo-o.svg', '27.13% 69.76% 0.01% 20.54%'],
+  ['logo-w.svg', '28.22% 54.68% 1.14% 30.92%'],
+  ['logo-t.svg', '2.97% 48.39% 1.14% 45.9%'],
+  ['logo-h.svg', '0 38.15% 1.11% 53.22%'],
+  ['logo-l.svg', '5.35% 22.71% 1.15% 68.77%'],
+  ['logo-a.svg', '27.13% 12.24% 0.01% 78.06%'],
+  ['logo-b.svg', '0 0 0 90.3%'],
+] as const
+---
+
+<span class:list={['relative block h-[20.386px] w-[150px] overflow-hidden', className]}>
+  <span class="sr-only">{label}</span>
+  {
+    glyphs.map(([asset, inset]) => (
+      <span class="absolute block" style={{inset}}>
+        <img
+          src={`/assets/figma/home/${asset}`}
+          alt=""
+          aria-hidden="true"
+          class="block h-full w-full max-w-none"
+          width="150"
+          height="21"
+          decoding="async"
+        />
+      </span>
+    ))
+  }
+</span>

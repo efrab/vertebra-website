@@ -1,0 +1,109 @@
+---
+interface Item {
+  quote: string
+  author: string
+  role?: string
+  company?: string
+  avatarSrc?: string
+}
+
+interface Props {
+  eyebrow?: string
+  heading: string
+  items: Item[]
+}
+
+const {eyebrow, heading, items} = Astro.props
+const defaultAvatar = '/assets/webflow/images/Frame-1000005321_1Frame-1000005321.png'
+---
+
+<section class="testimonios">
+  <div class="vf-padding-global padding-global">
+    <div class="vf-container-large container-large">
+      <div class="padding-section-medium">
+        <div class="testimonios_wrp" data-vf-reveal="30">
+          <div class="testimonios_info">
+            <img
+              loading="lazy"
+              src="/assets/webflow/images/Frame-1000005322.svg"
+              alt=""
+              class="icon-3-5"
+            />
+            <div class="pasos_title">
+              {
+                eyebrow && (
+                  <div class="text-size-medium text-color-blue text-weight-semibold">{eyebrow}</div>
+                )
+              }
+              <div class="heading-style-h3">{heading}</div>
+            </div>
+          </div>
+
+          <div
+            class="testimonios_slider"
+            data-vf-slider
+            data-vf-duration="500"
+            data-vf-hide-arrows="true"
+            data-vf-infinite="true"
+          >
+            <div class="testimonios_mask" data-vf-slider-track>
+              {
+                items.map((item) => (
+                  <div class="testimonios_slide">
+                    <div class="testimonios_cont">
+                      <img
+                        src="/assets/webflow/images/comillas.svg"
+                        loading="lazy"
+                        alt=""
+                        class="testimonios_comillas"
+                      />
+                      <p>“{item.quote}</p>
+                      <div class="testimonios_foot">
+                        <img src={item.avatarSrc || defaultAvatar} loading="lazy" alt="" />
+                        <div class="testimonios_txt">
+                          <div>{item.author}</div>
+                          {item.role && <div>{item.role}</div>}
+                          {item.company && <div>{item.company}</div>}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+            <button
+              type="button"
+              class="testimonios_arrow is-left w-slider-arrow-left"
+              data-vf-slider-prev
+              aria-label="Anterior"
+            >
+              <img
+                src="/assets/webflow/images/Frame-1000005655.svg"
+                loading="lazy"
+                alt=""
+                width="86"
+                height="87"
+              />
+            </button>
+            <button
+              type="button"
+              class="testimonios_arrow is-right w-slider-arrow-right"
+              data-vf-slider-next
+              aria-label="Siguiente"
+            >
+              <img
+                src="/assets/webflow/images/Frame-1000005656.svg"
+                loading="lazy"
+                alt=""
+                class="testimonios_arrow-icon"
+                width="86"
+                height="87"
+              />
+            </button>
+            <div class="testimonios_nav w-slider-nav w-round w-num" data-vf-slider-nav></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

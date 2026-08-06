@@ -1,0 +1,57 @@
+---
+interface Props {
+  heading?: string
+  roiValue: string
+  roiLabel: string
+  description?: string
+  stats?: {label: string}[]
+}
+
+const {heading, roiValue, roiLabel, description, stats = []} = Astro.props
+---
+
+<section class="resultados">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="padding-section-medium">
+        <div class="layout-2" data-vf-reveal="30">
+          <div class="roi_wrp">
+            <div class="roi_header">
+              <img
+                src="/assets/webflow/images/icon-roi.svg"
+                loading="lazy"
+                alt=""
+                class="icon-3-5"
+              />
+              {heading && <div class="heading-style-h3">{heading}</div>}
+            </div>
+            <div class="roi_main">
+              <div class="roi_number">{roiValue}</div>
+              <div class="heading-style-h4 text-style-allcaps text-color-green">
+                ROI <br />MENSUAL
+              </div>
+            </div>
+          </div>
+          <div class="roi_content">
+            {
+              description && (
+                <h2 class="heading-style-h3 text-color-bluedark">{description}</h2>
+              )
+            }
+            {
+              stats.length > 0 && (
+                <ul role="list" class="list-component">
+                  {stats.map((stat) => (
+                    <li class="list_item">
+                      <div>{stat.label}</div>
+                    </li>
+                  ))}
+                </ul>
+              )
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

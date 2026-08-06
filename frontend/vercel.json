@@ -1,0 +1,32 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "astro",
+  "installCommand": "npm install",
+  "redirects": [
+    {"source": "/old-home", "destination": "/es/", "permanent": true},
+    {"source": "/modulos-old", "destination": "/es/modulos", "permanent": true},
+    {"source": "/contacto-opc-2", "destination": "/es/contacto", "permanent": true},
+    {"source": "/typ", "destination": "/es/gracias", "permanent": true},
+    {"source": "/template-post", "destination": "/es/blog", "permanent": true},
+    {"source": "/blog-interna", "destination": "/es/blog", "permanent": true},
+    {"source": "/dashboards", "destination": "/es/modulos", "permanent": true},
+    {"source": "/401", "destination": "/es/", "permanent": true},
+    {"source": "/modulos", "destination": "/es/modulos", "permanent": true},
+    {"source": "/beneficios", "destination": "/es/beneficios", "permanent": true},
+    {"source": "/ai", "destination": "/es/ai", "permanent": true},
+    {"source": "/nosotros", "destination": "/es/nosotros", "permanent": true},
+    {"source": "/blog", "destination": "/es/blog", "permanent": true},
+    {"source": "/centro-de-ayuda", "destination": "/es/centro-de-ayuda", "permanent": true},
+    {"source": "/como-podemos-ayudarte", "destination": "/es/como-podemos-ayudarte", "permanent": true},
+    {"source": "/como-podemos-ayudarte-buscador", "destination": "/es/como-podemos-ayudarte-buscador", "permanent": true},
+    {"source": "/agenda", "destination": "/es/agenda", "permanent": true},
+    {"source": "/gracias-agenda", "destination": "/es/gracias-agenda", "permanent": true},
+    {"source": "/contacto", "destination": "/es/contacto", "permanent": true},
+    {"source": "/pricing", "destination": "/es/pricing", "permanent": true},
+    {"source": "/bienvenidos", "destination": "/es/bienvenidos", "permanent": true},
+    {"source": "/free-trial", "destination": "/es/free-trial", "permanent": true},
+    {"source": "/landing-contratos-documentos", "destination": "/es/landing-contratos-documentos", "permanent": true},
+    {"source": "/landing-servicios", "destination": "/es/landing-servicios", "permanent": true},
+    {"source": "/gracias", "destination": "/es/gracias", "permanent": true}
+  ]
+}

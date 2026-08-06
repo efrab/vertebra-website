@@ -1,0 +1,90 @@
+---
+interface Role {
+  title: string
+  description: string
+  imageSrc?: string
+  bgSrc?: string
+  figureSrc?: string
+  decorLeftSrc?: string
+  decorRightSrc?: string
+  decorLeftClass?: string
+  decorRightClass?: string
+}
+
+interface Props {
+  eyebrow?: string
+  heading: string
+  roles: Role[]
+}
+
+const {eyebrow, heading, roles} = Astro.props
+---
+
+<section id="soluciones" class="soluciones">
+  <div class="vf-padding-global padding-global">
+    <div>
+      <div class="padding-section-medium">
+        <div class="equipo_wrp">
+          <div class="title_component">
+            <div class="title_wrapper">
+              <img
+                src="/assets/webflow/images/title-recurso.svg"
+                loading="lazy"
+                alt=""
+                class="title_img"
+              />
+              {eyebrow && <div class="text-size-medium">{eyebrow}</div>}
+              <h2 words-slide-from-right text-split>{heading}</h2>
+            </div>
+          </div>
+
+          <div class="content-flex" data-vf-reveal="30">
+            {
+              roles.map((role) => (
+                <div class="soluciones-component">
+                  <div class="layout-2">
+                    <div class="soluciones_content">
+                      <div class="soluciones_title">
+                        <div>{role.title}</div>
+                      </div>
+                      <div>{role.description}</div>
+                    </div>
+                    <div class="soluciones_img-wrp">
+                      {role.bgSrc && (
+                        <img src={role.bgSrc} loading="lazy" alt="" class="soluciones_img-bg" />
+                      )}
+                      {(role.figureSrc || role.imageSrc) && (
+                        <img
+                          src={role.figureSrc || role.imageSrc}
+                          loading="lazy"
+                          alt=""
+                          class="soluciones_personaje"
+                        />
+                      )}
+                      {role.decorLeftSrc && (
+                        <img
+                          src={role.decorLeftSrc}
+                          loading="lazy"
+                          alt=""
+                          class={role.decorLeftClass || 'img-pro-left'}
+                        />
+                      )}
+                      {role.decorRightSrc && (
+                        <img
+                          src={role.decorRightSrc}
+                          loading="lazy"
+                          alt=""
+                          class={role.decorRightClass || 'img-pro-right'}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
