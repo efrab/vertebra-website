@@ -958,24 +958,24 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
+  gap: 6px;
   color: var(--_brands---dark-blue);
   text-align: center;
 }
 
 .logos_item-lockup-icon {
   display: block;
-  width: 2.125rem;
-  height: 0.7rem;
+  width: 36px;
+  height: 12px;
   object-fit: contain;
 }
 
 .logos_item-lockup-text {
   color: #2a3051;
   font-family: var(--font-sans, Poppins, sans-serif);
-  font-size: 1.15rem;
+  font-size: 17px;
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.1;
   letter-spacing: -0.01em;
   white-space: nowrap;
 }
