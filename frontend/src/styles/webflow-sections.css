@@ -1966,7 +1966,7 @@ html.vf-text-ready [text-split] {
   }
 }
 
-/* Mobile: never hide content behind entrance animations (Speed Index) */
+/* Mobile: skip entrance opacity hides (Speed Index) */
 @media (max-width: 767px) {
   [text-split],
   [words-slide-from-right] .word,
@@ -1975,6 +1975,12 @@ html.vf-text-ready [text-split] {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+
+  /* Defer layout/paint work for below-fold sections */
+  main#main-content > section:nth-child(n + 3) {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 720px;
   }
 }
 
