@@ -271,9 +271,13 @@
   z-index: 0;
   object-fit: cover;
   object-position: 50% 50%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 10%;
   width: 100%;
   height: 80%;
-  /* static in flex parent — matches Webflow .heroh_fondo */
+  /* absolute so decode doesn't shift flex layout (CLS) */
 }
 
 .vf-heroh__colors {
