@@ -142,3 +142,5 @@ window.setTimeout(() => {
     el.classList.add('is-in')
   })
 }, 2500)
+
+export {}
