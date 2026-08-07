@@ -222,7 +222,7 @@
 
 .pricing-heading-3 {
   color: #fff;
-  font-family: Poppins, sans-serif;
+  font-family: var(--font-sans, Arial, sans-serif);
   font-size: 40px;
   font-weight: 700;
   line-height: 1;

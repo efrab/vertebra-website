@@ -50,7 +50,7 @@ const {
   pressLogos = [],
   investorLogos = [],
   videoSrc = '/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd.mp4',
-  posterSrc = '/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-720.jpg',
+  posterSrc: _posterSrc = '/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-720.jpg',
 } = Astro.props
 
 const boldPart = headingBold ?? heading
@@ -103,9 +103,9 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                   muted
                   loop
                   playsinline
-                  preload="metadata"
-                  poster="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-720.jpg"
+                  preload="none"
                   data-hero-video
+                  data-poster-desktop="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-720.jpg"
                   data-poster-mobile="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-480.jpg"
                   data-src-mobile="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-mobile.mp4"
                   data-src-desktop={videoSrc}
@@ -136,13 +136,13 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
       <source
         type="image/avif"
         media="(max-width: 767px)"
-        srcset="/assets/optimized/trama-p-480.avif"
+        srcset="/assets/optimized/trama-p-412.avif"
         sizes="100vw"
       />
       <source
         type="image/webp"
         media="(max-width: 767px)"
-        srcset="/assets/optimized/trama-p-480.webp"
+        srcset="/assets/optimized/trama-p-412.webp"
         sizes="100vw"
       />
       <source
@@ -158,23 +158,25 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
         sizes="100vw"
       />
       <img
-        src="/assets/optimized/trama-p-800.webp"
+        src="/assets/optimized/trama-p-412.avif"
         alt=""
         class="vf-heroh__fondo"
         fetchpriority="high"
         decoding="async"
+        width="412"
+        height="720"
       />
     </picture>
     <picture>
       <source
         type="image/avif"
         media="(max-width: 767px)"
-        srcset="/assets/optimized/Group-1000005376-450.avif"
+        srcset="/assets/optimized/Group-1000005376-360.avif"
       />
       <source
         type="image/webp"
         media="(max-width: 767px)"
-        srcset="/assets/optimized/Group-1000005376-450.webp"
+        srcset="/assets/optimized/Group-1000005376-360.webp"
       />
       <source
         type="image/avif"
@@ -187,10 +189,13 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
         srcset="/assets/optimized/Group-1000005376-900.webp"
       />
       <img
-        src="/assets/optimized/Group-1000005376-450.webp"
+        src="/assets/optimized/Group-1000005376-360.avif"
         alt=""
         class="vf-heroh__colors"
         decoding="async"
+        fetchpriority="low"
+        width="360"
+        height="142"
       />
     </picture>
   </div>
@@ -199,8 +204,9 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
 {/* Autoplay hero video; on mobile attach source after first paint (poster holds SI) */}
 <script>
   const video = document.querySelector<HTMLVideoElement>('[data-hero-video]')
+  const isDesktop = window.matchMedia('(min-width: 768px)').matches
+
   if (video) {
-    const isDesktop = window.matchMedia('(min-width: 768px)').matches
     video.muted = true
     video.defaultMuted = true
     video.setAttribute('muted', '')
@@ -212,17 +218,20 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
 
     if (isDesktop) {
       video.preload = 'auto'
+      const desktopPoster = video.dataset.posterDesktop
+      if (desktopPoster) video.poster = desktopPoster
       video.dataset.ready = '1'
       if (video.readyState >= 2) tryPlay()
       else video.addEventListener('loadeddata', tryPlay, {once: true})
       video.addEventListener('canplay', tryPlay, {once: true})
     } else {
-      const mobilePoster = video.dataset.posterMobile
-      if (mobilePoster) video.poster = mobilePoster
+      // Keep poster off the critical path — CSS fill holds the media block for SI
       const src = video.dataset.srcMobile
       const attachAndPlay = () => {
         if (!src || video.dataset.ready) return
         video.dataset.ready = '1'
+        const mobilePoster = video.dataset.posterMobile
+        if (mobilePoster) video.poster = mobilePoster
         // Drop any desktop media sources the browser ignored
         video.querySelectorAll('source').forEach((s) => s.remove())
         const source = document.createElement('source')
@@ -267,6 +276,27 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
       if (!document.hidden && video.paused && (isDesktop || video.dataset.ready)) tryPlay()
     })
   }
+
+  // Defer press/investor logos so they don't contend with mobile LCP/SI
+  const hydrateDeferred = () => {
+    document.querySelectorAll<HTMLImageElement>('img[data-vf-defer]').forEach((img) => {
+      const src = img.dataset.vfDefer
+      if (!src) return
+      img.src = src
+      img.removeAttribute('data-vf-defer')
+    })
+  }
+  if (isDesktop) {
+    hydrateDeferred()
+  } else {
+    const start = () => {
+      window.setTimeout(hydrateDeferred, 4500)
+    }
+    window.addEventListener('scroll', hydrateDeferred, {once: true, passive: true})
+    window.addEventListener('pointerdown', hydrateDeferred, {once: true})
+    if (document.readyState === 'complete') start()
+    else window.addEventListener('load', start, {once: true})
+  }
 </script>
 
 {
@@ -288,10 +318,12 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                       aria-label={logo.name}
                     >
                       <img
-                        src={logo.src}
+                        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='122' height='40'%3E%3C/svg%3E"
+                        data-vf-defer={logo.src}
                         alt={logo.name}
                         class:list={['heroh_logo', logo.small && 'ismall']}
-                        loading="lazy"
+                        width="122"
+                        height="40"
                         decoding="async"
                       />
                     </a>
@@ -339,10 +371,12 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                       aria-label={logo.name}
                     >
                       <img
-                        src={logo.src}
+                        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='80'%3E%3C/svg%3E"
+                        data-vf-defer={logo.src}
                         alt={logo.name}
                         class="logos_item-img"
-                        loading="lazy"
+                        width="160"
+                        height="80"
                         decoding="async"
                       />
                     </a>

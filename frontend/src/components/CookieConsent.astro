@@ -51,10 +51,22 @@ const {locale} = Astro.props
   }
 
   const existing = localStorage.getItem(KEY)
-  if (!existing) {
-    banner?.classList.remove('hidden')
-  } else {
+  if (existing) {
     window.dispatchEvent(new CustomEvent('vf:consent', {detail: {value: existing}}))
+  } else {
+    // Defer banner so mobile Speed Index isn't tanked by a late white strip
+    const show = () => banner?.classList.remove('hidden')
+    const schedule =
+      'requestIdleCallback' in window
+        ? (cb: () => void) => window.requestIdleCallback(cb, {timeout: 5000})
+        : (cb: () => void) => setTimeout(cb, 3500)
+    window.addEventListener(
+      'load',
+      () => {
+        setTimeout(() => schedule(show), 2500)
+      },
+      {once: true},
+    )
   }
 
   accept?.addEventListener('click', () => setConsent('accepted'))

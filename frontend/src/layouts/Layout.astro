@@ -129,9 +129,9 @@ const lcpPreloadType = lcpImage?.endsWith('.avif')
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="preload" href={poppins400} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={poppins600} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={poppins700} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={poppins400} as="font" type="font/woff2" crossorigin media="(min-width: 768px)" />
+    <link rel="preload" href={poppins600} as="font" type="font/woff2" crossorigin media="(min-width: 768px)" />
+    <link rel="preload" href={poppins700} as="font" type="font/woff2" crossorigin media="(min-width: 768px)" />
     {preloadVideo && (
       <link
         rel="preload"
@@ -145,7 +145,7 @@ const lcpPreloadType = lcpImage?.endsWith('.avif')
       <link
         rel="preload"
         as="image"
-        href={isTramaLcp ? '/assets/optimized/trama-p-480.avif' : lcpImage}
+        href={isTramaLcp ? '/assets/optimized/trama-p-412.avif' : lcpImage}
         fetchpriority="high"
         media="(max-width: 767px)"
         type={isTramaLcp ? 'image/avif' : lcpPreloadType}
@@ -240,11 +240,26 @@ const lcpPreloadType = lcpImage?.endsWith('.avif')
     <CookieConsent locale={locale} />
     <Analytics />
     <script>
-      import '../scripts/motion'
-      import '../scripts/webflow-home'
-      // Home has no tabs — skip modulos script to cut mobile main-thread work
-      if (document.querySelector('.w-tabs, .w-tab-menu, [data-vf-modulos]')) {
-        void import('../scripts/webflow-modulos')
+      const boot = () => {
+        void import('../scripts/motion')
+        void import('../scripts/webflow-home')
+        if (document.querySelector('.w-tabs, .w-tab-menu, [data-vf-modulos]')) {
+          void import('../scripts/webflow-modulos')
+        }
+      }
+      // Mobile: wait for LCP/SI window before motion runtime
+      if (window.matchMedia('(max-width: 767px)').matches) {
+        const start = () => {
+          if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(() => boot(), {timeout: 4000})
+          } else {
+            setTimeout(boot, 2000)
+          }
+        }
+        if (document.readyState === 'complete') start()
+        else window.addEventListener('load', start, {once: true})
+      } else {
+        boot()
       }
     </script>
   </body>

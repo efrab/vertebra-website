@@ -6,9 +6,21 @@
 }
 
 @media (max-width: 767px) {
-  .vf-padding-global {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+  .vf-title-page {
+    min-height: 22rem;
+  }
+
+  .vf-title-page__h1 {
+    font-size: 2.25rem;
+    min-height: 10.8rem;
+  }
+
+  .vf-title-page__content {
+    min-height: 8.5rem;
+  }
+
+  .vf-title-page__sub {
+    min-height: 4.5rem;
   }
 }
 
@@ -284,7 +296,8 @@
   z-index: 0;
   object-fit: cover;
   object-position: 50% 50%;
-  width: auto;
+  width: min(56.25rem, 90%);
+  aspect-ratio: 360 / 142;
   height: auto;
   max-width: 100%;
   position: absolute;
@@ -370,6 +383,8 @@
   margin-right: auto;
   position: relative;
   overflow: hidden;
+  /* Solid fill so SI doesn't wait on poster decode for the hero media block */
+  background-color: #0f1538;
 }
 
 .vf-heroh__gif img,
