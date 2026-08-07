@@ -103,7 +103,7 @@ const structuredData = buildPageStructuredData({
 
 const lcpPreloadSrcset =
   lcpImage && lcpImage.includes('trama-p-800.')
-    ? '/assets/optimized/trama-p-800.avif 800w, /assets/optimized/trama-p-1200.avif 1200w, /assets/optimized/trama-p-1600.avif 1600w'
+    ? '/assets/optimized/trama-p-800.avif 800w, /assets/optimized/trama-p-1200.avif 1200w'
     : lcpImage && lcpImage.includes('-480.')
       ? `${lcpImage} 480w, ${lcpImage.replace('-480.', '-640.')} 640w, ${lcpImage.replace('-480.', '-1024.')} 1024w`
       : lcpImage && lcpImage.includes('-640.')
@@ -133,7 +133,7 @@ const lcpPreloadType = lcpImage?.endsWith('.avif')
         {...(lcpPreloadSrcset
           ? {
               imagesrcset: lcpPreloadSrcset,
-              imagesizes: '(max-width: 800px) 100vw, (max-width: 1200px) 100vw, 1600px',
+              imagesizes: '(max-width: 900px) 100vw, 1200px',
             }
           : {})}
       />

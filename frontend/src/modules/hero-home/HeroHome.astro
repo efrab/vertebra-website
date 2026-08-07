@@ -50,7 +50,7 @@ const {
   pressLogos = [],
   investorLogos = [],
   videoSrc = '/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd.mp4',
-  posterSrc = '/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster.jpg',
+  posterSrc = '/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-720.jpg',
 } = Astro.props
 
 const boldPart = headingBold ?? heading
@@ -107,8 +107,8 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                   preload="metadata"
                   poster={posterSrc}
                 >
-                  <source src={webmSrc} type="video/webm" />
                   <source src={videoSrc} type="video/mp4" />
+                  <source src={webmSrc} type="video/webm" />
                 </video>
               ) : (
                 <img
@@ -130,16 +130,17 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
   </div>
 
   <div class="vf-heroh__bg" aria-hidden="true">
+    {/* Cap at 1200w — 1600 AVIF was ~385KB and hurt desktop LCP */}
     <picture>
       <source
         type="image/avif"
-        srcset="/assets/optimized/trama-p-800.avif 800w, /assets/optimized/trama-p-1200.avif 1200w, /assets/optimized/trama-p-1600.avif 1600w"
-        sizes="100vw"
+        srcset="/assets/optimized/trama-p-800.avif 800w, /assets/optimized/trama-p-1200.avif 1200w"
+        sizes="(max-width: 900px) 100vw, 1200px"
       />
       <source
         type="image/webp"
-        srcset="/assets/optimized/trama-p-800.webp 800w, /assets/optimized/trama-p-1200.webp 1200w, /assets/optimized/trama-p-1600.webp 1600w"
-        sizes="100vw"
+        srcset="/assets/optimized/trama-p-800.webp 800w, /assets/optimized/trama-p-1200.webp 1200w"
+        sizes="(max-width: 900px) 100vw, 1200px"
       />
       <img
         src="/assets/optimized/trama-p-800.webp"
@@ -151,16 +152,26 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
         decoding="async"
       />
     </picture>
+    {/* Decorative — must not become LCP on desktop */}
     <picture>
-      <source type="image/avif" srcset="/assets/optimized/Group-1000005376.avif" />
-      <source type="image/webp" srcset="/assets/optimized/Group-1000005376.webp" />
+      <source
+        type="image/avif"
+        srcset="/assets/optimized/Group-1000005376-900.avif 900w, /assets/optimized/Group-1000005376.avif 1479w"
+        sizes="(max-width: 900px) 90vw, 900px"
+      />
+      <source
+        type="image/webp"
+        srcset="/assets/optimized/Group-1000005376-900.webp 900w, /assets/optimized/Group-1000005376.webp 1479w"
+        sizes="(max-width: 900px) 90vw, 900px"
+      />
       <img
-        src="/assets/optimized/Group-1000005376.webp"
+        src="/assets/optimized/Group-1000005376-900.webp"
         alt=""
         class="vf-heroh__colors"
-        width="1479"
-        height="800"
+        width="900"
+        height="355"
         loading="lazy"
+        fetchpriority="low"
         decoding="async"
       />
     </picture>

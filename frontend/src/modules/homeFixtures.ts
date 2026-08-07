@@ -27,7 +27,7 @@ export function homeFixtures(locale: Locale): PageSection[] {
       },
       gifSrc: `${WF}/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd.gif`,
       videoSrc: `/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd.mp4`,
-      posterSrc: `/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster.jpg`,
+      posterSrc: `/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-720.jpg`,
       pressLabel: isEn ? 'You can find us on' : 'Nos pueden encontrar en',
       pressLogos: [
         {
