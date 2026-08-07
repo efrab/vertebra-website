@@ -314,6 +314,8 @@
   justify-content: center;
   text-align: center;
   gap: 1.25rem;
+  /* Lock hero copy block so font/fallback metrics can't push the video (desktop CLS) */
+  min-height: 18.5rem;
 }
 
 .vf-title-page__header {

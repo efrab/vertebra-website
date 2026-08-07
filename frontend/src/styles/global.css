@@ -1,9 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
-@import "@fontsource/poppins/latin-400.css";
-@import "@fontsource/poppins/latin-500.css";
-@import "@fontsource/poppins/latin-600.css";
-@import "@fontsource/poppins/latin-700.css";
+@import "./fonts.css";
 
 @theme {
   /* Vertebra brand (from Webflow CSS variables) */
@@ -42,8 +39,8 @@
   --color-magenta-tint: #b6cffc;
   --color-teal-soft: #5480f6;
 
-  --font-display: "Poppins", "Helvetica Neue", Arial, sans-serif;
-  --font-sans: "Poppins", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Poppins", "Poppins Fallback", Arial, sans-serif;
+  --font-sans: "Poppins", "Poppins Fallback", Arial, sans-serif;
 
   --text-hero: clamp(2rem, 4.5vw, 3.5rem);
   --text-display: clamp(1.75rem, 3.5vw, 2.75rem);
