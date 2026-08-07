@@ -93,23 +93,26 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
             </div>
           </div>
 
-          <div class="vf-heroh__gif" data-vf-reveal="30">
+          <div class="vf-heroh__gif">
             {
               videoSrc ? (
-                <video
-                  class="hero_gif-img"
-                  width="960"
-                  height="784"
-                  autoplay
-                  muted
-                  loop
-                  playsinline
-                  preload="metadata"
-                  poster={posterSrc}
+                <div
+                  class="vf-heroh__media"
+                  data-hero-media
+                  data-mp4={videoSrc}
+                  data-webm={webmSrc}
+                  data-poster={posterSrc}
                 >
-                  <source src={videoSrc} type="video/mp4" />
-                  <source src={webmSrc} type="video/webm" />
-                </video>
+                  <img
+                    src={posterSrc}
+                    alt=""
+                    class="hero_gif-img"
+                    width="960"
+                    height="784"
+                    decoding="async"
+                    fetchpriority="low"
+                  />
+                </div>
               ) : (
                 <img
                   src={gifSrc}
@@ -117,7 +120,7 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                   class="hero_gif-img"
                   width="1024"
                   height="640"
-                  loading="eager"
+                  loading="lazy"
                   decoding="async"
                 />
               )
@@ -144,19 +147,19 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
 </section>
 
 <script>
-  const root = document.querySelector('[data-hero-decor]')
-  if (root instanceof HTMLElement) {
-    const inject = () => {
-      if (root.dataset.ready) return
-      root.dataset.ready = '1'
-      const tramaAvif800 = root.dataset.tramaAvif800
-      const tramaAvif1200 = root.dataset.tramaAvif1200
-      const tramaWebp800 = root.dataset.tramaWebp800
-      const tramaWebp1200 = root.dataset.tramaWebp1200
-      const colorsAvif = root.dataset.colorsAvif
-      const colorsWebp = root.dataset.colorsWebp
+  const decor = document.querySelector('[data-hero-decor]')
+  if (decor instanceof HTMLElement) {
+    const injectDecor = () => {
+      if (decor.dataset.ready) return
+      decor.dataset.ready = '1'
+      const tramaAvif800 = decor.dataset.tramaAvif800
+      const tramaAvif1200 = decor.dataset.tramaAvif1200
+      const tramaWebp800 = decor.dataset.tramaWebp800
+      const tramaWebp1200 = decor.dataset.tramaWebp1200
+      const colorsAvif = decor.dataset.colorsAvif
+      const colorsWebp = decor.dataset.colorsWebp
 
-      root.innerHTML = `
+      decor.innerHTML = `
         <picture>
           <source type="image/avif" srcset="${tramaAvif800} 800w, ${tramaAvif1200} 1200w" sizes="(max-width: 900px) 100vw, 1200px" />
           <source type="image/webp" srcset="${tramaWebp800} 800w, ${tramaWebp1200} 1200w" sizes="(max-width: 900px) 100vw, 1200px" />
@@ -170,12 +173,52 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
       `
     }
 
-    // After first paint so H1 on solid brand blue can be LCP
     const schedule =
       typeof requestIdleCallback === 'function'
         ? (cb: () => void) => requestIdleCallback(cb, {timeout: 1200})
         : (cb: () => void) => setTimeout(cb, 200)
-    schedule(inject)
+    schedule(injectDecor)
+  }
+
+  const media = document.querySelector('[data-hero-media]')
+  if (media instanceof HTMLElement) {
+    const upgradeVideo = () => {
+      if (media.dataset.ready) return
+      media.dataset.ready = '1'
+      const mp4 = media.dataset.mp4
+      const webm = media.dataset.webm
+      const poster = media.dataset.poster
+      const video = document.createElement('video')
+      video.className = 'hero_gif-img'
+      video.width = 960
+      video.height = 784
+      video.autoplay = true
+      video.muted = true
+      video.loop = true
+      video.playsInline = true
+      video.preload = 'metadata'
+      if (poster) video.poster = poster
+      if (webm) {
+        const sWebm = document.createElement('source')
+        sWebm.src = webm
+        sWebm.type = 'video/webm'
+        video.appendChild(sWebm)
+      }
+      if (mp4) {
+        const sMp4 = document.createElement('source')
+        sMp4.src = mp4
+        sMp4.type = 'video/mp4'
+        video.appendChild(sMp4)
+      }
+      media.replaceChildren(video)
+      void video.play().catch(() => {})
+    }
+
+    const schedule =
+      typeof requestIdleCallback === 'function'
+        ? (cb: () => void) => requestIdleCallback(cb, {timeout: 1800})
+        : (cb: () => void) => setTimeout(cb, 400)
+    schedule(upgradeVideo)
   }
 </script>
 <noscript>
