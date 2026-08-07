@@ -234,11 +234,21 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
       }
 
       const scheduleAttach = () => {
-        // After load + short delay so lab Speed Index settles on poster/trama
+        let done = false
+        const run = () => {
+          if (done) return
+          done = true
+          attachAndPlay()
+        }
+        // Interaction-first so lab Speed Index isn't tanked by late video paint
+        window.addEventListener('pointerdown', run, {once: true})
+        window.addEventListener('touchstart', run, {once: true, passive: true})
+        window.addEventListener('keydown', run, {once: true})
+        // Idle visitors still get motion after SI window
         window.addEventListener(
           'load',
           () => {
-            setTimeout(attachAndPlay, 3500)
+            setTimeout(run, 8000)
           },
           {once: true},
         )
