@@ -104,9 +104,9 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                   loop
                   playsinline
                   preload="metadata"
-                  poster="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-480.jpg"
+                  poster="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-720.jpg"
                   data-hero-video
-                  data-poster-desktop={posterSrc}
+                  data-poster-mobile="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-480.jpg"
                   data-src-mobile="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-mobile.mp4"
                   data-src-desktop={videoSrc}
                 >
@@ -148,17 +148,17 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
       <source
         type="image/avif"
         media="(min-width: 768px)"
-        srcset="/assets/optimized/trama-p-800.avif 800w, /assets/optimized/trama-p-1200.avif 1200w"
-        sizes="(max-width: 900px) 100vw, 1200px"
+        srcset="/assets/optimized/trama-p-800.avif"
+        sizes="100vw"
       />
       <source
         type="image/webp"
         media="(min-width: 768px)"
-        srcset="/assets/optimized/trama-p-800.webp 800w, /assets/optimized/trama-p-1200.webp 1200w"
-        sizes="(max-width: 900px) 100vw, 1200px"
+        srcset="/assets/optimized/trama-p-800.webp"
+        sizes="100vw"
       />
       <img
-        src="/assets/optimized/trama-p-480.webp"
+        src="/assets/optimized/trama-p-800.webp"
         alt=""
         class="vf-heroh__fondo"
         fetchpriority="high"
@@ -212,12 +212,13 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
 
     if (isDesktop) {
       video.preload = 'auto'
-      const desktopPoster = video.dataset.posterDesktop
-      if (desktopPoster) video.poster = desktopPoster
+      video.dataset.ready = '1'
       if (video.readyState >= 2) tryPlay()
       else video.addEventListener('loadeddata', tryPlay, {once: true})
       video.addEventListener('canplay', tryPlay, {once: true})
     } else {
+      const mobilePoster = video.dataset.posterMobile
+      if (mobilePoster) video.poster = mobilePoster
       const src = video.dataset.srcMobile
       const attachAndPlay = () => {
         if (!src || video.dataset.ready) return
@@ -263,7 +264,7 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
     }
 
     document.addEventListener('visibilitychange', () => {
-      if (!document.hidden && video.paused && video.dataset.ready) tryPlay()
+      if (!document.hidden && video.paused && (isDesktop || video.dataset.ready)) tryPlay()
     })
   }
 </script>

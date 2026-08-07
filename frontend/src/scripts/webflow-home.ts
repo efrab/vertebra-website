@@ -287,10 +287,9 @@ function initBlockReveal(reduce: boolean) {
 
 function boot() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  // Mobile: skip entrance opacity/transform delays so Speed Index isn't tanked
-  // by content sitting at opacity:0. End state looks the same.
-  const mobile = window.matchMedia('(max-width: 767px)').matches
-  const instant = reduce || mobile
+  // Skip entrance opacity/transform delays so first paint + CLS stay stable
+  // (text/video no longer jump when fonts arrive). End state looks the same.
+  const instant = true
 
   requestAnimationFrame(() => {
     initTextReveal(instant)
@@ -307,7 +306,7 @@ function boot() {
       if (el.closest('.w-tab-pane')) return
       if (isInTriggerZone(el)) el.classList.add('is-in')
     })
-  }, instant ? 0 : 4000)
+  }, 0)
 }
 
 if (document.readyState === 'loading') {

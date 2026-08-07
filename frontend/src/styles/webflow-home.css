@@ -335,6 +335,8 @@
   font-weight: 600;
   line-height: 1.2;
   color: #fff;
+  /* Reserve ~2 lines so font swap doesn't push the hero video (desktop CLS) */
+  min-height: 7.2rem;
 }
 
 .vf-title-page__h1 .is-light {
@@ -347,6 +349,7 @@
   align-items: center;
   gap: 1.25rem;
   max-width: 43.25rem;
+  min-height: 7.5rem;
 }
 
 .vf-title-page__sub {
@@ -354,6 +357,7 @@
   font-size: 1.25rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
+  min-height: 3.75rem;
 }
 
 .vf-heroh__gif {

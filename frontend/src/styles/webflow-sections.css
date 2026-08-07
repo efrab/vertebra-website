@@ -1966,24 +1966,23 @@ html.vf-text-ready [text-split] {
   }
 }
 
-/* Mobile: skip entrance opacity hides (Speed Index) */
-@media (max-width: 767px) {
-  [text-split],
-  [words-slide-from-right] .word,
-  [data-vf-reveal],
-  html.vf-motion-ready [data-vf-reveal]:not(.is-in) {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
+/* Never hide content behind entrance animations (SI + CLS) */
+[text-split],
+[words-slide-from-right] .word,
+[data-vf-reveal],
+html.vf-motion-ready [data-vf-reveal]:not(.is-in) {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
 
-  /* Defer layout/paint work for below-fold sections */
+/* Mobile: defer layout/paint work for below-fold sections */
+@media (max-width: 767px) {
   main#main-content > section:nth-child(n + 2) {
     content-visibility: auto;
     contain-intrinsic-size: 1px 480px;
   }
 
-  /* Keep first hero section painting fully; push following strips off first paint */
   .vf-heroh {
     min-height: 100svh;
   }

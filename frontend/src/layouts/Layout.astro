@@ -109,7 +109,7 @@ const structuredData = buildPageStructuredData({
 const isTramaLcp = Boolean(lcpImage?.includes('trama-p-'))
 
 const lcpPreloadSrcset = isTramaLcp
-  ? '/assets/optimized/trama-p-800.avif 800w, /assets/optimized/trama-p-1200.avif 1200w'
+  ? '/assets/optimized/trama-p-800.avif'
   : lcpImage && lcpImage.includes('-480.')
     ? `${lcpImage} 480w, ${lcpImage.replace('-480.', '-640.')} 640w, ${lcpImage.replace('-480.', '-1024.')} 1024w`
     : lcpImage && lcpImage.includes('-640.')
@@ -159,7 +159,7 @@ const lcpPreloadType = lcpImage?.endsWith('.avif')
         fetchpriority="high"
         media="(min-width: 768px)"
         {...(lcpPreloadType ? {type: lcpPreloadType} : {})}
-        {...(lcpPreloadSrcset
+        {...(!isTramaLcp && lcpPreloadSrcset
           ? {
               imagesrcset: lcpPreloadSrcset,
               imagesizes: '(max-width: 900px) 100vw, 1200px',
