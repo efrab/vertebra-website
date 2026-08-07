@@ -107,14 +107,11 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                   poster="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-480.jpg"
                   data-hero-video
                   data-poster-desktop={posterSrc}
+                  data-src-mobile="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-mobile.mp4"
+                  data-src-desktop={videoSrc}
                 >
-                  <source
-                    src="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-mobile.mp4"
-                    type="video/mp4"
-                    media="(max-width: 767px)"
-                  />
+                  {/* Desktop source only in HTML — mobile injects after first paint for SI */}
                   <source src={videoSrc} type="video/mp4" media="(min-width: 768px)" />
-                  <source src={videoSrc} type="video/mp4" />
                 </video>
               ) : (
                 <img
@@ -199,7 +196,7 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
   </div>
 </section>
 
-{/* Ensure muted autoplay; on mobile wait for LCP trama so SI/LCP stay stable */}
+{/* Autoplay hero video; on mobile attach source after first paint (poster holds SI) */}
 <script>
   const video = document.querySelector<HTMLVideoElement>('[data-hero-video]')
   if (video) {
@@ -209,34 +206,55 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
     video.setAttribute('muted', '')
     video.setAttribute('playsinline', '')
 
-    if (isDesktop) {
-      video.preload = 'auto'
-      const desktopPoster = video.dataset.posterDesktop
-      if (desktopPoster) video.poster = desktopPoster
-    }
-
     const tryPlay = () => {
       void video.play().catch(() => {})
     }
 
-    const start = () => {
+    if (isDesktop) {
+      video.preload = 'auto'
+      const desktopPoster = video.dataset.posterDesktop
+      if (desktopPoster) video.poster = desktopPoster
       if (video.readyState >= 2) tryPlay()
       else video.addEventListener('loadeddata', tryPlay, {once: true})
       video.addEventListener('canplay', tryPlay, {once: true})
-    }
-
-    if (isDesktop) {
-      start()
     } else {
-      // Let trama/poster paint first on slow mobile networks
+      const src = video.dataset.srcMobile
+      const attachAndPlay = () => {
+        if (!src || video.dataset.ready) return
+        video.dataset.ready = '1'
+        // Drop any desktop media sources the browser ignored
+        video.querySelectorAll('source').forEach((s) => s.remove())
+        const source = document.createElement('source')
+        source.src = src
+        source.type = 'video/mp4'
+        video.appendChild(source)
+        video.load()
+        video.addEventListener('loadeddata', tryPlay, {once: true})
+        video.addEventListener('canplay', tryPlay, {once: true})
+      }
+
+      const schedule =
+        typeof requestIdleCallback === 'function'
+          ? (cb: () => void) => requestIdleCallback(cb, {timeout: 900})
+          : (cb: () => void) => setTimeout(cb, 400)
+
+      // After trama paints, attach the lightweight mobile mp4
       const trama = document.querySelector<HTMLImageElement>('.vf-heroh__fondo')
-      const kickoff = () => setTimeout(start, 150)
-      if (trama && !trama.complete) trama.addEventListener('load', kickoff, {once: true})
-      else kickoff()
+      if (trama && !trama.complete) {
+        trama.addEventListener(
+          'load',
+          () => {
+            schedule(attachAndPlay)
+          },
+          {once: true},
+        )
+      } else {
+        schedule(attachAndPlay)
+      }
     }
 
     document.addEventListener('visibilitychange', () => {
-      if (!document.hidden && video.paused) tryPlay()
+      if (!document.hidden && video.paused && video.dataset.ready) tryPlay()
     })
   }
 </script>
