@@ -1966,6 +1966,18 @@ html.vf-text-ready [text-split] {
   }
 }
 
+/* Mobile: never hide content behind entrance animations (Speed Index) */
+@media (max-width: 767px) {
+  [text-split],
+  [words-slide-from-right] .word,
+  [data-vf-reveal],
+  html.vf-motion-ready [data-vf-reveal]:not(.is-in) {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 
 /* Title on dark sections */
 .soluciones .title_wrapper,
