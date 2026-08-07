@@ -103,10 +103,17 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                   muted
                   loop
                   playsinline
-                  preload="auto"
-                  poster={posterSrc}
+                  preload="metadata"
+                  poster="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-480.jpg"
                   data-hero-video
+                  data-poster-desktop={posterSrc}
                 >
+                  <source
+                    src="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-mobile.mp4"
+                    type="video/mp4"
+                    media="(max-width: 767px)"
+                  />
+                  <source src={videoSrc} type="video/mp4" media="(min-width: 768px)" />
                   <source src={videoSrc} type="video/mp4" />
                 </video>
               ) : (
@@ -131,47 +138,86 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
     <picture>
       <source
         type="image/avif"
+        media="(max-width: 767px)"
+        srcset="/assets/optimized/trama-p-480.avif 480w, /assets/optimized/trama-p-640.avif 640w"
+        sizes="100vw"
+      />
+      <source
+        type="image/webp"
+        media="(max-width: 767px)"
+        srcset="/assets/optimized/trama-p-480.webp 480w, /assets/optimized/trama-p-640.webp 640w"
+        sizes="100vw"
+      />
+      <source
+        type="image/avif"
+        media="(min-width: 768px)"
         srcset="/assets/optimized/trama-p-800.avif 800w, /assets/optimized/trama-p-1200.avif 1200w"
         sizes="(max-width: 900px) 100vw, 1200px"
       />
       <source
         type="image/webp"
+        media="(min-width: 768px)"
         srcset="/assets/optimized/trama-p-800.webp 800w, /assets/optimized/trama-p-1200.webp 1200w"
         sizes="(max-width: 900px) 100vw, 1200px"
       />
       <img
-        src="/assets/optimized/trama-p-800.webp"
+        src="/assets/optimized/trama-p-480.webp"
         alt=""
         class="vf-heroh__fondo"
-        width="800"
-        height="450"
+        width="480"
+        height="270"
         fetchpriority="high"
         decoding="async"
       />
     </picture>
     <picture>
-      <source type="image/avif" srcset="/assets/optimized/Group-1000005376-900.avif" />
-      <source type="image/webp" srcset="/assets/optimized/Group-1000005376-900.webp" />
+      <source
+        type="image/avif"
+        media="(max-width: 767px)"
+        srcset="/assets/optimized/Group-1000005376-450.avif"
+      />
+      <source
+        type="image/webp"
+        media="(max-width: 767px)"
+        srcset="/assets/optimized/Group-1000005376-450.webp"
+      />
+      <source
+        type="image/avif"
+        media="(min-width: 768px)"
+        srcset="/assets/optimized/Group-1000005376-900.avif"
+      />
+      <source
+        type="image/webp"
+        media="(min-width: 768px)"
+        srcset="/assets/optimized/Group-1000005376-900.webp"
+      />
       <img
-        src="/assets/optimized/Group-1000005376-900.webp"
+        src="/assets/optimized/Group-1000005376-450.webp"
         alt=""
         class="vf-heroh__colors"
-        width="900"
-        height="355"
+        width="450"
+        height="178"
         decoding="async"
       />
     </picture>
   </div>
 </section>
 
-{/* Ensure muted autoplay starts even if the browser paused it */}
+{/* Ensure muted autoplay starts; on desktop bump preload for snappier start */}
 <script>
   const video = document.querySelector<HTMLVideoElement>('[data-hero-video]')
   if (video) {
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches
     video.muted = true
     video.defaultMuted = true
     video.setAttribute('muted', '')
     video.setAttribute('playsinline', '')
+
+    if (isDesktop) {
+      video.preload = 'auto'
+      const desktopPoster = video.dataset.posterDesktop
+      if (desktopPoster) video.poster = desktopPoster
+    }
 
     const tryPlay = () => {
       void video.play().catch(() => {})

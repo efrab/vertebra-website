@@ -131,13 +131,41 @@ const lcpPreloadType = lcpImage?.endsWith('.avif')
     <link rel="preload" href={poppins400} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={poppins600} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={poppins700} as="font" type="font/woff2" crossorigin />
-    {preloadVideo && <link rel="preload" as="video" href={preloadVideo} type="video/mp4" />}
+    {preloadVideo && (
+      <link
+        rel="preload"
+        as="video"
+        href={preloadVideo}
+        type="video/mp4"
+        media="(min-width: 768px)"
+      />
+    )}
+    {lcpImage && (
+      <link
+        rel="preload"
+        as="image"
+        href={lcpImage.includes('trama-p-800') ? '/assets/optimized/trama-p-480.avif' : lcpImage}
+        fetchpriority="high"
+        media="(max-width: 767px)"
+        {...(lcpImage.includes('trama-p-800')
+          ? {
+              type: 'image/avif',
+              imagesrcset:
+                '/assets/optimized/trama-p-480.avif 480w, /assets/optimized/trama-p-640.avif 640w',
+              imagesizes: '100vw',
+            }
+          : lcpPreloadType
+            ? {type: lcpPreloadType}
+            : {})}
+      />
+    )}
     {lcpImage && (
       <link
         rel="preload"
         as="image"
         href={lcpImage}
         fetchpriority="high"
+        media="(min-width: 768px)"
         {...(lcpPreloadType ? {type: lcpPreloadType} : {})}
         {...(lcpPreloadSrcset
           ? {
@@ -222,7 +250,10 @@ const lcpPreloadType = lcpImage?.endsWith('.avif')
     <script>
       import '../scripts/motion'
       import '../scripts/webflow-home'
-      import '../scripts/webflow-modulos'
+      // Home has no tabs — skip modulos script to cut mobile main-thread work
+      if (document.querySelector('.w-tabs, .w-tab-menu, [data-vf-modulos]')) {
+        void import('../scripts/webflow-modulos')
+      }
     </script>
   </body>
 </html>
