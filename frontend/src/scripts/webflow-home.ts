@@ -287,9 +287,14 @@ function initBlockReveal(reduce: boolean) {
 
 function boot() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  // Mobile: skip entrance opacity/transform delays so Speed Index isn't tanked
+  // by content sitting at opacity:0. End state looks the same.
+  const mobile = window.matchMedia('(max-width: 767px)').matches
+  const instant = reduce || mobile
+
   requestAnimationFrame(() => {
-    initTextReveal(reduce)
-    initBlockReveal(reduce)
+    initTextReveal(instant)
+    initBlockReveal(instant)
     initSliders()
   })
 
@@ -302,7 +307,7 @@ function boot() {
       if (el.closest('.w-tab-pane')) return
       if (isInTriggerZone(el)) el.classList.add('is-in')
     })
-  }, 4000)
+  }, instant ? 0 : 4000)
 }
 
 if (document.readyState === 'loading') {

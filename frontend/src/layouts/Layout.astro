@@ -106,14 +106,15 @@ const structuredData = buildPageStructuredData({
   service: pageType === 'service' ? service : undefined,
 })
 
-const lcpPreloadSrcset =
-  lcpImage && lcpImage.includes('trama-p-800.')
-    ? '/assets/optimized/trama-p-800.avif 800w, /assets/optimized/trama-p-1200.avif 1200w'
-    : lcpImage && lcpImage.includes('-480.')
-      ? `${lcpImage} 480w, ${lcpImage.replace('-480.', '-640.')} 640w, ${lcpImage.replace('-480.', '-1024.')} 1024w`
-      : lcpImage && lcpImage.includes('-640.')
-        ? `${lcpImage} 640w, ${lcpImage.replace('-640.', '-1024.')} 1024w`
-        : undefined
+const isTramaLcp = Boolean(lcpImage?.includes('trama-p-'))
+
+const lcpPreloadSrcset = isTramaLcp
+  ? '/assets/optimized/trama-p-800.avif 800w, /assets/optimized/trama-p-1200.avif 1200w'
+  : lcpImage && lcpImage.includes('-480.')
+    ? `${lcpImage} 480w, ${lcpImage.replace('-480.', '-640.')} 640w, ${lcpImage.replace('-480.', '-1024.')} 1024w`
+    : lcpImage && lcpImage.includes('-640.')
+      ? `${lcpImage} 640w, ${lcpImage.replace('-640.', '-1024.')} 1024w`
+      : undefined
 
 const lcpPreloadType = lcpImage?.endsWith('.avif')
   ? 'image/avif'
@@ -144,26 +145,17 @@ const lcpPreloadType = lcpImage?.endsWith('.avif')
       <link
         rel="preload"
         as="image"
-        href={lcpImage.includes('trama-p-800') ? '/assets/optimized/trama-p-480.avif' : lcpImage}
+        href={isTramaLcp ? '/assets/optimized/trama-p-480.avif' : lcpImage}
         fetchpriority="high"
         media="(max-width: 767px)"
-        {...(lcpImage.includes('trama-p-800')
-          ? {
-              type: 'image/avif',
-              imagesrcset:
-                '/assets/optimized/trama-p-480.avif 480w, /assets/optimized/trama-p-640.avif 640w',
-              imagesizes: '100vw',
-            }
-          : lcpPreloadType
-            ? {type: lcpPreloadType}
-            : {})}
+        type={isTramaLcp ? 'image/avif' : lcpPreloadType}
       />
     )}
     {lcpImage && (
       <link
         rel="preload"
         as="image"
-        href={lcpImage}
+        href={isTramaLcp ? '/assets/optimized/trama-p-800.avif' : lcpImage}
         fetchpriority="high"
         media="(min-width: 768px)"
         {...(lcpPreloadType ? {type: lcpPreloadType} : {})}
