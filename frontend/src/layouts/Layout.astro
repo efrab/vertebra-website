@@ -31,6 +31,7 @@ interface Props extends LayoutSeoProps {
   description?: string
   image?: string
   lcpImage?: string
+  preloadVideo?: string
   headerAppearance?: 'auto' | 'overlay' | 'solid'
 }
 
@@ -40,6 +41,7 @@ const {
   description,
   image,
   lcpImage,
+  preloadVideo,
   headerAppearance = 'auto',
   noindex = false,
   ogType = 'website',
@@ -129,6 +131,7 @@ const lcpPreloadType = lcpImage?.endsWith('.avif')
     <link rel="preload" href={poppins400} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={poppins600} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={poppins700} as="font" type="font/woff2" crossorigin />
+    {preloadVideo && <link rel="preload" as="video" href={preloadVideo} type="video/mp4" />}
     {lcpImage && (
       <link
         rel="preload"

@@ -55,7 +55,6 @@ const {
 
 const boldPart = headingBold ?? heading
 const lightPart = headingLight
-const webmSrc = videoSrc.replace(/\.mp4$/, '.webm')
 
 const MARK_SRC = '/assets/webflow/images/icon_title.svg'
 ---
@@ -96,23 +95,20 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
           <div class="vf-heroh__gif">
             {
               videoSrc ? (
-                <div
-                  class="vf-heroh__media"
-                  data-hero-media
-                  data-mp4={videoSrc}
-                  data-webm={webmSrc}
-                  data-poster={posterSrc}
+                <video
+                  class="hero_gif-img"
+                  width="960"
+                  height="784"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  preload="auto"
+                  poster={posterSrc}
+                  data-hero-video
                 >
-                  <img
-                    src={posterSrc}
-                    alt=""
-                    class="hero_gif-img"
-                    width="960"
-                    height="784"
-                    decoding="async"
-                    fetchpriority="low"
-                  />
-                </div>
+                  <source src={videoSrc} type="video/mp4" />
+                </video>
               ) : (
                 <img
                   src={gifSrc}
@@ -120,7 +116,6 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                   class="hero_gif-img"
                   width="1024"
                   height="640"
-                  loading="lazy"
                   decoding="async"
                 />
               )
@@ -132,107 +127,65 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
     </div>
   </div>
 
-  <div
-    class="vf-heroh__bg"
-    aria-hidden="true"
-    data-hero-decor
-    data-trama-avif-800="/assets/optimized/trama-p-800.avif"
-    data-trama-avif-1200="/assets/optimized/trama-p-1200.avif"
-    data-trama-webp-800="/assets/optimized/trama-p-800.webp"
-    data-trama-webp-1200="/assets/optimized/trama-p-1200.webp"
-    data-colors-avif="/assets/optimized/Group-1000005376-900.avif"
-    data-colors-webp="/assets/optimized/Group-1000005376-900.webp"
-  >
+  <div class="vf-heroh__bg" aria-hidden="true">
+    <picture>
+      <source
+        type="image/avif"
+        srcset="/assets/optimized/trama-p-800.avif 800w, /assets/optimized/trama-p-1200.avif 1200w"
+        sizes="(max-width: 900px) 100vw, 1200px"
+      />
+      <source
+        type="image/webp"
+        srcset="/assets/optimized/trama-p-800.webp 800w, /assets/optimized/trama-p-1200.webp 1200w"
+        sizes="(max-width: 900px) 100vw, 1200px"
+      />
+      <img
+        src="/assets/optimized/trama-p-800.webp"
+        alt=""
+        class="vf-heroh__fondo"
+        width="800"
+        height="450"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
+    <picture>
+      <source type="image/avif" srcset="/assets/optimized/Group-1000005376-900.avif" />
+      <source type="image/webp" srcset="/assets/optimized/Group-1000005376-900.webp" />
+      <img
+        src="/assets/optimized/Group-1000005376-900.webp"
+        alt=""
+        class="vf-heroh__colors"
+        width="900"
+        height="355"
+        decoding="async"
+      />
+    </picture>
   </div>
 </section>
 
+{/* Ensure muted autoplay starts even if the browser paused it */}
 <script>
-  const decor = document.querySelector('[data-hero-decor]')
-  if (decor instanceof HTMLElement) {
-    const injectDecor = () => {
-      if (decor.dataset.ready) return
-      decor.dataset.ready = '1'
-      const tramaAvif800 = decor.dataset.tramaAvif800
-      const tramaAvif1200 = decor.dataset.tramaAvif1200
-      const tramaWebp800 = decor.dataset.tramaWebp800
-      const tramaWebp1200 = decor.dataset.tramaWebp1200
-      const colorsAvif = decor.dataset.colorsAvif
-      const colorsWebp = decor.dataset.colorsWebp
+  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]')
+  if (video) {
+    video.muted = true
+    video.defaultMuted = true
+    video.setAttribute('muted', '')
+    video.setAttribute('playsinline', '')
 
-      decor.innerHTML = `
-        <picture>
-          <source type="image/avif" srcset="${tramaAvif800} 800w, ${tramaAvif1200} 1200w" sizes="(max-width: 900px) 100vw, 1200px" />
-          <source type="image/webp" srcset="${tramaWebp800} 800w, ${tramaWebp1200} 1200w" sizes="(max-width: 900px) 100vw, 1200px" />
-          <img src="${tramaWebp800}" alt="" class="vf-heroh__fondo" width="800" height="450" decoding="async" />
-        </picture>
-        <picture>
-          <source type="image/avif" srcset="${colorsAvif}" />
-          <source type="image/webp" srcset="${colorsWebp}" />
-          <img src="${colorsWebp}" alt="" class="vf-heroh__colors" width="900" height="355" decoding="async" />
-        </picture>
-      `
-    }
-
-    const schedule =
-      typeof requestIdleCallback === 'function'
-        ? (cb: () => void) => requestIdleCallback(cb, {timeout: 1200})
-        : (cb: () => void) => setTimeout(cb, 200)
-    schedule(injectDecor)
-  }
-
-  const media = document.querySelector('[data-hero-media]')
-  if (media instanceof HTMLElement) {
-    const upgradeVideo = () => {
-      if (media.dataset.ready) return
-      media.dataset.ready = '1'
-      const mp4 = media.dataset.mp4
-      const webm = media.dataset.webm
-      const poster = media.dataset.poster
-      const video = document.createElement('video')
-      video.className = 'hero_gif-img vf-heroh__video'
-      video.width = 960
-      video.height = 784
-      video.autoplay = true
-      video.muted = true
-      video.loop = true
-      video.playsInline = true
-      video.preload = 'metadata'
-      if (poster) video.poster = poster
-      if (mp4) {
-        const sMp4 = document.createElement('source')
-        sMp4.src = mp4
-        sMp4.type = 'video/mp4'
-        video.appendChild(sMp4)
-      }
-      if (webm) {
-        const sWebm = document.createElement('source')
-        sWebm.src = webm
-        sWebm.type = 'video/webm'
-        video.appendChild(sWebm)
-      }
-      // Overlay instead of replace to avoid CLS / LCP swap mid-load
-      media.appendChild(video)
+    const tryPlay = () => {
       void video.play().catch(() => {})
     }
 
-    window.addEventListener(
-      'load',
-      () => {
-        setTimeout(upgradeVideo, 2500)
-      },
-      {once: true},
-    )
+    if (video.readyState >= 2) tryPlay()
+    else video.addEventListener('loadeddata', tryPlay, {once: true})
+
+    video.addEventListener('canplay', tryPlay, {once: true})
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && video.paused) tryPlay()
+    })
   }
 </script>
-<noscript>
-  <style>
-    .vf-heroh__bg {
-      background-image: url('/assets/optimized/trama-p-800.webp');
-      background-size: cover;
-      background-position: center;
-    }
-  </style>
-</noscript>
 
 {
   pressLogos.length > 0 && (
