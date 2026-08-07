@@ -341,6 +341,12 @@
   font-weight: 300;
 }
 
+@media (max-width: 767px) {
+  .vf-title-page__h1 .is-light {
+    font-weight: 400; /* avoid extra 300 weight download/CLS on mobile */
+  }
+}
+
 .vf-title-page__content {
   display: flex;
   flex-direction: column;

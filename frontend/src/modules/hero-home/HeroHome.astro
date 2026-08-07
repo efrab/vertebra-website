@@ -233,23 +233,22 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
         video.addEventListener('canplay', tryPlay, {once: true})
       }
 
-      const schedule =
-        typeof requestIdleCallback === 'function'
-          ? (cb: () => void) => requestIdleCallback(cb, {timeout: 900})
-          : (cb: () => void) => setTimeout(cb, 400)
-
-      // After trama paints, attach the lightweight mobile mp4
-      const trama = document.querySelector<HTMLImageElement>('.vf-heroh__fondo')
-      if (trama && !trama.complete) {
-        trama.addEventListener(
+      const scheduleAttach = () => {
+        // After load + short delay so lab Speed Index settles on poster/trama
+        window.addEventListener(
           'load',
           () => {
-            schedule(attachAndPlay)
+            setTimeout(attachAndPlay, 1200)
           },
           {once: true},
         )
+      }
+
+      const trama = document.querySelector<HTMLImageElement>('.vf-heroh__fondo')
+      if (trama && !trama.complete) {
+        trama.addEventListener('load', scheduleAttach, {once: true})
       } else {
-        schedule(attachAndPlay)
+        scheduleAttach()
       }
     }
 
