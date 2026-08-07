@@ -1978,9 +1978,14 @@ html.vf-text-ready [text-split] {
   }
 
   /* Defer layout/paint work for below-fold sections */
-  main#main-content > section:nth-child(n + 3) {
+  main#main-content > section:nth-child(n + 2) {
     content-visibility: auto;
-    contain-intrinsic-size: 1px 720px;
+    contain-intrinsic-size: 1px 480px;
+  }
+
+  /* Keep first hero section painting fully; push following strips off first paint */
+  .vf-heroh {
+    min-height: 100svh;
   }
 }
 
