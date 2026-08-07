@@ -199,7 +199,7 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
   </div>
 </section>
 
-{/* Ensure muted autoplay starts; on desktop bump preload for snappier start */}
+{/* Ensure muted autoplay; on mobile wait for LCP trama so SI/LCP stay stable */}
 <script>
   const video = document.querySelector<HTMLVideoElement>('[data-hero-video]')
   if (video) {
@@ -219,10 +219,22 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
       void video.play().catch(() => {})
     }
 
-    if (video.readyState >= 2) tryPlay()
-    else video.addEventListener('loadeddata', tryPlay, {once: true})
+    const start = () => {
+      if (video.readyState >= 2) tryPlay()
+      else video.addEventListener('loadeddata', tryPlay, {once: true})
+      video.addEventListener('canplay', tryPlay, {once: true})
+    }
 
-    video.addEventListener('canplay', tryPlay, {once: true})
+    if (isDesktop) {
+      start()
+    } else {
+      // Let trama/poster paint first on slow mobile networks
+      const trama = document.querySelector<HTMLImageElement>('.vf-heroh__fondo')
+      const kickoff = () => setTimeout(start, 150)
+      if (trama && !trama.complete) trama.addEventListener('load', kickoff, {once: true})
+      else kickoff()
+    }
+
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && video.paused) tryPlay()
     })
