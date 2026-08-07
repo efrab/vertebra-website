@@ -189,7 +189,7 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
       const webm = media.dataset.webm
       const poster = media.dataset.poster
       const video = document.createElement('video')
-      video.className = 'hero_gif-img'
+      video.className = 'hero_gif-img vf-heroh__video'
       video.width = 960
       video.height = 784
       video.autoplay = true
@@ -198,27 +198,30 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
       video.playsInline = true
       video.preload = 'metadata'
       if (poster) video.poster = poster
-      if (webm) {
-        const sWebm = document.createElement('source')
-        sWebm.src = webm
-        sWebm.type = 'video/webm'
-        video.appendChild(sWebm)
-      }
       if (mp4) {
         const sMp4 = document.createElement('source')
         sMp4.src = mp4
         sMp4.type = 'video/mp4'
         video.appendChild(sMp4)
       }
-      media.replaceChildren(video)
+      if (webm) {
+        const sWebm = document.createElement('source')
+        sWebm.src = webm
+        sWebm.type = 'video/webm'
+        video.appendChild(sWebm)
+      }
+      // Overlay instead of replace to avoid CLS / LCP swap mid-load
+      media.appendChild(video)
       void video.play().catch(() => {})
     }
 
-    const schedule =
-      typeof requestIdleCallback === 'function'
-        ? (cb: () => void) => requestIdleCallback(cb, {timeout: 1800})
-        : (cb: () => void) => setTimeout(cb, 400)
-    schedule(upgradeVideo)
+    window.addEventListener(
+      'load',
+      () => {
+        setTimeout(upgradeVideo, 2500)
+      },
+      {once: true},
+    )
   }
 </script>
 <noscript>

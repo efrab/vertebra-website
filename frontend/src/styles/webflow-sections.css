@@ -400,6 +400,8 @@
 
 .title_img {
   height: 1.2rem;
+  width: auto;
+  aspect-ratio: 70 / 21;
 }
 
 .title_wrapper {
