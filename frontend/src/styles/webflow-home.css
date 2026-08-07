@@ -338,13 +338,7 @@
 }
 
 .vf-title-page__h1 .is-light {
-  font-weight: 300;
-}
-
-@media (max-width: 767px) {
-  .vf-title-page__h1 .is-light {
-    font-weight: 400; /* avoid extra 300 weight download/CLS on mobile */
-  }
+  font-weight: 400;
 }
 
 .vf-title-page__content {
