@@ -129,55 +129,64 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
     </div>
   </div>
 
-  <div class="vf-heroh__bg" aria-hidden="true">
-    {/* Cap at 1200w — 1600 AVIF was ~385KB and hurt desktop LCP */}
-    <picture>
-      <source
-        type="image/avif"
-        srcset="/assets/optimized/trama-p-800.avif 800w, /assets/optimized/trama-p-1200.avif 1200w"
-        sizes="(max-width: 900px) 100vw, 1200px"
-      />
-      <source
-        type="image/webp"
-        srcset="/assets/optimized/trama-p-800.webp 800w, /assets/optimized/trama-p-1200.webp 1200w"
-        sizes="(max-width: 900px) 100vw, 1200px"
-      />
-      <img
-        src="/assets/optimized/trama-p-800.webp"
-        alt=""
-        class="vf-heroh__fondo"
-        width="800"
-        height="450"
-        loading="lazy"
-        fetchpriority="low"
-        decoding="async"
-      />
-    </picture>
-    {/* Decorative — must not become LCP on desktop */}
-    <picture>
-      <source
-        type="image/avif"
-        srcset="/assets/optimized/Group-1000005376-900.avif 900w, /assets/optimized/Group-1000005376.avif 1479w"
-        sizes="(max-width: 900px) 90vw, 900px"
-      />
-      <source
-        type="image/webp"
-        srcset="/assets/optimized/Group-1000005376-900.webp 900w, /assets/optimized/Group-1000005376.webp 1479w"
-        sizes="(max-width: 900px) 90vw, 900px"
-      />
-      <img
-        src="/assets/optimized/Group-1000005376-900.webp"
-        alt=""
-        class="vf-heroh__colors"
-        width="900"
-        height="355"
-        loading="lazy"
-        fetchpriority="low"
-        decoding="async"
-      />
-    </picture>
+  <div
+    class="vf-heroh__bg"
+    aria-hidden="true"
+    data-hero-decor
+    data-trama-avif-800="/assets/optimized/trama-p-800.avif"
+    data-trama-avif-1200="/assets/optimized/trama-p-1200.avif"
+    data-trama-webp-800="/assets/optimized/trama-p-800.webp"
+    data-trama-webp-1200="/assets/optimized/trama-p-1200.webp"
+    data-colors-avif="/assets/optimized/Group-1000005376-900.avif"
+    data-colors-webp="/assets/optimized/Group-1000005376-900.webp"
+  >
   </div>
 </section>
+
+<script>
+  const root = document.querySelector('[data-hero-decor]')
+  if (root instanceof HTMLElement) {
+    const inject = () => {
+      if (root.dataset.ready) return
+      root.dataset.ready = '1'
+      const tramaAvif800 = root.dataset.tramaAvif800
+      const tramaAvif1200 = root.dataset.tramaAvif1200
+      const tramaWebp800 = root.dataset.tramaWebp800
+      const tramaWebp1200 = root.dataset.tramaWebp1200
+      const colorsAvif = root.dataset.colorsAvif
+      const colorsWebp = root.dataset.colorsWebp
+
+      root.innerHTML = `
+        <picture>
+          <source type="image/avif" srcset="${tramaAvif800} 800w, ${tramaAvif1200} 1200w" sizes="(max-width: 900px) 100vw, 1200px" />
+          <source type="image/webp" srcset="${tramaWebp800} 800w, ${tramaWebp1200} 1200w" sizes="(max-width: 900px) 100vw, 1200px" />
+          <img src="${tramaWebp800}" alt="" class="vf-heroh__fondo" width="800" height="450" decoding="async" />
+        </picture>
+        <picture>
+          <source type="image/avif" srcset="${colorsAvif}" />
+          <source type="image/webp" srcset="${colorsWebp}" />
+          <img src="${colorsWebp}" alt="" class="vf-heroh__colors" width="900" height="355" decoding="async" />
+        </picture>
+      `
+    }
+
+    // After first paint so H1 on solid brand blue can be LCP
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(inject, {timeout: 1200})
+    } else {
+      window.setTimeout(inject, 200)
+    }
+  }
+</script>
+<noscript>
+  <style>
+    .vf-heroh__bg {
+      background-image: url('/assets/optimized/trama-p-800.webp');
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
+</noscript>
 
 {
   pressLogos.length > 0 && (
