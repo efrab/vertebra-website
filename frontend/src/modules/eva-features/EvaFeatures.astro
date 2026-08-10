@@ -1,8 +1,12 @@
 ---
+import HeroIcon from '../../components/ui/HeroIcon.astro'
+import type {HeroIconName} from '../../components/ui/heroicons'
+
 interface Item {
   title?: string
   description: string
   iconSrc?: string
+  icon?: HeroIconName
 }
 
 interface Props {
@@ -49,19 +53,25 @@ const {heading, subheading, introLabel, items} = Astro.props
                 </div>
               )
             }
-            <div class="layout-4" data-vf-reveal="1.875em">
+            <div class="layout-4" data-vf-stagger="100">
               {
                 items.map((item) => (
-                  <div class="card-v1">
+                  <div class="card-v1" data-vf-reveal="1.875em">
                     <div class="card_header">
-                      <img
-                        src={item.iconSrc || '/assets/webflow/images/almuerzo-cohete-1-1.svg'}
-                        loading="lazy"
-                        alt=""
-                        class="icon-4-5"
-                        width="64"
-                        height="64"
-                      />
+                      {item.icon ? (
+                        <span class="icon-4-5 icon-4-5--hero" aria-hidden="true">
+                          <HeroIcon name={item.icon} size={24} />
+                        </span>
+                      ) : (
+                        <img
+                          src={item.iconSrc || '/assets/webflow/images/almuerzo-cohete-1-1.svg'}
+                          loading="lazy"
+                          alt=""
+                          class="icon-4-5"
+                          width="64"
+                          height="64"
+                        />
+                      )}
                     </div>
                     {item.title && <div class="heading-style-h5">{item.title}</div>}
                     <div>{item.description}</div>
@@ -75,3 +85,17 @@ const {heading, subheading, introLabel, items} = Astro.props
     </div>
   </div>
 </section>
+
+<style>
+  .icon-4-5--hero {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 999px;
+    color: #141b4d;
+    background: #fff;
+    flex-shrink: 0;
+  }
+</style>

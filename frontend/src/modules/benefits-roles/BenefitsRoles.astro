@@ -46,10 +46,10 @@ const {
             </div>
           </div>
 
-          <div class="layout-3" data-vf-reveal="30">
+          <div class="layout-3" data-vf-stagger="120">
             {
               cards.map((card) => (
-                <article class="card-v3">
+                <article class="card-v3" data-vf-reveal="30">
                   <div class="card_header">
                     <img
                       src={card.iconSrc || '/assets/webflow/images/icon-v3.svg'}

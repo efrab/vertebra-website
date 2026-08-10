@@ -236,7 +236,10 @@ function disableMotion() {
 let initialized = false
 
 function start() {
-  if (reduceMotion.matches) {
+  const isMobile = window.matchMedia('(max-width: 767px)').matches
+
+  // Mobile: no entrance opacity/transform (SI + CLS). Desktop keeps reveals.
+  if (reduceMotion.matches || isMobile) {
     disableMotion()
     return
   }

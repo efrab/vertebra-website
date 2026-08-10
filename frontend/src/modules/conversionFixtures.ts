@@ -60,25 +60,25 @@ export function agendaFixtures(locale: Locale): PageSection[] {
           description: isEn
             ? 'A walkthrough of modules tailored to your portfolio.'
             : 'Un recorrido de módulos adaptado a tu portafolio.',
-          iconSrc: `${WF}/almuerzo-cohete-1-1.svg`,
+          icon: 'squares-2x2',
         },
         {
           description: isEn
             ? 'Examples of automation for contracts, billing and maintenance.'
             : 'Ejemplos de automatización para contratos, cobranza y mantenimiento.',
-          iconSrc: `${WF}/almuerzo-cohete-1-1.svg`,
+          icon: 'bolt',
         },
         {
           description: isEn
             ? 'Time to resolve questions with a Vertebra specialist.'
             : 'Tiempo para resolver dudas con un especialista de Vértebra.',
-          iconSrc: `${WF}/almuerzo-cohete-1-1.svg`,
+          icon: 'chat-bubble-left-right',
         },
         {
           description: isEn
             ? 'Next steps to start a free trial or onboarding.'
             : 'Próximos pasos para iniciar una prueba gratis o el onboarding.',
-          iconSrc: `${WF}/almuerzo-cohete-1-1.svg`,
+          icon: 'rocket-launch',
         },
       ],
     },

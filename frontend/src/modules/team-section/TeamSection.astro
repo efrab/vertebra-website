@@ -32,10 +32,10 @@ const {heading, members} = Astro.props
               <h2 words-slide-from-right text-split>{heading}</h2>
             </div>
           </div>
-          <div class="layout-3" data-vf-reveal="30">
+          <div class="layout-3" data-vf-stagger="120">
             {
               members.map((member) => (
-                <div class="card_linkedin">
+                <div class="card_linkedin" data-vf-reveal="30">
                   {member.imageSrc && (
                     <img
                       src={member.imageSrc}

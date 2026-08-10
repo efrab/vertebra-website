@@ -40,10 +40,10 @@ const WF = '/assets/webflow/images'
               </div>
             )
           }
-          <div class="blog_grid" data-vf-reveal="1.875em">
+          <div class="blog_grid" data-vf-stagger="100">
             {
               posts.map((post) => (
-                <a href={post.href} class="card-blog w-inline-block">
+                <a href={post.href} class="card-blog w-inline-block" data-vf-reveal="1.875em">
                   <div class="card-blog_head">
                     <img
                       loading="lazy"

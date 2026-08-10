@@ -48,6 +48,33 @@ const propertyOptions = isEn
   ? ['1–20', '20–50', '50–100', '100+']
   : ['1 a 20', '20 a 50', '50 a 100', '100 a más']
 const hourOptions = ['09:00', '10:00', '11:00', '12:00', '15:00', '16:00', '17:00']
+const dialCodes = [
+  {code: '+52', label: isEn ? '+52 Mexico' : '+52 México'},
+  {code: '+54', label: '+54 Argentina'},
+  {code: '+591', label: '+591 Bolivia'},
+  {code: '+55', label: isEn ? '+55 Brazil' : '+55 Brasil'},
+  {code: '+56', label: '+56 Chile'},
+  {code: '+57', label: '+57 Colombia'},
+  {code: '+506', label: '+506 Costa Rica'},
+  {code: '+53', label: '+53 Cuba'},
+  {code: '+593', label: '+593 Ecuador'},
+  {code: '+503', label: '+503 El Salvador'},
+  {code: '+34', label: isEn ? '+34 Spain' : '+34 España'},
+  {code: '+1', label: isEn ? '+1 USA/Canada' : '+1 EE.UU./Canadá'},
+  {code: '+502', label: '+502 Guatemala'},
+  {code: '+504', label: '+504 Honduras'},
+  {code: '+39', label: isEn ? '+39 Italy' : '+39 Italia'},
+  {code: '+505', label: '+505 Nicaragua'},
+  {code: '+507', label: isEn ? '+507 Panama' : '+507 Panamá'},
+  {code: '+595', label: '+595 Paraguay'},
+  {code: '+51', label: isEn ? '+51 Peru' : '+51 Perú'},
+  {code: '+351', label: '+351 Portugal'},
+  {code: '+1787', label: '+1 Puerto Rico'},
+  {code: '+44', label: isEn ? '+44 UK' : '+44 Reino Unido'},
+  {code: '+1809', label: isEn ? '+1 Dom. Rep.' : '+1 Rep. Dom.'},
+  {code: '+598', label: '+598 Uruguay'},
+  {code: '+58', label: '+58 Venezuela'},
+] as const
 const resolvedFormTitle =
   formTitle || (isEn ? 'Leave us a message' : 'Déjanos un mensaje')
 const resolvedFormSubtitle =
@@ -205,7 +232,7 @@ const showSide = Boolean(sideHeading || contactLinks.length)
                     class="input-fom-input w-input"
                     maxlength="256"
                     name="firstName"
-                    placeholder={t(locale, 'form.name')}
+                    placeholder=" "
                     type="text"
                     required
                     autocomplete="given-name"
@@ -217,7 +244,7 @@ const showSide = Boolean(sideHeading || contactLinks.length)
                     class="input-fom-input w-input"
                     maxlength="256"
                     name="lastName"
-                    placeholder={t(locale, 'form.lastName')}
+                    placeholder=" "
                     type="text"
                     autocomplete="family-name"
                   />
@@ -229,7 +256,7 @@ const showSide = Boolean(sideHeading || contactLinks.length)
                   class="input-fom-input w-input"
                   maxlength="256"
                   name="email"
-                  placeholder={t(locale, 'form.email')}
+                  placeholder=" "
                   type="email"
                   required
                   autocomplete="email"
@@ -238,11 +265,16 @@ const showSide = Boolean(sideHeading || contactLinks.length)
               </div>
               <div class="agenda_form-col is-cel">
                 <div class="input-fom">
-                  <select name="dialCode" class="input-fom-input w-select">
-                    <option value="+52">+52</option>
-                    <option value="+51">+51</option>
-                    <option value="+1">+1</option>
-                    <option value="+57">+57</option>
+                  <select
+                    name="dialCode"
+                    class="input-fom-input w-select"
+                    aria-label={isEn ? 'Country code' : 'Código de país'}
+                  >
+                    {dialCodes.map((item) => (
+                      <option value={item.code} selected={item.code === '+52' || undefined}>
+                        {item.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div class="input-fom">
@@ -250,7 +282,7 @@ const showSide = Boolean(sideHeading || contactLinks.length)
                     class="input-fom-input w-input"
                     maxlength="256"
                     name="phone"
-                    placeholder={t(locale, 'form.phone')}
+                    placeholder=" "
                     type="tel"
                     autocomplete="tel"
                   />
@@ -258,20 +290,22 @@ const showSide = Boolean(sideHeading || contactLinks.length)
                 </div>
               </div>
               <div class="input-fom">
-                <select name="properties" class="input-fom-input w-select">
+                <select name="properties" class="input-fom-input w-select" aria-label={t(locale, 'form.properties')}>
                   <option value="">{t(locale, 'form.properties')}</option>
                   {propertyOptions.map((opt) => (
                     <option value={opt}>{opt}</option>
                   ))}
                 </select>
+                <div class="input-fom-txt">{t(locale, 'form.properties')}</div>
               </div>
               <div class="input-fom is-area">
                 <textarea
-                  placeholder={t(locale, 'form.message')}
+                  placeholder=" "
                   maxlength="5000"
                   name="message"
                   class="input-fom-input w-input"
                   rows="4"></textarea>
+                <div class="input-fom-txt">{t(locale, 'form.message')}</div>
               </div>
               {
                 showSchedule && (
@@ -281,22 +315,25 @@ const showSide = Boolean(sideHeading || contactLinks.length)
                         class="input-fom-input w-input"
                         maxlength="256"
                         name="day"
-                        placeholder={isEn ? 'Day' : 'Día'}
+                        placeholder=" "
                         type="date"
                       />
+                      <div class="input-fom-txt">{isEn ? 'Day' : 'Día'}</div>
                       <img
                         src="/assets/webflow/images/heroicons-outlinecalendar.svg"
                         loading="lazy"
                         alt=""
+                        aria-hidden="true"
                       />
                     </div>
                     <div class="input-fom">
-                      <select name="hour" class="input-fom-input w-select">
+                      <select name="hour" class="input-fom-input w-select" aria-label={isEn ? 'Time' : 'Hora'}>
                         <option value="">{isEn ? 'Time' : 'Hora'}</option>
                         {hourOptions.map((hour) => (
                           <option value={hour}>{hour}</option>
                         ))}
                       </select>
+                      <div class="input-fom-txt">{isEn ? 'Time' : 'Hora'}</div>
                     </div>
                   </div>
                 )
@@ -344,7 +381,30 @@ const showSide = Boolean(sideHeading || contactLinks.length)
 </section>
 
 <script>
+  const syncFilled = (wrap: HTMLElement) => {
+    const control = wrap.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+      'input, select, textarea',
+    )
+    if (!control) return
+    const filled =
+      control instanceof HTMLSelectElement
+        ? control.value.trim() !== ''
+        : control.value.trim() !== ''
+    wrap.classList.toggle('is-filled', filled)
+  }
+
   document.querySelectorAll<HTMLFormElement>('[data-lead-form]').forEach((form) => {
+    form.querySelectorAll<HTMLElement>('.input-fom').forEach((wrap) => {
+      const control = wrap.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+        'input, select, textarea',
+      )
+      if (!control) return
+      syncFilled(wrap)
+      control.addEventListener('input', () => syncFilled(wrap))
+      control.addEventListener('change', () => syncFilled(wrap))
+      control.addEventListener('blur', () => syncFilled(wrap))
+    })
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault()
       const success = form.querySelector('[data-form-success]')
@@ -365,6 +425,7 @@ const showSide = Boolean(sideHeading || contactLinks.length)
         }
         success?.removeAttribute('hidden')
         form.reset()
+        form.querySelectorAll<HTMLElement>('.input-fom').forEach(syncFilled)
       } catch {
         error?.removeAttribute('hidden')
       }

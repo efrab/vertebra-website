@@ -216,7 +216,12 @@ export type PageSection =
       heading: string
       subheading?: string
       introLabel?: string
-      items: {title?: string; description: string; iconSrc?: string}[]
+      items: {
+        title?: string
+        description: string
+        iconSrc?: string
+        icon?: 'squares-2x2' | 'bolt' | 'chat-bubble-left-right' | 'rocket-launch'
+      }[]
     }
   | {
       _type: 'aboutIntro'

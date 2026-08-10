@@ -27,5 +27,8 @@
     "prettier": "^3.8.2",
     "prettier-plugin-astro": "^0.14.1",
     "tsx": "^4.23.5"
+  },
+  "overrides": {
+    "vite": "^7"
   }
 }

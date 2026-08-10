@@ -36,10 +36,10 @@ const {heading, subheading, items} = Astro.props
               }
             </div>
           </div>
-          <div class="beneficios_4-grid" data-vf-reveal="30" style="--vf-reveal-delay: 0.15s">
+          <div class="beneficios_4-grid" data-vf-stagger="100">
             {
               items.map((item) => (
-                <div class="card-v2">
+                <div class="card-v2" data-vf-reveal="30">
                   <img
                     src="/assets/webflow/images/icon_cardv2.svg"
                     loading="lazy"

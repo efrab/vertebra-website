@@ -552,6 +552,10 @@
 }
 
 .logos_item-img {
+  display: block;
+  width: auto;
+  height: 72px;
+  max-width: 140px;
   mix-blend-mode: multiply;
   object-fit: contain;
 }
@@ -1028,7 +1032,6 @@
 .deslizante_arrow {
   display: flex;
   position: absolute;
-  inset: 0% auto 0% -3.9rem;
   overflow: visible;
 }
 
@@ -1036,7 +1039,6 @@
   z-index: 999999;
   opacity: 100;
   position: absolute;
-  inset: 0% -3.8rem 0% auto;
 }
 
 .deslizante_nav {
@@ -1074,6 +1076,8 @@
   grid-template-columns: .5fr 1fr;
   grid-auto-columns: 1fr;
   display: grid;
+  position: relative;
+  align-items: center;
 }
 
 .testimonios_info {
@@ -1086,6 +1090,11 @@
   justify-content: center;
   align-items: flex-start;
   display: flex;
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .testimonios_slider {
@@ -1095,6 +1104,14 @@
   flex-flow: column;
   flex: 1;
   display: flex;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  /* Title column (.5fr) + grid gap — shared by slides, mask, and arrows */
+  --testimonios-title-span: calc((100% - 2.5rem) / 3 + 2.5rem);
+  --testimonios-arrow: 5.375rem;
 }
 
 .testimonios_mask {
@@ -1129,13 +1146,8 @@
   z-index: 2;
 }
 
-.testimonios_arrow.is-left {
-  inset: 0% auto 0% -2.9rem;
-}
-
 .testimonios_arrow.is-right {
   opacity: 100;
-  inset: 0% -3.3rem 0% auto;
 }
 
 .testimonios_slide {
@@ -1652,11 +1664,11 @@
     display: block;
   }
   .testimonios_arrow {
-    width: 4rem;
-    margin-right: -1.5rem;
+    /* sizing/position owned by shared slider arrow block */
+    margin-right: 0;
   }
   .testimonios_arrow.is-left {
-    margin-left: -1.5rem;
+    margin-left: 0;
     margin-right: 0;
   }
   .confian_wrp {
@@ -1966,18 +1978,18 @@ html.vf-text-ready [text-split] {
   }
 }
 
-/* Never hide content behind entrance animations (SI + CLS) */
-[text-split],
-[words-slide-from-right] .word,
-[data-vf-reveal],
-html.vf-motion-ready [data-vf-reveal]:not(.is-in) {
-  opacity: 1 !important;
-  transform: none !important;
-  transition: none !important;
-}
-
-/* Mobile: defer layout/paint work for below-fold sections */
+/* Mobile: skip entrance animations (SI + CLS); desktop keeps Webflow reveals */
 @media (max-width: 767px) {
+  [text-split],
+  [words-slide-from-right] .word,
+  [data-vf-reveal],
+  html.vf-motion-ready [data-vf-reveal]:not(.is-in) {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Defer layout/paint work for below-fold sections */
   main#main-content > section:nth-child(n + 2) {
     content-visibility: auto;
     contain-intrinsic-size: 1px 480px;
@@ -2078,9 +2090,14 @@ html.vf-motion-ready [data-vf-reveal]:not(.is-in) {
 }
 
 .brand_rs img {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.75rem;
+  height: 1.75rem;
   display: block;
+}
+
+.footer_rs .brand_rs img {
+  width: 28px;
+  height: 28px;
 }
 
 .footer_litem-link {
@@ -2197,18 +2214,22 @@ html.vf-motion-ready [data-vf-reveal]:not(.is-in) {
   box-sizing: border-box;
   scroll-snap-align: start;
   margin-right: 0;
+  /* Title zone + equal gutters so the card sits centered between both arrows */
+  padding-left: calc(var(--testimonios-title-span, 0px) + var(--testimonios-arrow, 5.375rem));
+  padding-right: var(--testimonios-arrow, 5.375rem);
 }
 
 .testimonios_cont {
   min-height: 23.875rem;
 }
 
-/* Arrows — Webflow .w-slider-arrow hit area (80px) + circular SVG icon */
+/* Arrows — icon-sized hit target only (not full-height Webflow strip) */
 .deslizante_arrow,
 .testimonios_arrow {
   box-sizing: border-box;
-  width: 80px;
-  margin: auto;
+  width: 5.375rem;
+  height: 5.375rem;
+  margin: 0;
   padding: 0;
   border: 0;
   background: transparent;
@@ -2218,23 +2239,60 @@ html.vf-motion-ready [data-vf-reveal]:not(.is-in) {
   align-items: center;
   justify-content: center;
   overflow: visible;
+  position: absolute;
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
 }
 
 .deslizante_arrow {
-  inset: 0 auto 0 -1.75rem;
+  left: 0;
+  right: auto;
 }
 
 .deslizante_arrow.is-right {
   z-index: 4;
-  inset: 0 -1.75rem 0 auto;
+  left: auto;
+  right: 0;
+}
+
+/* Keep cards clear of the circular arrows */
+.deslizante [data-vf-slider-track] {
+  width: calc(100% - 10.75rem) !important;
+  margin-inline: 5.375rem;
+}
+
+/* Soft mask: cards fade out as they pass over the title column */
+.testimonios_slider [data-vf-slider-track] {
+  width: 100% !important;
+  margin: 0;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(var(--testimonios-title-span) - 2.5rem),
+    #000 var(--testimonios-title-span),
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(var(--testimonios-title-span) - 2.5rem),
+    #000 var(--testimonios-title-span),
+    #000 100%
+  );
 }
 
 .testimonios_arrow.is-left {
-  inset: 0 auto 0 -1.5rem;
+  /* Sits in the left gutter, flush with the card’s left edge */
+  left: var(--testimonios-title-span);
+  right: auto;
 }
 
 .testimonios_arrow.is-right {
-  inset: 0 -1.5rem 0 auto;
+  /* Matching right gutter */
+  left: auto;
+  right: 0;
+  z-index: 4;
 }
 
 .deslizante_arrow img,
@@ -2314,6 +2372,30 @@ html.vf-motion-ready [data-vf-reveal]:not(.is-in) {
     max-width: 50%;
   }
 
+  .testimonios_info,
+  .testimonios_slider {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .testimonios_slider {
+    --testimonios-title-span: 0px;
+  }
+
+  .testimonios_slide {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .testimonios_slider [data-vf-slider-track] {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .testimonios_arrow.is-left {
+    left: 0;
+  }
+
   .testimonios_cont {
     min-height: 0;
   }
@@ -2324,18 +2406,48 @@ html.vf-motion-ready [data-vf-reveal]:not(.is-in) {
     padding-bottom: 4.5rem;
   }
 
-  .deslizante_arrow {
+  .deslizante [data-vf-slider-track],
+  .testimonios_slider [data-vf-slider-track] {
+    width: 100% !important;
+    margin-inline: 0;
+  }
+
+  .deslizante_arrow,
+  .testimonios_arrow {
     inset: auto auto 0.15rem 28%;
+    top: auto;
+    left: 28%;
+    right: auto;
+    width: 3.5rem;
+    height: 3.5rem;
+    margin: 0;
+    transform: none;
+  }
+
+  .deslizante_arrow.is-right,
+  .testimonios_arrow.is-right {
+    inset: auto 28% 0.15rem auto;
+    left: auto;
+    right: 28%;
+    top: auto;
+    transform: none;
+  }
+
+  .deslizante_arrow img,
+  .deslizante_arrow .testimonios_arrow-icon,
+  .testimonios_arrow img,
+  .testimonios_arrow-icon {
     width: 3.5rem;
     height: 3.5rem;
   }
 
-  .deslizante_arrow.is-right {
-    inset: auto 28% 0.15rem auto;
+  .deslizante_nav,
+  .testimonios_nav {
+    bottom: 0.15rem;
   }
 
-  .deslizante_nav {
-    bottom: 0.15rem;
+  .testimonios_slider {
+    padding-bottom: 4.5rem;
   }
 }
 

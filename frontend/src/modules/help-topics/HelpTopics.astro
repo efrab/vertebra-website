@@ -67,10 +67,10 @@ const {
               </div>
             </form>
           </div>
-          <div class="buscador_grilla" data-vf-reveal="1.875em">
+          <div class="buscador_grilla" data-vf-stagger="100">
             {
               topics.map((topic) => (
-                <div class="card-v5">
+                <div class="card-v5" data-vf-reveal="1.875em">
                   <img
                     loading="lazy"
                     src={topic.iconSrc || '/assets/webflow/images/almuerzo-cohete-1-1.svg'}

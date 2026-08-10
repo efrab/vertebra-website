@@ -40,3 +40,4 @@ frontend/.astro
 # docs/reference/webflow/videos/
 frontend/.vercel
 studio/dist
+.env*.local

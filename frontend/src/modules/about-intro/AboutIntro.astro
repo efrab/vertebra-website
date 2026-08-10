@@ -38,9 +38,15 @@ const {heading, description, logos = []} = Astro.props
           </div>
           {
             logos.length > 0 && (
-              <div class="regular-flex" data-vf-reveal="1.875em">
+              <div class="regular-flex" data-vf-stagger="80">
                 {logos.map((logo) => (
-                  <img src={logo.src} loading="lazy" alt={logo.name} class="confian_logo" />
+                  <img
+                    src={logo.src}
+                    loading="lazy"
+                    alt={logo.name}
+                    class="confian_logo"
+                    data-vf-reveal="1.875em"
+                  />
                 ))}
               </div>
             )

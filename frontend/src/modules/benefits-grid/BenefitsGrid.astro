@@ -34,14 +34,13 @@ const defaultIcon = '/assets/webflow/images/icon-card.v1.svg'
       <div
         class="deslizante"
         data-vf-slider
-        data-vf-reveal="1.875em"
         data-vf-duration="800"
         data-vf-infinite="true"
       >
-        <div class="deslizante_mask" data-vf-slider-track>
+        <div class="deslizante_mask" data-vf-slider-track data-vf-stagger="80">
           {
             items.map((item) => (
-              <div class="deslizante_slide">
+              <div class="deslizante_slide" data-vf-reveal="1.875em">
                 <div class="card-v1">
                   <div class="card_header">
                     <img

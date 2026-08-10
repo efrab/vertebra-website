@@ -240,12 +240,27 @@ function revealY(el: HTMLElement): string {
   return raw
 }
 
+/** Stagger sibling reveals: parent[data-vf-stagger="120"] → delays in ms */
+function applyStaggerDelays() {
+  document.querySelectorAll<HTMLElement>('[data-vf-stagger]').forEach((parent) => {
+    const stepMs = Number(parent.getAttribute('data-vf-stagger')) || 120
+    const kids = [...parent.children].filter(
+      (el): el is HTMLElement => el instanceof HTMLElement && el.hasAttribute('data-vf-reveal'),
+    )
+    kids.forEach((el, i) => {
+      if (el.style.getPropertyValue('--vf-reveal-delay')) return
+      el.style.setProperty('--vf-reveal-delay', `${((i * stepMs) / 1000).toFixed(2)}s`)
+    })
+  })
+}
+
 function initBlockReveal(reduce: boolean) {
   // Tab pane reveals are owned by webflow-modulos (enter on load + on tab switch)
   const nodes = [...document.querySelectorAll<HTMLElement>('[data-vf-reveal]')].filter(
     (el) => !el.closest('.w-tab-pane'),
   )
   document.documentElement.classList.add('vf-motion-ready')
+  applyStaggerDelays()
 
   if (reduce) {
     nodes.forEach((el) => el.classList.add('is-in'))
@@ -287,9 +302,9 @@ function initBlockReveal(reduce: boolean) {
 
 function boot() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  // Skip entrance opacity/transform delays so first paint + CLS stay stable
-  // (text/video no longer jump when fonts arrive). End state looks the same.
-  const instant = true
+  // Mobile: skip entrance delays for SI/CLS. Desktop: play Webflow reveals.
+  const isMobile = window.matchMedia('(max-width: 767px)').matches
+  const instant = reduce || isMobile
 
   requestAnimationFrame(() => {
     initTextReveal(instant)
