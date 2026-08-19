@@ -28,6 +28,7 @@ export const pathnames = {
   },
   landingServices: {es: 'landing-servicios', en: 'landing-services'},
   thankYou: {es: 'gracias', en: 'thank-you'},
+  roiCalculator: {es: 'calculadora-roi', en: 'roi-calculator'},
 } as const
 
 export type PathnameKey = keyof typeof pathnames
@@ -53,6 +54,7 @@ export const indexKeys = new Set<PathnameKey>([
   'landingContracts',
   'landingServices',
   'thankYou',
+  'roiCalculator',
 ])
 
 export function isLocale(value: string): value is Locale {
@@ -173,6 +175,7 @@ export type ResolvedRoute =
   | {kind: 'landingContracts'}
   | {kind: 'landingServices'}
   | {kind: 'thankYou'}
+  | {kind: 'roiCalculator'}
   | {kind: 'notFound'}
 
 export function resolveRoute(locale: Locale, segments: string[]): ResolvedRoute {
@@ -203,6 +206,7 @@ export function resolveRoute(locale: Locale, segments: string[]): ResolvedRoute 
     'landingContracts',
     'landingServices',
     'thankYou',
+    'roiCalculator',
   ]
 
   for (const key of singleKeys) {

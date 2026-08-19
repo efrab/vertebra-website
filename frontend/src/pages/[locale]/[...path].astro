@@ -22,6 +22,10 @@ if (route.kind === 'notFound') {
   return new Response(null, {status: 404, statusText: 'Not Found'})
 }
 
+if (route.kind === 'roiCalculator') {
+  return Astro.redirect(`/${locale}/roi-calculator`)
+}
+
 const marketingKeys = [
   'modules',
   'benefits',

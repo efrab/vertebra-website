@@ -16,6 +16,7 @@ const links = [
   {key: 'modules' as const, label: t(locale, 'nav.modules'), external: false},
   {key: 'benefits' as const, label: t(locale, 'nav.benefits'), external: false},
   {key: 'ai' as const, label: t(locale, 'nav.ai'), external: false},
+  {key: 'roiCalculator' as const, label: t(locale, 'nav.roiCalculator'), external: false},
   {key: 'about' as const, label: t(locale, 'nav.about'), external: false},
 ]
 
@@ -27,7 +28,7 @@ const homeHref = getLocalizedPath(locale, 'home')
 
 <header class="vf-menu">
   <div class="vf-padding-global">
-    <div class="vf-container-large">
+    <div class="vf-container-large" style="max-width: 90rem;">
       <div class="vf-menu__wrp">
         <a href={homeHref} class="shrink-0 no-underline" aria-label="Vertebra">
           <img

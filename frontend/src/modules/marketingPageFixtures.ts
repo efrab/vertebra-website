@@ -92,6 +92,10 @@ const copy: Record<
     es: {heading: '¡Gracias!', description: 'Recibimos tu solicitud. Te contactaremos pronto.'},
     en: {heading: 'Thank you!', description: 'We received your request. We will contact you soon.'},
   },
+  roiCalculator: {
+    es: {heading: 'Calculadora de ROI', description: 'Calcula el ROI de digitalizar la administración de tu portafolio inmobiliario.'},
+    en: {heading: 'ROI Calculator', description: 'Calculate the ROI of digitizing your real estate portfolio management.'},
+  },
 }
 
 export function marketingPageFixtures(locale: Locale, key: PageKey): PageSection[] {
