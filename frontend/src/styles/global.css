@@ -109,14 +109,6 @@ html {
   }
 }
 
-/* Mobile: skip Poppins download during LCP/SI — metric-matched Arial only */
-@media (max-width: 767px) {
-  html {
-    --font-display: "Poppins Fallback", Arial, sans-serif;
-    --font-sans: "Poppins Fallback", Arial, sans-serif;
-    font-family: "Poppins Fallback", Arial, sans-serif;
-  }
-}
 
 /* Lock typography growth past artboard */
 @media screen and (min-width: 1440px) {
