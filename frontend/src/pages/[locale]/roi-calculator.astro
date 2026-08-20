@@ -250,7 +250,7 @@ const description =
 <style>
   /* ── header-interna styles (scoped to avoid global side-effects) ── */
   .header-interna-component {
-    background-color: #fff0;
+    background-color: transparent;
     justify-content: flex-end;
     align-items: center;
     padding-left: 0;
@@ -258,8 +258,7 @@ const description =
     padding-top: 0;
     padding-bottom: 6rem;
     position: relative;
-    isolation: isolate;
-    z-index: 0;
+    overflow: hidden;
   }
 
   .header-interna_bg {
@@ -317,12 +316,10 @@ const description =
 
   @media screen and (max-width: 991px) {
     .header-interna-component {
-      background-color: #fff0;
+      background-color: transparent;
       padding-left: 0;
       position: relative;
       overflow: hidden;
-      isolation: isolate;
-      z-index: 0;
     }
     .header-interna_bg {
       z-index: -1;
