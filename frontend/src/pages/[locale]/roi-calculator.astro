@@ -596,7 +596,7 @@ const description =
       animateCounter('manMonth', man, money)
       if (roi >= 1) {
         animateCounter('roiMult', roi, function (v) {
-          return v.toFixed(1).replace(/\.0$/, '') + 'x'
+          return Math.ceil(v) + 'x'
         })
         animateCounter('roiPerDollar', roi, function (v) {
           return 'USD ' + v.toFixed(2)
@@ -610,7 +610,7 @@ const description =
       el('vertMonth').textContent = money(vert)
       el('manMonth').textContent = money(man)
       if (roi >= 1) {
-        el('roiMult').textContent = roi.toFixed(1).replace(/\.0$/, '') + 'x'
+        el('roiMult').textContent = Math.ceil(roi) + 'x'
         el('roiPerDollar').textContent = 'USD ' + roi.toFixed(2)
       } else {
         el('roiMult').textContent = '--'
