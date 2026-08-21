@@ -56,12 +56,12 @@ const description =
     </div>
   </section>
 
-  <section class="relative z-10 -mt-16 pb-20">
+  <section class="relative z-10 -mt-8 pb-12 sm:-mt-16 sm:pb-20">
     <div class="container-page flex flex-col gap-6">
-      <div class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.12fr)] items-stretch">
+      <div class="grid grid-cols-1 gap-5 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.12fr)] lg:items-stretch">
 
-        <div class="flex flex-col rounded-[18px] bg-white p-8 shadow-soft">
-          <h2 class="roi-panel-title mb-8 text-center text-brand">
+        <div class="flex flex-col rounded-[18px] bg-white p-5 shadow-soft sm:p-8">
+          <h2 class="roi-panel-title mb-6 text-center text-brand sm:mb-8">
             {locale === 'es' ? 'Tu portafolio' : 'Your portfolio'}
           </h2>
 
@@ -71,7 +71,7 @@ const description =
                 <span class="mr-2 inline-block h-2 w-2 rounded-full bg-brand align-middle"></span>
                 {locale === 'es' ? 'Propiedades comerciales' : 'Commercial properties'}
               </label>
-              <span class="num text-xs text-muted">$5 USD / {locale === 'es' ? 'mes c/u' : 'mo each'}</span>
+              <span class="num text-xs text-muted">USD 5 / {locale === 'es' ? 'mes c/u' : 'mo each'}</span>
             </div>
             <div class="flex items-center gap-4">
               <input type="range" id="comRange" min="0" max="600" step="1" value="80" aria-label={locale === 'es' ? 'Propiedades comerciales, deslizador' : 'Commercial properties, slider'} class="roi-range flex-1" />
@@ -85,7 +85,7 @@ const description =
                 <span class="mr-2 inline-block h-2 w-2 rounded-full bg-accent align-middle"></span>
                 {locale === 'es' ? 'Propiedades industriales' : 'Industrial properties'}
               </label>
-              <span class="num text-xs text-muted">$10 USD / {locale === 'es' ? 'mes c/u' : 'mo each'}</span>
+              <span class="num text-xs text-muted">USD 10 / {locale === 'es' ? 'mes c/u' : 'mo each'}</span>
             </div>
             <div class="flex items-center gap-4">
               <input type="range" id="indRange" min="0" max="600" step="1" value="20" aria-label={locale === 'es' ? 'Propiedades industriales, deslizador' : 'Industrial properties, slider'} class="roi-range roi-range--ind flex-1" />
@@ -106,7 +106,7 @@ const description =
             </div>
 
             <div class="flex flex-col overflow-x-auto px-0 pt-4">
-            <table class="w-full min-w-[340px] border-separate border-spacing-0 text-[13.5px]">
+            <table class="w-full border-separate border-spacing-0 text-[12px] sm:text-[13.5px] sm:min-w-[340px]">
               <caption class="sr-only">{locale === 'es' ? 'Desglose mensual por tipo de propiedad' : 'Monthly breakdown by property type'}</caption>
               <thead>
                 <tr>
@@ -137,26 +137,26 @@ const description =
           </div>
         </div>
 
-        <div class="flex flex-col rounded-[18px] bg-dark-blue p-8 text-white shadow-[0_8px_30px_rgba(0,0,0,0.25)] ring-1 ring-white/10" aria-live="polite">
-          <h2 class="roi-panel-title mb-8 text-center text-accent">
+        <div class="flex flex-col rounded-[18px] bg-dark-blue p-5 text-white shadow-[0_8px_30px_rgba(0,0,0,0.25)] ring-1 ring-white/10 sm:p-8" aria-live="polite">
+          <h2 class="roi-panel-title mb-6 text-center text-accent sm:mb-8">
             {locale === 'es' ? 'Tu resultado' : 'Your result'}
           </h2>
 
-          <div class="mt-6 border-b border-white/13 pb-6 text-center">
+          <div class="mt-6 border-b border-white/13 pb-4 text-center sm:pb-6">
             <div class="text-[11px] font-medium uppercase tracking-[0.12em] text-white/45">{locale === 'es' ? 'Ahorro estimado al año' : 'Estimated annual savings'}</div>
             <div class="num my-2 text-[clamp(38px,7.2vw,60px)] font-bold leading-none tracking-tight text-accent"><span id="savYear">&mdash;</span></div>
             <div class="num text-[13.5px] text-white/70"><span id="savLine">&mdash;</span></div>
           </div>
 
-          <div class="mt-5 grid grid-cols-1 gap-px overflow-hidden rounded-[14px] bg-white/13 sm:grid-cols-2">
+          <div class="mt-5 grid grid-cols-1 gap-px overflow-hidden rounded-[14px] bg-white/13 p-0 sm:grid-cols-2 sm:p-0">
             <div class="bg-dark-blue p-5">
               <div class="mb-2 text-[10.5px] font-medium uppercase tracking-[0.1em] text-white/45">{locale === 'es' ? 'Costo Vertebra' : 'Vertebra cost'}</div>
-              <div class="num text-[26px] font-semibold tracking-tight"><span id="vertMonth">&mdash;</span></div>
+              <div class="num text-[26px] sm:text-[26px] font-semibold tracking-tight"><span id="vertMonth">&mdash;</span></div>
               <div class="mt-1 text-[11px] text-white/70"><span id="vertNote">USD / {locale === 'es' ? 'mes' : 'mo'}</span></div>
             </div>
             <div class="bg-dark-blue p-5">
               <div class="mb-2 text-[10.5px] font-medium uppercase tracking-[0.1em] text-white/45">{locale === 'es' ? 'Costo del proceso manual' : 'Manual process cost'}</div>
-              <div class="num text-[26px] font-semibold tracking-tight text-white/70"><span id="manMonth">&mdash;</span></div>
+              <div class="num text-[26px] sm:text-[26px] font-semibold tracking-tight text-white/70"><span id="manMonth">&mdash;</span></div>
               <div class="mt-1 text-[11px] text-white/45">{locale === 'es' ? 'USD / mes en horas de equipo, errores y omisiones' : 'USD / mo in team hours, errors and omissions'}</div>
             </div>
           </div>
@@ -170,35 +170,35 @@ const description =
             <span>{locale === 'es' ? 'Lo que recuperas' : 'What you recover'}</span>
           </div>
 
-          <div class="mt-6 flex items-center gap-4 rounded-[14px] border border-accent/28 bg-accent/10 p-4 md:gap-5 md:p-5">
-            <div class="num text-[34px] font-bold leading-none tracking-tight text-accent whitespace-nowrap">
+          <div class="mt-6 flex items-center gap-3 rounded-[14px] border border-accent/28 bg-accent/10 p-3 sm:gap-5 sm:p-5">
+            <div class="num text-[28px] sm:text-[34px] font-bold leading-none tracking-tight text-accent whitespace-nowrap">
               <span id="roiMult">&mdash;</span>
             </div>
-            <p class="text-[13px] text-white/70">
+            <p class="text-[11px] sm:text-[13px] text-white/70">
               {locale === 'es' ? (
-                <Fragment>Por cada <b class="font-semibold text-white">$1 USD</b> que inviertes en Vertebra, dejas de gastar <b class="font-semibold text-white" id="roiPerDollar">&mdash;</b> en administración manual.</Fragment>
+                <Fragment>Por cada <b class="font-semibold text-white">USD 1</b> que inviertes en Vertebra, dejas de gastar <b class="font-semibold text-white" id="roiPerDollar">&mdash;</b> en administración manual.</Fragment>
               ) : (
-                <Fragment>For every <b class="font-semibold text-white">$1 USD</b> you invest in Vertebra, you stop spending <b class="font-semibold text-white" id="roiPerDollar">&mdash;</b> on manual administration.</Fragment>
+                <Fragment>For every <b class="font-semibold text-white">USD 1</b> you invest in Vertebra, you stop spending <b class="font-semibold text-white" id="roiPerDollar">&mdash;</b> on manual administration.</Fragment>
               )}
             </p>
           </div>
 
-          <p class="mt-auto pt-5 text-[11.5px] leading-relaxed text-white/45">
+          <p class="mt-auto pt-5 text-[10.5px] leading-relaxed text-white/45 sm:text-[11.5px]">
             <b class="font-medium text-white/70">{locale === 'es' ? 'Cómo se calcula.' : "How it's calculated."}</b>
             {locale === 'es'
-              ? ' Vertebra cobra $5 USD/mes por propiedad comercial y $10 USD/mes por industrial, con una tarifa mínima de $200 USD/mes. El costo del proceso manual —$40 USD/mes por propiedad comercial y $80 USD/mes por industrial— es el benchmark validado de Vertebra sobre portafolios administrados en hoja de cálculo: horas de equipo, errores de facturación, vencimientos no detectados y mantenimiento reactivo. Onboarding único de $500 USD, acreditable a tu suscripción.'
-              : " Vertebra charges $5 USD/mo per commercial property and $10 USD/mo per industrial, with a $200 USD/mo minimum. The manual process cost —$40 USD/mo per commercial and $80 USD/mo per industrial — is Vertebra's validated benchmark on spreadsheet-managed portfolios: team hours, billing errors, missed expirations and reactive maintenance. One-time $500 USD onboarding, credited to your subscription."}
+              ? ' Vertebra cobra USD 5/mes por propiedad comercial y USD 10/mes por industrial, con una tarifa mínima de USD 200/mes. El costo del proceso manual —USD 40/mes por propiedad comercial y USD 80/mes por industrial— es el benchmark validado de Vertebra sobre portafolios administrados en hoja de cálculo: horas de equipo, errores de facturación, vencimientos no detectados y mantenimiento reactivo. Onboarding único de USD 500, acreditable a tu suscripción.'
+              : " Vertebra charges USD 5/mo per commercial property and USD 10/mo per industrial, with a USD 200/mo minimum. The manual process cost —USD 40/mo per commercial and USD 80/mo per industrial — is Vertebra's validated benchmark on spreadsheet-managed portfolios: team hours, billing errors, missed expirations and reactive maintenance. One-time USD 500 onboarding, credited to your subscription."}
           </p>
         </div>
       </div>
     </div>
   </section>
 
-      <section class="bg-white">
-        <div class="vf-padding-global">
+      <section class="bg-white mb-12 sm:mb-16 lg:mb-20">
+        <div class="px-4 sm:px-10 lg:vf-padding-global">
           <div class="vf-container-large">
             <div>
-              <div class="cta_content" style="padding-top: 3rem; padding-bottom: 3rem; justify-content: center;">
+              <div class="cta_content" style="position: relative; padding-top: 3rem; padding-bottom: 3rem; justify-content: center;">
                 <div class="title_component">
                   <div class="title_wrapper">
                     <img loading="lazy" src="/assets/webflow/images/title-recurso.svg" alt="" class="title_img" />
@@ -206,7 +206,7 @@ const description =
                   </div>
                 </div>
                 <p>{locale === 'es' ? 'Armamos el business case con tus contratos y operaciones reales, en 30 minutos.' : "We'll build the business case with your contracts and real operations, in 30 minutes."}</p>
-                <div class="cta_btns">
+                <div class="cta_btns flex flex-col gap-3 sm:flex-row sm:gap-4">
                   <a href="https://wa.me/+51983723379" class="button-blue is-outline w-inline-block" target="_blank" rel="noopener noreferrer">
                     <div class="icon-1x1-small">
                       <svg width="24" height="25" viewBox="0 0 24 25" fill="none" aria-hidden="true">
@@ -229,15 +229,15 @@ const description =
                   <br />
                   &copy; Vertebra &middot; vertebra.co
                 </p>
-                <div class="cta_bg">
+                <div class="cta_bg" style="position: absolute; inset: 0; z-index: -1; overflow: hidden; border-radius: 1rem;">
                   <img
                     loading="lazy"
                     src="/assets/webflow/images/Frame-1000005638-1.png"
                     srcset="/assets/webflow/images/Frame-1000005638-1-p-500.png 500w, /assets/webflow/images/Frame-1000005638-1-p-800.png 800w, /assets/webflow/images/Frame-1000005638-1.png 1200w"
-                    sizes="(max-width: 1200px) 100vw, 1200px"
+                    sizes="100vw"
                     alt=""
                     class="cta_fondovf"
-                    style="object-fit: cover; object-position: center;"
+                    style="width: 100%; height: 100%; object-fit: cover; object-position: center;"
                   />
                 </div>
               </div>
@@ -310,7 +310,7 @@ const description =
 
   .header_title {
     color: var(--_brands---white);
-    font-size: 3rem;
+    font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 500;
     line-height: 1.1;
   }
@@ -345,21 +345,22 @@ const description =
   @media screen and (max-width: 479px) {
     .header-interna-component {
       flex-flow: column;
-      padding-top: 1rem;
+      padding-top: 0;
+      padding-bottom: 0;
     }
     .header-interna_content {
-      flex-flow: row;
-      justify-content: flex-start;
+      flex-flow: column;
+      justify-content: center;
       align-items: center;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
+      padding-top: 0;
+      padding-bottom: 3rem;
     }
     .header-interna_wrp {
       flex-flow: column;
-      padding-top: 1rem;
+      padding-top: 0;
     }
     .header_title {
-      font-size: 2rem;
+      font-size: 1.75rem;
     }
   }
 
@@ -475,6 +476,31 @@ const description =
     background: var(--color-accent);
     transition: width 0.35s ease;
   }
+
+  /* ── Responsive adjustments ── */
+  @media screen and (max-width: 991px) {
+    .roi-number {
+      width: 80px;
+      font-size: 15px;
+      padding: 8px 6px;
+    }
+    .roi-seg-btn {
+      font-size: 12px;
+      padding: 6px 14px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .roi-number {
+      width: 70px;
+      font-size: 14px;
+      padding: 8px 4px;
+    }
+    .roi-seg-btn {
+      font-size: 11px;
+      padding: 6px 12px;
+    }
+  }
 </style>
 
 <script>
@@ -498,13 +524,13 @@ const description =
   var counters: Record<string, {start: number; end: number; startTime: number; raf: number}> = {}
 
   function money(n: number) {
-    return '$' + Math.round(n).toLocaleString('en-US')
+    return 'USD ' + Math.round(n).toLocaleString('en-US')
   }
   function moneyShort(n: number) {
     n = Math.round(n)
-    if (n >= 1000000) return '$' + (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'
-    if (n >= 100000) return '$' + Math.round(n / 1000) + 'K'
-    return '$' + n.toLocaleString('en-US')
+    if (n >= 1000000) return 'USD ' + (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'
+    if (n >= 100000) return 'USD ' + Math.round(n / 1000) + 'K'
+    return 'USD ' + n.toLocaleString('en-US')
   }
   function count(v: string) {
     var parsed = parseInt(v, 10)
@@ -573,11 +599,11 @@ const description =
           return v.toFixed(1).replace(/\.0$/, '') + 'x'
         })
         animateCounter('roiPerDollar', roi, function (v) {
-          return '$' + v.toFixed(2) + ' USD'
+          return 'USD ' + v.toFixed(2)
         })
       } else {
         el('roiMult').textContent = '--'
-        el('roiPerDollar').textContent = '$0'
+        el('roiPerDollar').textContent = 'USD 0'
       }
     } else {
       el('savYear').textContent = moneyShort(saveYr)
@@ -585,10 +611,10 @@ const description =
       el('manMonth').textContent = money(man)
       if (roi >= 1) {
         el('roiMult').textContent = roi.toFixed(1).replace(/\.0$/, '') + 'x'
-        el('roiPerDollar').textContent = '$' + roi.toFixed(2) + ' USD'
+        el('roiPerDollar').textContent = 'USD ' + roi.toFixed(2)
       } else {
         el('roiMult').textContent = '--'
-        el('roiPerDollar').textContent = '$0'
+        el('roiPerDollar').textContent = 'USD 0'
       }
     }
 
@@ -600,7 +626,7 @@ const description =
     el('vertNote').textContent =
       'USD / mo' +
       (annual ? ' · billed annually' : '') +
-      (minApplied ? ' · $200 minimum applies' : '')
+      (minApplied ? ' · USD 200 minimum applies' : '')
 
     var pctCost = man > 0 ? Math.min((vert / man) * 100, 100) : 100
     el('barCost').style.width = pctCost.toFixed(1) + '%'

@@ -2479,6 +2479,18 @@ h2 {
   line-height: 1.2;
 }
 
+@media screen and (max-width: 767px) {
+  .title_wrapper h2 {
+    font-size: 1.75rem;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .title_wrapper h2 {
+    font-size: 1.5rem;
+  }
+}
+
 .soluciones .title_wrapper h2,
 .optimiza .title_wrapper h2 {
   color: #fff;
