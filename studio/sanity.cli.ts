@@ -17,8 +17,9 @@ export default defineCliConfig({
   },
   deployment: {
     autoUpdates: true,
+    appId: 'abgy9ohom46qat6bwg9mtnhk',
   },
-  studioHost: process.env.SANITY_STUDIO_STUDIO_HOST || '', // Visit https://www.sanity.io/docs/environment-variables to learn more about using environment variables for local & production.
+  studioHost: process.env.SANITY_STUDIO_STUDIO_HOST || 'vertebra',
   typegen: {
     path: '../frontend/src/**/*.{ts,tsx,js,jsx,astro}',
     schema: '../frontend/schema.json',

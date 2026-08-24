@@ -11,7 +11,7 @@ import {presentationLocations} from './src/presentation'
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'your-projectID'
 const dataset = process.env.SANITY_STUDIO_DATASET || 'production'
-const previewOrigin = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:4321'
+const previewOrigin = process.env.SANITY_STUDIO_PREVIEW_URL || 'https://www.vertebra.co'
 
 export default defineConfig({
   name: 'vertebra',

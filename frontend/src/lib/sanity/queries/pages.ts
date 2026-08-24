@@ -123,3 +123,13 @@ export const legalPageBySlugQuery = defineQuery(`
     seo ${seoProjection}
   }
 `)
+
+export const pageByRouteKeyQuery = defineQuery(`
+  *[_type == "page" && routeKey == $routeKey][0] {
+    _id,
+    ${titleField},
+    routeKey,
+    seo ${seoProjection},
+    pageBuilder[] ${pageBuilderProjection}
+  }
+`)

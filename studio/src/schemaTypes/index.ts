@@ -20,6 +20,10 @@ import headerInternal from './objects/headerInternal'
 import moduleShowcase from './objects/moduleShowcase'
 import formSection from './objects/formSection'
 import navGroup from './objects/navGroup'
+import contactPathsCopy from './objects/contactPathsCopy'
+import contactChannelItem from './objects/contactChannelItem'
+import contactReasonItem from './objects/contactReasonItem'
+import newsletterSection from './objects/newsletterSection'
 
 import siteSettings from './documents/siteSettings'
 import homePage from './documents/homePage'
@@ -31,6 +35,15 @@ import post from './documents/post'
 import category from './documents/category'
 import teamMember from './documents/teamMember'
 import testimonial from './documents/testimonial'
+import service from './documents/service'
+import caseStudy from './documents/caseStudy'
+import insight from './documents/insight'
+import servicesIndexPage from './documents/servicesIndexPage'
+import caseStudiesIndexPage from './documents/caseStudiesIndexPage'
+import insightsIndexPage from './documents/insightsIndexPage'
+import recruitmentPage from './documents/recruitmentPage'
+import legalPage from './documents/legalPage'
+import methodologyPage from './documents/methodologyPage'
 
 export const schemaTypes = [
   siteSettings,
@@ -43,6 +56,15 @@ export const schemaTypes = [
   category,
   teamMember,
   testimonial,
+  service,
+  caseStudy,
+  insight,
+  servicesIndexPage,
+  caseStudiesIndexPage,
+  insightsIndexPage,
+  recruitmentPage,
+  legalPage,
+  methodologyPage,
   seo,
   link,
   cta,
@@ -65,4 +87,8 @@ export const schemaTypes = [
   ctaBanner,
   pageBuilder,
   navGroup,
+  contactPathsCopy,
+  contactChannelItem,
+  contactReasonItem,
+  newsletterSection,
 ]

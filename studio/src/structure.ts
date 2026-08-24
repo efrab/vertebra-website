@@ -5,6 +5,12 @@ const singletonTitles: Record<string, string> = {
   aboutPage: 'Nosotros',
   contactPage: 'Contacto',
   thankYouPage: 'Gracias',
+  servicesIndexPage: 'Servicios (index)',
+  caseStudiesIndexPage: 'Casos de éxito (index)',
+  insightsIndexPage: 'Insights (index)',
+  recruitmentPage: 'Reclutamiento',
+  legalPage: 'Legal',
+  methodologyPage: 'Metodología',
   siteSettings: 'Site settings',
 }
 
@@ -36,6 +42,28 @@ export const structure: StructureResolver = (S) =>
             ]),
         ),
       S.listItem()
+        .id('servicios')
+        .title('Servicios')
+        .child(
+          S.list()
+            .title('Servicios')
+            .items([
+              S.documentTypeListItem('service').title('Servicios'),
+              singletonItem(S, 'servicesIndexPage'),
+            ]),
+        ),
+      S.listItem()
+        .id('casos-de-exito')
+        .title('Casos de éxito')
+        .child(
+          S.list()
+            .title('Casos de éxito')
+            .items([
+              S.documentTypeListItem('caseStudy').title('Casos de éxito'),
+              singletonItem(S, 'caseStudiesIndexPage'),
+            ]),
+        ),
+      S.listItem()
         .id('blog')
         .title('Blog')
         .child(
@@ -44,6 +72,8 @@ export const structure: StructureResolver = (S) =>
             .items([
               S.documentTypeListItem('post').title('Posts'),
               S.documentTypeListItem('category').title('Categorías'),
+              S.documentTypeListItem('insight').title('Insights'),
+              singletonItem(S, 'insightsIndexPage'),
             ]),
         ),
       S.listItem()
@@ -55,6 +85,18 @@ export const structure: StructureResolver = (S) =>
             .items([
               S.documentTypeListItem('teamMember').title('Equipo'),
               S.documentTypeListItem('testimonial').title('Testimonios'),
+            ]),
+        ),
+      S.listItem()
+        .id('otras-paginas')
+        .title('Otras páginas')
+        .child(
+          S.list()
+            .title('Otras páginas')
+            .items([
+              singletonItem(S, 'methodologyPage'),
+              singletonItem(S, 'recruitmentPage'),
+              singletonItem(S, 'legalPage'),
             ]),
         ),
       S.divider(),

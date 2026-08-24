@@ -22,6 +22,8 @@ import {
   helpPageMeta,
 } from '../modules/helpFixtures'
 import {singletonBreadcrumbs} from '../lib/seo/breadcrumbs'
+import {loadQuery} from '../lib/sanity/loadQuery'
+import {pageByRouteKeyQuery} from '../lib/sanity/queries/pages'
 import type {PageSection} from '../modules/fixtures'
 import '../styles/webflow-home.css'
 import '../styles/webflow-sections.css'
@@ -126,10 +128,33 @@ const registry: Partial<Record<Exclude<PathnameKey, 'home' | 'blogPost'>, () => 
   }),
 }
 
-const bundled = registry[routeKey]?.()
-const sections = bundled?.sections ?? marketingPageFixtures(locale, routeKey)
-const meta = bundled?.meta ?? pageMeta(locale, routeKey)
-const lcpImage = bundled?.lcpImage
+/* Try Sanity first, fall back to fixtures */
+let sections: PageSection[]
+let meta: {title: string; description: string}
+let lcpImage: string | undefined
+
+try {
+  const sanityPage = await loadQuery<{pageBuilder: PageSection[]; seo: {metaTitle?: string; metaDescription?: string}}>(
+    pageByRouteKeyQuery,
+    {locale, routeKey},
+  )
+
+  if (sanityPage?.pageBuilder?.length) {
+    sections = sanityPage.pageBuilder
+    meta = {
+      title: sanityPage.seo?.metaTitle || '',
+      description: sanityPage.seo?.metaDescription || '',
+    }
+    lcpImage = registry[routeKey]?.().lcpImage
+  } else {
+    throw new Error('No Sanity data, using fixtures')
+  }
+} catch {
+  const bundled = registry[routeKey]?.()
+  sections = bundled?.sections ?? marketingPageFixtures(locale, routeKey)
+  meta = bundled?.meta ?? pageMeta(locale, routeKey)
+  lcpImage = bundled?.lcpImage
+}
 ---
 
 <Layout
