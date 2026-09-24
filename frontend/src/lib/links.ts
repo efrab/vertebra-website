@@ -29,6 +29,7 @@ const typeToPathKey: Record<string, PathnameKey> = {
   aboutPage: 'about',
   contactPage: 'contact',
   thankYouPage: 'thankYou',
+  roiCalculatorPage: 'roiCalculator',
   page: 'modules',
   post: 'blogPost',
 }

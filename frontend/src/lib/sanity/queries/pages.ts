@@ -133,3 +133,116 @@ export const pageByRouteKeyQuery = defineQuery(`
     pageBuilder[] ${pageBuilderProjection}
   }
 `)
+
+const emptySavingsMessageField = localizedField('emptySavingsMessage')
+const savingsLineTemplateField = localizedField('savingsLineTemplate')
+const perMonthSuffixField = localizedField('perMonthSuffix')
+const billedAnnuallyNoteField = localizedField('billedAnnuallyNote')
+const minimumAppliesNoteField = localizedField('minimumAppliesNote')
+const commercialCountTemplateField = localizedField('commercialCountTemplate')
+const industrialCountTemplateField = localizedField('industrialCountTemplate')
+const meterAriaTemplateField = localizedField('meterAriaTemplate')
+const heroTitleField = localizedField('heroTitle')
+const heroHighlightField = localizedField('heroHighlight')
+const heroSubtitleField = localizedField('heroSubtitle')
+const portfolioTitleField = localizedField('portfolioTitle')
+const commercialLabelField = localizedField('commercialLabel')
+const industrialLabelField = localizedField('industrialLabel')
+const priceUnitSuffixField = localizedField('priceUnitSuffix')
+const planLabelField = localizedField('planLabel')
+const annualDiscountNoteField = localizedField('annualDiscountNote')
+const monthlyButtonField = localizedField('monthlyButton')
+const annualButtonField = localizedField('annualButton')
+const breakdownHeadingField = localizedField('breakdownHeading')
+const vertebraColumnField = localizedField('vertebraColumn')
+const manualColumnField = localizedField('manualColumn')
+const commercialRowLabelField = localizedField('commercialRowLabel')
+const industrialRowLabelField = localizedField('industrialRowLabel')
+const totalLabelField = localizedField('totalLabel')
+const commercialSliderAriaField = localizedField('commercialSliderAria')
+const commercialNumberAriaField = localizedField('commercialNumberAria')
+const industrialSliderAriaField = localizedField('industrialSliderAria')
+const industrialNumberAriaField = localizedField('industrialNumberAria')
+const planTypeAriaField = localizedField('planTypeAria')
+const resultsTitleField = localizedField('resultsTitle')
+const annualSavingsLabelField = localizedField('annualSavingsLabel')
+const vertebraCostLabelField = localizedField('vertebraCostLabel')
+const manualCostLabelField = localizedField('manualCostLabel')
+const manualCostNoteField = localizedField('manualCostNote')
+const investLabelField = localizedField('investLabel')
+const recoverLabelField = localizedField('recoverLabel')
+const roiSentenceBeforeField = localizedField('roiSentenceBefore')
+const roiSentenceAfterField = localizedField('roiSentenceAfter')
+const howCalculatedHeadingField = localizedField('howCalculatedHeading')
+const howCalculatedBodyField = localizedField('howCalculatedBody')
+const ctaHeadingField = localizedField('ctaHeading')
+const ctaBodyField = localizedField('ctaBody')
+const whatsappLabelField = localizedField('whatsappLabel')
+const demoLabelField = localizedField('demoLabel')
+const disclaimerField = localizedField('disclaimer')
+const descriptionField = localizedField('description')
+
+export const roiCalculatorPageQuery = defineQuery(`
+  *[_type == "roiCalculatorPage"][0] {
+    _id,
+    ${titleField},
+    ${descriptionField},
+    seo ${seoProjection},
+    ${heroTitleField},
+    ${heroHighlightField},
+    ${heroSubtitleField},
+    ${portfolioTitleField},
+    ${commercialLabelField},
+    ${industrialLabelField},
+    ${priceUnitSuffixField},
+    ${planLabelField},
+    ${annualDiscountNoteField},
+    ${monthlyButtonField},
+    ${annualButtonField},
+    ${breakdownHeadingField},
+    ${vertebraColumnField},
+    ${manualColumnField},
+    ${commercialRowLabelField},
+    ${industrialRowLabelField},
+    ${totalLabelField},
+    ${commercialSliderAriaField},
+    ${commercialNumberAriaField},
+    ${industrialSliderAriaField},
+    ${industrialNumberAriaField},
+    ${planTypeAriaField},
+    ${resultsTitleField},
+    ${annualSavingsLabelField},
+    ${vertebraCostLabelField},
+    ${manualCostLabelField},
+    ${manualCostNoteField},
+    ${investLabelField},
+    ${recoverLabelField},
+    ${roiSentenceBeforeField},
+    ${roiSentenceAfterField},
+    ${howCalculatedHeadingField},
+    ${howCalculatedBodyField},
+    ${emptySavingsMessageField},
+    ${savingsLineTemplateField},
+    ${perMonthSuffixField},
+    ${billedAnnuallyNoteField},
+    ${minimumAppliesNoteField},
+    ${commercialCountTemplateField},
+    ${industrialCountTemplateField},
+    ${meterAriaTemplateField},
+    priceCommercial,
+    priceIndustrial,
+    manualCommercial,
+    manualIndustrial,
+    minimumFee,
+    annualDiscountPercent,
+    defaultCommercial,
+    defaultIndustrial,
+    ${ctaHeadingField},
+    ${ctaBodyField},
+    ${whatsappLabelField},
+    whatsappUrl,
+    ${demoLabelField},
+    demoUrl,
+    ${disclaimerField}
+  }
+`)

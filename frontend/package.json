@@ -6,8 +6,8 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
+    "dev": "SANITY_ASTRO_DISABLE_MODULE_DEDUPE=1 astro dev",
+    "start": "SANITY_ASTRO_DISABLE_MODULE_DEDUPE=1 astro dev",
     "build": "astro check && tsc --noEmit && astro build",
     "preview": "astro preview",
     "check": "astro check && tsc --noEmit",
@@ -23,6 +23,7 @@
     "@sanity/client": "^7.21.0",
     "@sanity/image-url": "^2.1.1",
     "@sanity/preview-url-secret": "^4.1.2",
+    "@sanity/visual-editing": "^5.7.3",
     "@tailwindcss/vite": "^4.2.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

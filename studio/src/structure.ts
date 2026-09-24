@@ -2,17 +2,38 @@ import type {StructureResolver} from 'sanity/structure'
 
 const singletonTitles: Record<string, string> = {
   homePage: 'Home',
-  aboutPage: 'Nosotros',
-  contactPage: 'Contacto',
-  thankYouPage: 'Gracias',
+  siteSettings: 'Site settings',
   servicesIndexPage: 'Servicios (index)',
   caseStudiesIndexPage: 'Casos de éxito (index)',
   insightsIndexPage: 'Insights (index)',
   recruitmentPage: 'Reclutamiento',
   legalPage: 'Legal',
   methodologyPage: 'Metodología',
-  siteSettings: 'Site settings',
+  roiCalculatorPage: 'Calculadora ROI',
 }
+
+const marketingPages: {id: string; title: string; routeKey: string}[] = [
+  {id: 'page-modules', title: 'Módulos', routeKey: 'modules'},
+  {id: 'page-benefits', title: 'Beneficios', routeKey: 'benefits'},
+  {id: 'page-ai', title: 'IA', routeKey: 'ai'},
+  {id: 'page-about', title: 'Nosotros', routeKey: 'about'},
+  {id: 'page-agenda', title: 'Agendar demo', routeKey: 'agenda'},
+  {id: 'page-contact', title: 'Contacto', routeKey: 'contact'},
+  {id: 'page-pricing', title: 'Pricing', routeKey: 'pricing'},
+  {id: 'page-welcome', title: 'Bienvenidos', routeKey: 'welcome'},
+  {id: 'page-freeTrial', title: 'Free Trial', routeKey: 'freeTrial'},
+  {id: 'page-landingContracts', title: 'Landing Contratos', routeKey: 'landingContracts'},
+  {id: 'page-landingServices', title: 'Landing Servicios', routeKey: 'landingServices'},
+  {id: 'page-thanksDemo', title: 'Gracias (demo)', routeKey: 'thanksDemo'},
+  {id: 'page-thankYou', title: 'Gracias', routeKey: 'thankYou'},
+  {id: 'page-helpCenter', title: 'Centro de ayuda', routeKey: 'helpCenter'},
+  {id: 'page-howCanWeHelp', title: 'Cómo podemos ayudarte', routeKey: 'howCanWeHelp'},
+  {
+    id: 'page-howCanWeHelpSearch',
+    title: 'Cómo podemos ayudarte (buscador)',
+    routeKey: 'howCanWeHelpSearch',
+  },
+]
 
 function singletonItem(S: Parameters<StructureResolver>[0], typeName: string) {
   return S.listItem()
@@ -21,6 +42,16 @@ function singletonItem(S: Parameters<StructureResolver>[0], typeName: string) {
     .child(
       S.document().schemaType(typeName).documentId(typeName).title(singletonTitles[typeName] || typeName),
     )
+}
+
+function pageItem(
+  S: Parameters<StructureResolver>[0],
+  page: {id: string; title: string; routeKey: string},
+) {
+  return S.listItem()
+    .id(page.id)
+    .title(page.title)
+    .child(S.document().schemaType('page').documentId(page.id).title(page.title))
 }
 
 export const structure: StructureResolver = (S) =>
@@ -35,10 +66,10 @@ export const structure: StructureResolver = (S) =>
             .title('Páginas')
             .items([
               singletonItem(S, 'homePage'),
-              singletonItem(S, 'aboutPage'),
-              singletonItem(S, 'contactPage'),
-              singletonItem(S, 'thankYouPage'),
-              S.documentTypeListItem('page').title('Páginas (builder)'),
+              S.divider(),
+              ...marketingPages.map((page) => pageItem(S, page)),
+              S.divider(),
+              singletonItem(S, 'roiCalculatorPage'),
             ]),
         ),
       S.listItem()

@@ -1,20 +1,72 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import type {Locale} from '../../i18n/routes'
+import {loadQuery} from '../../lib/sanity/loadQuery'
+import {roiCalculatorPageQuery} from '../../lib/sanity/queries/pages'
+import {
+  mergeRoiCalculatorCopy,
+  type RoiCalculatorCopy,
+} from '../../modules/roiCalculatorFixtures'
 import '../../styles/webflow-home.css'
 import '../../styles/webflow-sections.css'
 import '../../styles/webflow-pages.css'
 
 const {locale} = Astro.params as {locale: Locale}
+const perspectiveCookie = Astro.locals.perspectiveCookie
 
-const title =
-  locale === 'es'
-    ? 'Calculadora de ROI | Vertebra'
-    : 'ROI Calculator | Vertebra'
-const description =
-  locale === 'es'
-    ? 'Calcula cuánto pierde tu operación inmobiliaria cada mes y el ROI de administrar tu portafolio con Vertebra.'
-    : 'Calculate how much your real estate operation loses every month and the ROI of managing your portfolio with Vertebra.'
+let sanityPage: Partial<RoiCalculatorCopy> | null = null
+try {
+  sanityPage = await loadQuery<Partial<RoiCalculatorCopy>>(
+    roiCalculatorPageQuery,
+    {locale},
+    {perspectiveCookie},
+  )
+} catch (error) {
+  if (perspectiveCookie) throw error
+  console.warn('[roi-calculator] Sanity fetch failed, using fixtures', error)
+}
+
+const c = mergeRoiCalculatorCopy(locale, sanityPage)
+const title = c.seo?.metaTitle || c.title
+const description = c.seo?.metaDescription || c.description
+
+const discount = c.annualDiscountPercent
+const annualButtonLabel = `${c.annualButton} −${discount}%`
+const commercialPriceLabel = `USD ${c.priceCommercial} / ${c.priceUnitSuffix}`
+const industrialPriceLabel = `USD ${c.priceIndustrial} / ${c.priceUnitSuffix}`
+
+function renderHeroTitle(raw: string, highlight: string) {
+  const lines = raw.split('\n')
+  return lines.map((line, i) => {
+    const parts: Array<{text: string; highlight?: boolean}> = []
+    if (highlight && line.includes(highlight)) {
+      const idx = line.indexOf(highlight)
+      if (idx > 0) parts.push({text: line.slice(0, idx)})
+      parts.push({text: highlight, highlight: true})
+      const after = line.slice(idx + highlight.length)
+      if (after) parts.push({text: after})
+    } else {
+      parts.push({text: line})
+    }
+    return {parts, br: i < lines.length - 1}
+  })
+}
+const heroLines = renderHeroTitle(c.heroTitle, c.heroHighlight)
+
+const runtimeConfig = {
+  price: {com: c.priceCommercial, ind: c.priceIndustrial},
+  manual: {com: c.manualCommercial, ind: c.manualIndustrial},
+  minFee: c.minimumFee,
+  annualDiscount: discount / 100,
+  emptySavingsMessage: c.emptySavingsMessage,
+  savingsLineTemplate: c.savingsLineTemplate,
+  perMonthSuffix: c.perMonthSuffix,
+  billedAnnuallyNote: c.billedAnnuallyNote,
+  minimumAppliesNote: c.minimumAppliesNote,
+  commercialCountTemplate: c.commercialCountTemplate,
+  industrialCountTemplate: c.industrialCountTemplate,
+  meterAriaTemplate: c.meterAriaTemplate,
+}
 ---
 
 <Layout locale={locale} title={title} description={description} routeKey="roiCalculator">
@@ -29,16 +81,21 @@ const description =
         height="40"
       />
       <h1 class="header_title">
-        {locale === 'es' ? (
-          <>Cuánto te cuesta<br/>administrar <span style="color: var(--_brands---green)">a mano</span></>
-        ) : (
-          <>How much it costs you<br/>to manage <span style="color: var(--_brands---green)">by hand</span></>
-        )}
+        {heroLines.map((line) => (
+          <>
+            {line.parts.map((part) =>
+              part.highlight ? (
+                <span style="color: var(--_brands---green)">{part.text}</span>
+              ) : (
+                part.text
+              ),
+            )}
+            {line.br ? <br /> : null}
+          </>
+        ))}
       </h1>
       <p style="color: rgba(255,255,255,0.65); font-size: 1rem; max-width: 36rem; margin: 0.75rem auto 0;">
-        {locale === 'es'
-          ? 'Ajusta tu portafolio y compara tu costo mensual con Vertebra contra lo que hoy gastas en procesos manuales.'
-          : 'Adjust your portfolio and compare your monthly cost with Vertebra against what you currently spend on manual processes.'}
+        {c.heroSubtitle}
       </p>
     </div>
     <div class="header-interna_bg" aria-hidden="true">
@@ -56,26 +113,30 @@ const description =
     </div>
   </section>
 
-  <section class="relative z-10 -mt-8 pb-12 sm:-mt-16 sm:pb-20">
+  <section
+    class="relative z-10 -mt-8 pb-12 sm:-mt-16 sm:pb-20"
+    id="roi-calculator"
+    data-roi={JSON.stringify(runtimeConfig)}
+  >
     <div class="container-page flex flex-col gap-6">
       <div class="grid grid-cols-1 gap-5 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.12fr)] lg:items-stretch">
 
         <div class="flex flex-col rounded-[18px] bg-white p-5 shadow-soft sm:p-8">
           <h2 class="roi-panel-title mb-6 text-center text-brand sm:mb-8">
-            {locale === 'es' ? 'Tu portafolio' : 'Your portfolio'}
+            {c.portfolioTitle}
           </h2>
 
           <div class="mt-6 mb-6">
             <div class="mb-2.5 flex items-baseline justify-between gap-3">
               <label for="comRange" class="text-[15px] font-medium">
                 <span class="mr-2 inline-block h-2 w-2 rounded-full bg-brand align-middle"></span>
-                {locale === 'es' ? 'Propiedades comerciales' : 'Commercial properties'}
+                {c.commercialLabel}
               </label>
-              <span class="num text-xs text-muted">USD 5 / {locale === 'es' ? 'mes c/u' : 'mo each'}</span>
+              <span class="num text-xs text-muted">{commercialPriceLabel}</span>
             </div>
             <div class="flex items-center gap-4">
-              <input type="range" id="comRange" min="0" max="600" step="1" value="80" aria-label={locale === 'es' ? 'Propiedades comerciales, deslizador' : 'Commercial properties, slider'} class="roi-range flex-1" />
-              <input type="number" id="comNum" min="0" max="100000" step="1" value="80" aria-label={locale === 'es' ? 'Número de propiedades comerciales' : 'Number of commercial properties'} class="roi-number" />
+              <input type="range" id="comRange" min="0" max="600" step="1" value={c.defaultCommercial} aria-label={c.commercialSliderAria} class="roi-range flex-1" />
+              <input type="number" id="comNum" min="0" max="100000" step="1" value={c.defaultCommercial} aria-label={c.commercialNumberAria} class="roi-number" />
             </div>
           </div>
 
@@ -83,51 +144,51 @@ const description =
             <div class="mb-2.5 flex items-baseline justify-between gap-3">
               <label for="indRange" class="text-[15px] font-medium">
                 <span class="mr-2 inline-block h-2 w-2 rounded-full bg-accent align-middle"></span>
-                {locale === 'es' ? 'Propiedades industriales' : 'Industrial properties'}
+                {c.industrialLabel}
               </label>
-              <span class="num text-xs text-muted">USD 10 / {locale === 'es' ? 'mes c/u' : 'mo each'}</span>
+              <span class="num text-xs text-muted">{industrialPriceLabel}</span>
             </div>
             <div class="flex items-center gap-4">
-              <input type="range" id="indRange" min="0" max="600" step="1" value="20" aria-label={locale === 'es' ? 'Propiedades industriales, deslizador' : 'Industrial properties, slider'} class="roi-range roi-range--ind flex-1" />
-              <input type="number" id="indNum" min="0" max="100000" step="1" value="20" aria-label={locale === 'es' ? 'Número de propiedades industriales' : 'Number of industrial properties'} class="roi-number" />
+              <input type="range" id="indRange" min="0" max="600" step="1" value={c.defaultIndustrial} aria-label={c.industrialSliderAria} class="roi-range roi-range--ind flex-1" />
+              <input type="number" id="indNum" min="0" max="100000" step="1" value={c.defaultIndustrial} aria-label={c.industrialNumberAria} class="roi-number" />
             </div>
           </div>
 
           <div class="overflow-hidden rounded-[14px] border border-border">
             <div class="flex items-center justify-between gap-4 border-b border-border bg-neutral-50 px-5 py-4">
               <div>
-                <div class="text-sm font-bold text-ink">Plan</div>
-                <div class="mt-0.5 text-[12px] font-medium text-brand">{locale === 'es' ? '10% de descuento con pago anual' : '10% discount with annual payment'}</div>
+                <div class="text-sm font-bold text-ink">{c.planLabel}</div>
+                <div class="mt-0.5 text-[12px] font-medium text-brand">{c.annualDiscountNote}</div>
               </div>
-              <div class="inline-flex rounded-full border-[1.5px] border-border bg-white p-1" role="group" aria-label={locale === 'es' ? 'Tipo de plan' : 'Plan type'}>
-                <button type="button" id="btnMensual" class="roi-seg-btn" aria-pressed="false">{locale === 'es' ? 'Mensual' : 'Monthly'}</button>
-                <button type="button" id="btnAnual" class="roi-seg-btn roi-seg-btn--active" aria-pressed="true">{locale === 'es' ? 'Anual −10%' : 'Annual −10%'}</button>
+              <div class="inline-flex rounded-full border-[1.5px] border-border bg-white p-1" role="group" aria-label={c.planTypeAria}>
+                <button type="button" id="btnMensual" class="roi-seg-btn" aria-pressed="false">{c.monthlyButton}</button>
+                <button type="button" id="btnAnual" class="roi-seg-btn roi-seg-btn--active" aria-pressed="true">{annualButtonLabel}</button>
               </div>
             </div>
 
             <div class="flex flex-col overflow-x-auto px-0 pt-4">
             <table class="w-full border-separate border-spacing-0 text-[12px] sm:text-[13.5px] sm:min-w-[340px]">
-              <caption class="sr-only">{locale === 'es' ? 'Desglose mensual por tipo de propiedad' : 'Monthly breakdown by property type'}</caption>
+              <caption class="sr-only">{c.breakdownHeading}</caption>
               <thead>
                 <tr>
-                  <th class="border-b border-border pb-3 text-center text-[10.5px] font-semibold uppercase tracking-[0.1em] text-muted">{locale === 'es' ? 'Desglose mensual' : 'Monthly breakdown'}</th>
-                  <th class="border-b border-border pb-3 text-center text-[10.5px] font-semibold uppercase tracking-[0.1em] text-brand">Vertebra</th>
-                  <th class="border-b border-border pb-3 text-center text-[10.5px] font-semibold uppercase tracking-[0.1em] text-muted">{locale === 'es' ? 'Proceso manual' : 'Manual process'}</th>
+                  <th class="border-b border-border pb-3 text-center text-[10.5px] font-semibold uppercase tracking-[0.1em] text-muted">{c.breakdownHeading}</th>
+                  <th class="border-b border-border pb-3 text-center text-[10.5px] font-semibold uppercase tracking-[0.1em] text-brand">{c.vertebraColumn}</th>
+                  <th class="border-b border-border pb-3 text-center text-[10.5px] font-semibold uppercase tracking-[0.1em] text-muted">{c.manualColumn}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th scope="row" id="rowComLabel" class="border-b border-border py-4 text-center text-[13.5px] font-normal normal-case tracking-normal text-ink">{locale === 'es' ? 'Comerciales' : 'Commercial'}</th>
+                  <th scope="row" id="rowComLabel" class="border-b border-border py-4 text-center text-[13.5px] font-normal normal-case tracking-normal text-ink">{c.commercialRowLabel}</th>
                   <td id="rowComVert" class="border-b border-border py-4 text-center font-semibold tabular-nums text-brand">&mdash;</td>
                   <td id="rowComMan" class="border-b border-border py-4 text-center tabular-nums text-ink">&mdash;</td>
                 </tr>
                 <tr>
-                  <th scope="row" id="rowIndLabel" class="border-b border-border py-4 text-center text-[13.5px] font-normal normal-case tracking-normal text-ink">{locale === 'es' ? 'Industriales' : 'Industrial'}</th>
+                  <th scope="row" id="rowIndLabel" class="border-b border-border py-4 text-center text-[13.5px] font-normal normal-case tracking-normal text-ink">{c.industrialRowLabel}</th>
                   <td id="rowIndVert" class="border-b border-border py-4 text-center font-semibold tabular-nums text-brand">&mdash;</td>
                   <td id="rowIndMan" class="border-b border-border py-4 text-center tabular-nums text-ink">&mdash;</td>
                 </tr>
                 <tr class="bg-neutral-50">
-                  <th scope="row" class="py-4 text-center text-[14px] font-semibold normal-case tracking-normal text-ink">{locale === 'es' ? 'Total' : 'Total'}</th>
+                  <th scope="row" class="py-4 text-center text-[14px] font-semibold normal-case tracking-normal text-ink">{c.totalLabel}</th>
                   <td id="rowTotVert" class="py-4 text-center font-semibold tabular-nums text-brand">&mdash;</td>
                   <td id="rowTotMan" class="py-4 text-center font-semibold tabular-nums text-ink">&mdash;</td>
                 </tr>
@@ -139,35 +200,35 @@ const description =
 
         <div class="flex flex-col rounded-[18px] bg-dark-blue p-5 text-white shadow-[0_8px_30px_rgba(0,0,0,0.25)] ring-1 ring-white/10 sm:p-8" aria-live="polite">
           <h2 class="roi-panel-title mb-6 text-center text-accent sm:mb-8">
-            {locale === 'es' ? 'Tu resultado' : 'Your result'}
+            {c.resultsTitle}
           </h2>
 
           <div class="mt-6 border-b border-white/13 pb-4 text-center sm:pb-6">
-            <div class="text-[11px] font-medium uppercase tracking-[0.12em] text-white/45">{locale === 'es' ? 'Ahorro estimado al año' : 'Estimated annual savings'}</div>
+            <div class="text-[11px] font-medium uppercase tracking-[0.12em] text-white/45">{c.annualSavingsLabel}</div>
             <div class="num my-2 text-[clamp(38px,7.2vw,60px)] font-bold leading-none tracking-tight text-accent"><span id="savYear">&mdash;</span></div>
             <div class="num text-[13.5px] text-white/70"><span id="savLine">&mdash;</span></div>
           </div>
 
           <div class="mt-5 grid grid-cols-1 gap-px overflow-hidden rounded-[14px] bg-white/13 p-0 sm:grid-cols-2 sm:p-0">
             <div class="bg-dark-blue p-5">
-              <div class="mb-2 text-[10.5px] font-medium uppercase tracking-[0.1em] text-white/45">{locale === 'es' ? 'Costo Vertebra' : 'Vertebra cost'}</div>
+              <div class="mb-2 text-[10.5px] font-medium uppercase tracking-[0.1em] text-white/45">{c.vertebraCostLabel}</div>
               <div class="num text-[26px] sm:text-[26px] font-semibold tracking-tight"><span id="vertMonth">&mdash;</span></div>
-              <div class="mt-1 text-[11px] text-white/70"><span id="vertNote">USD / {locale === 'es' ? 'mes' : 'mo'}</span></div>
+              <div class="mt-1 text-[11px] text-white/70"><span id="vertNote">{c.perMonthSuffix}</span></div>
             </div>
             <div class="bg-dark-blue p-5">
-              <div class="mb-2 text-[10.5px] font-medium uppercase tracking-[0.1em] text-white/45">{locale === 'es' ? 'Costo del proceso manual' : 'Manual process cost'}</div>
+              <div class="mb-2 text-[10.5px] font-medium uppercase tracking-[0.1em] text-white/45">{c.manualCostLabel}</div>
               <div class="num text-[26px] sm:text-[26px] font-semibold tracking-tight text-white/70"><span id="manMonth">&mdash;</span></div>
-              <div class="mt-1 text-[11px] text-white/45">{locale === 'es' ? 'USD / mes en horas de equipo, errores y omisiones' : 'USD / mo in team hours, errors and omissions'}</div>
+              <div class="mt-1 text-[11px] text-white/45">{c.manualCostNote}</div>
             </div>
           </div>
 
-          <div class="roi-meter" role="img" id="meter" aria-label={locale === 'es' ? 'Proporción entre inversión y ahorro' : 'Investment to savings ratio'}>
+          <div class="roi-meter" role="img" id="meter" aria-label={c.resultsTitle}>
             <span class="roi-meter__invested" id="barCost" style="width:12%"></span>
             <span class="roi-meter__recovered" id="barSave" style="width:88%"></span>
           </div>
           <div class="my-2 flex justify-between text-[11px] text-white/45">
-            <span>{locale === 'es' ? 'Lo que inviertes' : 'What you invest'}</span>
-            <span>{locale === 'es' ? 'Lo que recuperas' : 'What you recover'}</span>
+            <span>{c.investLabel}</span>
+            <span>{c.recoverLabel}</span>
           </div>
 
           <div class="mt-6 flex items-center gap-3 rounded-[14px] border border-accent/28 bg-accent/10 p-3 sm:gap-5 sm:p-5">
@@ -175,19 +236,15 @@ const description =
               <span id="roiMult">&mdash;</span>
             </div>
             <p class="text-[11px] sm:text-[13px] text-white/70">
-              {locale === 'es' ? (
-                <Fragment>Por cada <b class="font-semibold text-white">USD 1</b> que inviertes en Vertebra, dejas de gastar <b class="font-semibold text-white" id="roiPerDollar">&mdash;</b> en administración manual.</Fragment>
-              ) : (
-                <Fragment>For every <b class="font-semibold text-white">USD 1</b> you invest in Vertebra, you stop spending <b class="font-semibold text-white" id="roiPerDollar">&mdash;</b> on manual administration.</Fragment>
-              )}
+              {c.roiSentenceBefore}{' '}
+              <b class="font-semibold text-white" id="roiPerDollar">&mdash;</b>{' '}
+              {c.roiSentenceAfter}
             </p>
           </div>
 
           <p class="mt-auto pt-5 text-[10.5px] leading-relaxed text-white/45 sm:text-[11.5px]">
-            <b class="font-medium text-white/70">{locale === 'es' ? 'Cómo se calcula.' : "How it's calculated."}</b>
-            {locale === 'es'
-              ? ' Vertebra cobra USD 5/mes por propiedad comercial y USD 10/mes por industrial, con una tarifa mínima de USD 200/mes. El costo del proceso manual —USD 40/mes por propiedad comercial y USD 80/mes por industrial— es el benchmark validado de Vertebra sobre portafolios administrados en hoja de cálculo: horas de equipo, errores de facturación, vencimientos no detectados y mantenimiento reactivo. Onboarding único de USD 500, acreditable a tu suscripción.'
-              : " Vertebra charges USD 5/mo per commercial property and USD 10/mo per industrial, with a USD 200/mo minimum. The manual process cost —USD 40/mo per commercial and USD 80/mo per industrial — is Vertebra's validated benchmark on spreadsheet-managed portfolios: team hours, billing errors, missed expirations and reactive maintenance. One-time USD 500 onboarding, credited to your subscription."}
+            <b class="font-medium text-white/70">{c.howCalculatedHeading}</b>
+            {c.howCalculatedBody}
           </p>
         </div>
       </div>
@@ -202,30 +259,28 @@ const description =
                 <div class="title_component">
                   <div class="title_wrapper">
                     <img loading="lazy" src="/assets/webflow/images/title-recurso.svg" alt="" class="title_img" />
-                    <h2 class="is-text-in" words-slide-from-right text-split>{locale === 'es' ? '¿Quieres el número exacto para tu portafolio?' : 'Want the exact number for your portfolio?'}</h2>
+                    <h2 class="is-text-in" words-slide-from-right text-split>{c.ctaHeading}</h2>
                   </div>
                 </div>
-                <p>{locale === 'es' ? 'Armamos el business case con tus contratos y operaciones reales, en 30 minutos.' : "We'll build the business case with your contracts and real operations, in 30 minutes."}</p>
+                <p>{c.ctaBody}</p>
                 <div class="cta_btns flex flex-col gap-3 sm:flex-row sm:gap-4">
-                  <a href="https://wa.me/+51983723379" class="button-blue is-outline w-inline-block" target="_blank" rel="noopener noreferrer">
+                  <a href={c.whatsappUrl} class="button-blue is-outline w-inline-block" target="_blank" rel="noopener noreferrer">
                     <div class="icon-1x1-small">
                       <svg width="24" height="25" viewBox="0 0 24 25" fill="none" aria-hidden="true">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M20.4626 4.04546C18.2166 1.79746 15.2306 0.558465 12.0496 0.557465C5.49464 0.557465 0.159641 5.89146 0.156641 12.4495C0.155641 14.5455 0.703641 16.5915 1.74464 18.3955L0.0566406 24.5575L6.36064 22.9035C8.09764 23.8515 10.0536 24.3505 12.0436 24.3515H12.0486C18.6026 24.3515 23.9386 19.0165 23.9416 12.4585C23.9436 9.28146 22.7076 6.29246 20.4626 4.04546ZM12.0496 22.3425H12.0456C10.2716 22.3425 8.53264 21.8655 7.01464 20.9645L6.65364 20.7505L2.91264 21.7315L3.91164 18.0835L3.67664 17.7095C2.68664 16.1355 2.16464 14.3165 2.16564 12.4495C2.16764 6.99946 6.60264 2.56546 12.0546 2.56546C14.6946 2.56546 17.1766 3.59546 19.0426 5.46346C20.9086 7.33246 21.9356 9.81546 21.9346 12.4565C21.9316 17.9085 17.4976 22.3425 12.0496 22.3425ZM17.4716 14.9395C17.1746 14.7905 15.7136 14.0715 15.4406 13.9725C15.1686 13.8735 14.9706 13.8235 14.7716 14.1205C14.5726 14.4175 14.0046 15.0875 13.8306 15.2865C13.6576 15.4845 13.4836 15.5095 13.1866 15.3605C12.8896 15.2115 11.9316 14.8985 10.7966 13.8855C9.91364 13.0975 9.31664 12.1245 9.14364 11.8265C8.97064 11.5285 9.12564 11.3685 9.27364 11.2205C9.40764 11.0875 9.57064 10.8735 9.71964 10.6995C9.86964 10.5275 9.91864 10.4035 10.0186 10.2045C10.1176 10.0065 10.0686 9.83247 9.99364 9.68347C9.91864 9.53547 9.32464 8.07246 9.07764 7.47746C8.83664 6.89746 8.59164 6.97646 8.40864 6.96746C8.23564 6.95846 8.03764 6.95746 7.83864 6.95746C7.64064 6.95746 7.31864 7.03146 7.04664 7.32946C6.77464 7.62746 6.00664 8.34647 6.00664 9.80847C6.00664 11.2715 7.07164 12.6845 7.21964 12.8825C7.36764 13.0805 9.31464 16.0825 12.2956 17.3695C13.0046 17.6755 13.5586 17.8585 13.9896 17.9955C14.7016 18.2215 15.3496 18.1895 15.8616 18.1135C16.4326 18.0285 17.6196 17.3945 17.8676 16.7005C18.1156 16.0065 18.1156 15.4105 18.0406 15.2875C17.9666 15.1625 17.7686 15.0885 17.4716 14.9395Z" fill="#43EA51"></path>
                       </svg>
                     </div>
-                    <div>{locale === 'es' ? 'Escríbenos por WhatsApp' : 'Message us on WhatsApp'}</div>
+                    <div>{c.whatsappLabel}</div>
                   </a>
-                  <a href="https://calendly.com/josepablot/30min" class="button-blue is-icon w-inline-block" target="_blank" rel="noopener noreferrer">
-                    <div>{locale === 'es' ? 'Agendar demo' : 'Book a demo'}</div>
+                  <a href={c.demoUrl} class="button-blue is-icon w-inline-block" target="_blank" rel="noopener noreferrer">
+                    <div>{c.demoLabel}</div>
                     <svg class="button-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                       <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                     </svg>
                   </a>
                 </div>
                 <p class="mt-8 text-center text-[11.5px] leading-relaxed text-muted">
-                  {locale === 'es'
-                    ? 'Cifras en USD, con fines ilustrativos. El ahorro real depende del tamaño del equipo, la complejidad de los contratos y los procesos actuales.'
-                    : 'Figures in USD, for illustrative purposes. Actual savings depend on team size, contract complexity and current processes.'}
+                  {c.disclaimer}
                   <br />
                   &copy; Vertebra &middot; vertebra.co
                 </p>
@@ -505,11 +560,36 @@ const description =
 
 <script>
 ;(function () {
-  var PRICE = {com: 5, ind: 10}
-  var MANUAL = {com: 40, ind: 80}
-  var MIN_FEE = 200
-  var ANNUAL_DISCOUNT = 0.10
+  type RoiConfig = {
+    price: {com: number; ind: number}
+    manual: {com: number; ind: number}
+    minFee: number
+    annualDiscount: number
+    emptySavingsMessage: string
+    savingsLineTemplate: string
+    perMonthSuffix: string
+    billedAnnuallyNote: string
+    minimumAppliesNote: string
+    commercialCountTemplate: string
+    industrialCountTemplate: string
+    meterAriaTemplate: string
+  }
+
+  var root = document.getElementById('roi-calculator')
+  var raw = root?.getAttribute('data-roi') || '{}'
+  var cfg: RoiConfig = JSON.parse(raw)
+
+  var PRICE = cfg.price || {com: 5, ind: 10}
+  var MANUAL = cfg.manual || {com: 40, ind: 80}
+  var MIN_FEE = cfg.minFee ?? 200
+  var ANNUAL_DISCOUNT = cfg.annualDiscount ?? 0.1
   var ANIM_DURATION = 600
+
+  function tpl(template: string, vars: Record<string, string | number>) {
+    return (template || '').replace(/\{(\w+)\}/g, function (_, key) {
+      return vars[key] != null ? String(vars[key]) : ''
+    })
+  }
 
   var annual = true
   var el = function (id: string) {
@@ -520,7 +600,6 @@ const description =
   var indRange = el('indRange') as HTMLInputElement
   var indNum = el('indNum') as HTMLInputElement
 
-  // ── counter animation state ──
   var counters: Record<string, {start: number; end: number; startTime: number; raf: number}> = {}
 
   function money(n: number) {
@@ -620,24 +699,32 @@ const description =
 
     el('savLine').textContent =
       total === 0
-        ? 'Add properties to see your savings'
-        : money(save) + ' / mo · ' + money(saveYr) + ' / yr'
+        ? cfg.emptySavingsMessage
+        : tpl(cfg.savingsLineTemplate, {monto: money(save), anual: money(saveYr)})
 
-    el('vertNote').textContent =
-      'USD / mo' +
-      (annual ? ' · billed annually' : '') +
-      (minApplied ? ' · USD 200 minimum applies' : '')
+    var vertNote = cfg.perMonthSuffix
+    if (annual) vertNote += ' · ' + cfg.billedAnnuallyNote
+    if (minApplied) {
+      vertNote +=
+        ' · ' +
+        tpl(cfg.minimumAppliesNote, {minimo: String(MIN_FEE)})
+    }
+    el('vertNote').textContent = vertNote
 
     var pctCost = man > 0 ? Math.min((vert / man) * 100, 100) : 100
     el('barCost').style.width = pctCost.toFixed(1) + '%'
     el('barSave').style.width = (100 - pctCost).toFixed(1) + '%'
     el('meter').setAttribute(
       'aria-label',
-      'Invest ' + money(vert) + ' to recover ' + money(save) + ' per month'
+      tpl(cfg.meterAriaTemplate, {monto: money(vert), anual: money(save)}),
     )
 
-    el('rowComLabel').textContent = com.toLocaleString('en-US') + ' commercial'
-    el('rowIndLabel').textContent = ind.toLocaleString('en-US') + ' industrial'
+    el('rowComLabel').textContent = tpl(cfg.commercialCountTemplate, {
+      cantidad: com.toLocaleString('en-US'),
+    })
+    el('rowIndLabel').textContent = tpl(cfg.industrialCountTemplate, {
+      cantidad: ind.toLocaleString('en-US'),
+    })
     el('rowComVert').textContent = money(vertCom)
     el('rowIndVert').textContent = money(vertInd)
     el('rowComMan').textContent = money(manCom)

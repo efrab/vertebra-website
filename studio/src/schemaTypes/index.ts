@@ -19,6 +19,12 @@ import teamSection from './objects/teamSection'
 import headerInternal from './objects/headerInternal'
 import moduleShowcase from './objects/moduleShowcase'
 import formSection from './objects/formSection'
+import benefitsRoles from './objects/benefitsRoles'
+import aboutIntro from './objects/aboutIntro'
+import evaFeatures from './objects/evaFeatures'
+import helpTopics from './objects/helpTopics'
+import pricingTable from './objects/pricingTable'
+import thanksHero from './objects/thanksHero'
 import navGroup from './objects/navGroup'
 import contactPathsCopy from './objects/contactPathsCopy'
 import contactChannelItem from './objects/contactChannelItem'
@@ -44,6 +50,7 @@ import insightsIndexPage from './documents/insightsIndexPage'
 import recruitmentPage from './documents/recruitmentPage'
 import legalPage from './documents/legalPage'
 import methodologyPage from './documents/methodologyPage'
+import roiCalculatorPage from './documents/roiCalculatorPage'
 
 export const schemaTypes = [
   siteSettings,
@@ -51,6 +58,7 @@ export const schemaTypes = [
   aboutPage,
   contactPage,
   thankYouPage,
+  roiCalculatorPage,
   page,
   post,
   category,
@@ -83,6 +91,12 @@ export const schemaTypes = [
   headerInternal,
   moduleShowcase,
   formSection,
+  benefitsRoles,
+  aboutIntro,
+  evaFeatures,
+  helpTopics,
+  pricingTable,
+  thanksHero,
   faqSection,
   ctaBanner,
   pageBuilder,
