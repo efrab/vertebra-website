@@ -1,5 +1,5 @@
 ---
-import {VisualEditing} from '@sanity/astro/visual-editing'
+import SanityVisualEditing from '../components/SanityVisualEditing'
 import {stegaClean} from '@sanity/client/stega'
 import '../styles/global.css'
 import '../styles/fonts.css'
@@ -64,6 +64,13 @@ const pathname = Astro.url.pathname
 const canonicalURL = buildCanonicalUrl({pathname, siteUrl})
 const draftMode = Astro.locals.draftMode
 const perspectiveCookie = Astro.locals.perspectiveCookie
+
+/** Presentation iframe may load before cookie sticks — still mount VisualEditing for comlink */
+const referer = Astro.request.headers.get('referer') || ''
+const secFetchDest = Astro.request.headers.get('sec-fetch-dest') || ''
+const isStudioFrame =
+  secFetchDest === 'iframe' || /sanity\.studio|\.sanity\.io/i.test(referer)
+const enableVisualEditing = draftMode || isStudioFrame
 
 let siteSettings: SiteSettings | null = null
 
@@ -133,7 +140,7 @@ const fontFaces = `@font-face{font-family:'Poppins';font-style:normal;font-displ
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={locale} class:list={[enableVisualEditing && 'vf-preview']}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -239,7 +246,7 @@ const fontFaces = `@font-face{font-family:'Poppins';font-style:normal;font-displ
     </noscript>
   </head>
   <body class="flex min-h-screen flex-col font-sans antialiased">
-    {draftMode && <VisualEditing enabled={draftMode} />}
+    {enableVisualEditing && <SanityVisualEditing client:load />}
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:bg-brand focus:px-4 focus:py-2 focus:text-white">
       Skip to content
     </a>
@@ -250,28 +257,39 @@ const fontFaces = `@font-face{font-family:'Poppins';font-style:normal;font-displ
     <Footer locale={locale} />
     <CookieConsent locale={locale} />
     <Analytics />
-    <script>
-      const boot = () => {
-        void import('../scripts/motion')
-        void import('../scripts/webflow-home')
-        if (document.querySelector('.w-tabs, .w-tab-menu, [data-vf-modulos]')) {
-          void import('../scripts/webflow-modulos')
-        }
-      }
-      // Mobile: wait for LCP/SI window before motion runtime
-      if (window.matchMedia('(max-width: 767px)').matches) {
-        const start = () => {
-          if ('requestIdleCallback' in window) {
-            window.requestIdleCallback(() => boot(), {timeout: 4000})
-          } else {
-            setTimeout(boot, 2000)
+    {
+      enableVisualEditing ? (
+        <script>
+          // Presentation: tabs only (no entrance motion / home IX)
+          if (document.querySelector('[data-vf-tabs], .w-tabs, .w-tab-menu')) {
+            void import('../scripts/webflow-modulos')
           }
-        }
-        if (document.readyState === 'complete') start()
-        else window.addEventListener('load', start, {once: true})
-      } else {
-        boot()
-      }
-    </script>
+        </script>
+      ) : (
+        <script>
+          const boot = () => {
+            void import('../scripts/motion')
+            void import('../scripts/webflow-home')
+            if (document.querySelector('.w-tabs, .w-tab-menu, [data-vf-modulos]')) {
+              void import('../scripts/webflow-modulos')
+            }
+          }
+          // Mobile: wait for LCP/SI window before motion runtime
+          if (window.matchMedia('(max-width: 767px)').matches) {
+            const start = () => {
+              if ('requestIdleCallback' in window) {
+                window.requestIdleCallback(() => boot(), {timeout: 4000})
+              } else {
+                setTimeout(boot, 2000)
+              }
+            }
+            if (document.readyState === 'complete') start()
+            else window.addEventListener('load', start, {once: true})
+          } else {
+            boot()
+          }
+        </script>
+      )
+    }
   </body>
 </html>

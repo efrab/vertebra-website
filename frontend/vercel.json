@@ -3,6 +3,23 @@
   "framework": "astro",
   "installCommand": "cd .. && npm install",
   "buildCommand": "npm run build",
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {"key": "Access-Control-Allow-Origin", "value": "https://vertebra.sanity.studio"},
+        {"key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS"},
+        {"key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization"},
+        {"key": "Access-Control-Allow-Credentials", "value": "true"}
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {"key": "Content-Security-Policy", "value": "frame-ancestors 'self' https://vertebra.sanity.studio https://*.sanity.studio https://*.sanity.io https://www.sanity.io;"}
+      ]
+    }
+  ],
   "redirects": [
     {"source": "/old-home", "destination": "/es/", "permanent": true},
     {"source": "/modulos-old", "destination": "/es/modulos", "permanent": true},
