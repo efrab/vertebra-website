@@ -11,7 +11,9 @@ import {presentationLocations} from './src/presentation'
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'your-projectID'
 const dataset = process.env.SANITY_STUDIO_DATASET || 'production'
-const previewOrigin = process.env.SANITY_STUDIO_PREVIEW_URL || 'https://www.vertebra.co'
+const previewOrigin = (
+  process.env.SANITY_STUDIO_PREVIEW_URL || 'https://vertebra-website.vercel.app'
+).replace(/\/$/, '')
 
 export default defineConfig({
   name: 'vertebra',
@@ -22,7 +24,8 @@ export default defineConfig({
     structureTool({structure}),
     presentationTool({
       previewUrl: {
-        initial: previewOrigin,
+        origin: previewOrigin,
+        preview: '/es/',
         previewMode: {
           enable: '/api/draft-mode/enable',
           disable: '/api/draft-mode/disable',
@@ -31,17 +34,31 @@ export default defineConfig({
       resolve: {
         mainDocuments: defineDocuments([
           {route: '/:locale', filter: () => `_type == "homePage"`},
-          {route: '/:locale/nosotros', filter: () => `_type == "aboutPage"`},
-          {route: '/:locale/about', filter: () => `_type == "aboutPage"`},
-          {route: '/:locale/contacto', filter: () => `_type == "contactPage"`},
-          {route: '/:locale/contact', filter: () => `_type == "contactPage"`},
-          {route: '/:locale/gracias', filter: () => `_type == "thankYouPage"`},
-          {route: '/:locale/thank-you', filter: () => `_type == "thankYouPage"`},
-          {
-            route: '/:locale/:slug',
-            filter: ({params}) =>
-              `_type == "page" && (slug.es.current == "${params.slug}" || slug.en.current == "${params.slug}")`,
-          },
+          {route: '/:locale/:slug', filter: ({params}) => {
+            if (params.slug === 'roi-calculator') {
+              return `_type == "roiCalculatorPage"`
+            }
+            const routeMap: Record<string, string> = {
+              'nosotros': 'about', 'about': 'about',
+              'contacto': 'contact', 'contact': 'contact',
+              'gracias': 'thankYou', 'thank-you': 'thankYou',
+              'modulos': 'modules', 'modules': 'modules',
+              'beneficios': 'benefits', 'benefits': 'benefits',
+              'ai': 'ai',
+              'centro-de-ayuda': 'helpCenter', 'help-center': 'helpCenter',
+              'como-podemos-ayudarte': 'howCanWeHelp', 'how-can-we-help': 'howCanWeHelp',
+              'como-podemos-ayudarte-buscador': 'howCanWeHelpSearch', 'how-can-we-help-search': 'howCanWeHelpSearch',
+              'agenda': 'agenda', 'book-demo': 'agenda',
+              'gracias-agenda': 'thanksDemo', 'thanks-demo': 'thanksDemo',
+              'pricing': 'pricing',
+              'bienvenidos': 'welcome', 'welcome': 'welcome',
+              'free-trial': 'freeTrial',
+              'landing-contratos-documentos': 'landingContracts', 'landing-contracts-documents': 'landingContracts',
+              'landing-servicios': 'landingServices', 'landing-services': 'landingServices',
+            }
+            const routeKey = routeMap[params.slug as string]
+            return routeKey ? `_type == "page" && routeKey == "${routeKey}"` : `false`
+          }},
           {
             route: '/:locale/blog/:slug',
             filter: ({params}) =>

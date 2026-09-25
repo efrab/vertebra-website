@@ -6,6 +6,7 @@
  */
 
 import {createClient} from '@sanity/client'
+import {randomKey} from '@sanity/util/content'
 
 const PROJECT_ID = process.env.SANITY_STUDIO_PROJECT_ID || '3dmm07xl'
 const DATASET = process.env.SANITY_STUDIO_DATASET || 'production'
@@ -24,10 +25,19 @@ const client = createClient({
   useCdn: false,
 })
 
+/** internationalizedArrayString */
 function L(es: string, en: string) {
   return [
-    {language: 'es', value: es},
-    {language: 'en', value: en},
+    {_key: randomKey(), _type: 'internationalizedArrayStringValue', language: 'es', value: es},
+    {_key: randomKey(), _type: 'internationalizedArrayStringValue', language: 'en', value: en},
+  ]
+}
+
+/** internationalizedArrayText */
+function LT(es: string, en: string) {
+  return [
+    {_key: randomKey(), _type: 'internationalizedArrayTextValue', language: 'es', value: es},
+    {_key: randomKey(), _type: 'internationalizedArrayTextValue', language: 'en', value: en},
   ]
 }
 
@@ -35,16 +45,16 @@ const doc = {
   _type: 'roiCalculatorPage',
   _id: 'roiCalculatorPage',
   title: L('Calculadora de ROI | Vertebra', 'ROI Calculator | Vertebra'),
-  description: L(
+  description: LT(
     'Calcula cuánto pierde tu operación inmobiliaria cada mes y el ROI de administrar tu portafolio con Vertebra.',
     'Calculate how much your real estate operation loses every month and the ROI of managing your portfolio with Vertebra.',
   ),
-  heroTitle: L(
+  heroTitle: LT(
     'Cuánto te cuesta\nadministrar a mano',
     'How much it costs you\nto manage by hand',
   ),
   heroHighlight: L('a mano', 'by hand'),
-  heroSubtitle: L(
+  heroSubtitle: LT(
     'Ajusta tu portafolio y compara tu costo mensual con Vertebra contra lo que hoy gastas en procesos manuales.',
     'Adjust your portfolio and compare your monthly cost with Vertebra against what you currently spend on manual processes.',
   ),
@@ -86,19 +96,19 @@ const doc = {
   annualSavingsLabel: L('Ahorro estimado al año', 'Estimated annual savings'),
   vertebraCostLabel: L('Costo Vertebra', 'Vertebra cost'),
   manualCostLabel: L('Costo del proceso manual', 'Manual process cost'),
-  manualCostNote: L(
+  manualCostNote: LT(
     'USD / mes en horas de equipo, errores y omisiones',
     'USD / mo in team hours, errors and omissions',
   ),
   investLabel: L('Lo que inviertes', 'What you invest'),
   recoverLabel: L('Lo que recuperas', 'What you recover'),
-  roiSentenceBefore: L(
+  roiSentenceBefore: LT(
     'Por cada USD 1 que inviertes en Vertebra, dejas de gastar',
     'For every USD 1 you invest in Vertebra, you stop spending',
   ),
-  roiSentenceAfter: L('en administración manual.', 'on manual administration.'),
+  roiSentenceAfter: LT('en administración manual.', 'on manual administration.'),
   howCalculatedHeading: L('Cómo se calcula.', "How it's calculated."),
-  howCalculatedBody: L(
+  howCalculatedBody: LT(
     ' Vertebra cobra USD 5/mes por propiedad comercial y USD 10/mes por industrial, con una tarifa mínima de USD 200/mes. El costo del proceso manual —USD 40/mes por propiedad comercial y USD 80/mes por industrial— es el benchmark validado de Vertebra sobre portafolios administrados en hoja de cálculo: horas de equipo, errores de facturación, vencimientos no detectados y mantenimiento reactivo. Onboarding único de USD 500, acreditable a tu suscripción.',
     " Vertebra charges USD 5/mo per commercial property and USD 10/mo per industrial, with a USD 200/mo minimum. The manual process cost —USD 40/mo per commercial and USD 80/mo per industrial — is Vertebra's validated benchmark on spreadsheet-managed portfolios: team hours, billing errors, missed expirations and reactive maintenance. One-time USD 500 onboarding, credited to your subscription.",
   ),
@@ -124,11 +134,11 @@ const doc = {
   annualDiscountPercent: 10,
   defaultCommercial: 80,
   defaultIndustrial: 20,
-  ctaHeading: L(
+  ctaHeading: LT(
     '¿Quieres el número exacto para tu portafolio?',
     'Want the exact number for your portfolio?',
   ),
-  ctaBody: L(
+  ctaBody: LT(
     'Armamos el business case con tus contratos y operaciones reales, en 30 minutos.',
     "We'll build the business case with your contracts and real operations, in 30 minutes.",
   ),
@@ -136,7 +146,7 @@ const doc = {
   whatsappUrl: 'https://wa.me/+17866207272',
   demoLabel: L('Agendar demo', 'Book a demo'),
   demoUrl: 'https://calendly.com/josepablot/30min',
-  disclaimer: L(
+  disclaimer: LT(
     'Cifras en USD, con fines ilustrativos. El ahorro real depende del tamaño del equipo, la complejidad de los contratos y los procesos actuales.',
     'Figures in USD, for illustrative purposes. Actual savings depend on team size, contract complexity and current processes.',
   ),
@@ -145,6 +155,19 @@ const doc = {
 async function main() {
   console.log(`Seeding roiCalculatorPage → ${PROJECT_ID}/${DATASET}…`)
   await client.createOrReplace(doc)
+
+  // Drop any draft that still has the old keyless arrays
+  try {
+    await client.delete('drafts.roiCalculatorPage')
+    console.log('Removed drafts.roiCalculatorPage')
+  } catch {
+    // no draft
+  }
+
+  const sample = await client.fetch(
+    `*[_id=="roiCalculatorPage"][0]{title[0]{_key,_type,language},heroTitle[0]{_key,_type,language}}`,
+  )
+  console.log('Sample keys:', JSON.stringify(sample))
   console.log('Done. Document id: roiCalculatorPage')
 }
 

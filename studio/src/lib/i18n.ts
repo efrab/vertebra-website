@@ -17,6 +17,7 @@ export const I18N_DOCUMENT_TYPES = [
   'aboutPage',
   'contactPage',
   'thankYouPage',
+  'roiCalculatorPage',
   'page',
   'post',
   'category',

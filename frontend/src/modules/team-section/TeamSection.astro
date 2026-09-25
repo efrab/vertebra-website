@@ -32,7 +32,10 @@ const {heading, members} = Astro.props
               <h2 words-slide-from-right text-split>{heading}</h2>
             </div>
           </div>
-          <div class="layout-3" data-vf-stagger="120">
+          <div
+            class:list={['layout-3', members.length < 3 && 'layout-3--center']}
+            data-vf-stagger="120"
+          >
             {
               members.map((member) => (
                 <div class="card_linkedin" data-vf-reveal="30">
@@ -80,3 +83,31 @@ const {heading, members} = Astro.props
     </div>
   </div>
 </section>
+
+<style>
+  .layout-3--center {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .layout-3--center > .card_linkedin {
+    flex: 0 1 calc((100% - 32px) / 3);
+    max-width: calc((100% - 32px) / 3);
+  }
+
+  @media screen and (max-width: 767px) {
+    .layout-3--center > .card_linkedin {
+      flex-basis: calc((100% - 16px) / 2);
+      max-width: calc((100% - 16px) / 2);
+    }
+  }
+
+  @media screen and (max-width: 479px) {
+    .layout-3--center > .card_linkedin {
+      flex-basis: 100%;
+      max-width: 100%;
+    }
+  }
+</style>

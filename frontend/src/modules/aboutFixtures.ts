@@ -13,7 +13,7 @@ export function aboutFixtures(locale: Locale): PageSection[] {
       variant: 'base',
       heading: isEn ? 'About us' : 'Nosotros',
       personSrc: `${WF}/Frame-1000005790.png`,
-      personSrcSet: `${WF}/Frame-1000005790-p-500.png 500w, ${WF}/Frame-1000005790.png 800w`,
+      personSrcSet: `${WF}/Frame-1000005790-p-500.png 500w, ${WF}/Frame-1000005790.png 650w`,
       bgSrc: `${WF}/background-1.png`,
       bgSrcSet: `${WF}/background-1-p-500.png 500w, ${WF}/background-1-p-800.png 800w, ${WF}/background-1-p-1080.png 1080w, ${WF}/background-1.png 1440w`,
     },
@@ -23,8 +23,8 @@ export function aboutFixtures(locale: Locale): PageSection[] {
         ? 'Vertebra, the digital backbone of property management'
         : 'Vertebra la columna digital de la administración inmobiliaria',
       description: isEn
-        ? 'We build software so owners, tenants and administrators manage industrial and commercial portfolios in one place.'
-        : 'Construimos software para que propietarios, inquilinos y administradores gestionen portafolios industriales y comerciales en un solo lugar.',
+        ? 'We are a Mexican proptech born from the real experience of managing industrial and commercial portfolios. Today we help owners, administrators and tenants simplify management with technology, metrics and automation.'
+        : 'Somos una proptech mexicana que nació desde la experiencia real de gestionar portafolios industriales y comerciales. Hoy ayudamos a propietarios, administradores e inquilinos a simplificar la gestión con tecnología, métricas y automatización.',
       logos: [
         {name: 'BuenTrip', src: `${WF}/6690635841bfe6ab96a.png`},
         {name: 'Investor', src: `${WF}/image-3_1image-3.png`},
@@ -59,13 +59,6 @@ export function aboutFixtures(locale: Locale): PageSection[] {
       _type: 'teamSection',
       heading: isEn ? 'Our team' : 'Nuestros Equipo',
       members: [
-        {
-          name: 'Ferley León',
-          role: 'Founding Senior Fullstack Development',
-          imageSrc: `${WF}/ferley-foto.png`,
-          imageSrcSet: `${WF}/ferley-foto-p-500.png 500w, ${WF}/ferley-foto-p-800.png 800w, ${WF}/ferley-foto-p-1080.png 1080w, ${WF}/ferley-foto.png 2139w`,
-          linkedinUrl: 'https://www.linkedin.com/in/ferley-leon/',
-        },
         {
           name: 'Martin Ramirez',
           role: 'UX & Product Management',

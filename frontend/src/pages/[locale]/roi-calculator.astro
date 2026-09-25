@@ -35,6 +35,9 @@ const annualButtonLabel = `${c.annualButton} −${discount}%`
 const commercialPriceLabel = `USD ${c.priceCommercial} / ${c.priceUnitSuffix}`
 const industrialPriceLabel = `USD ${c.priceIndustrial} / ${c.priceUnitSuffix}`
 
+/** Draft/preview: keep heroTitle intact so stega overlays survive. Published: split + green highlight. */
+const isDraftPreview = Boolean(perspectiveCookie)
+
 function renderHeroTitle(raw: string, highlight: string) {
   const lines = raw.split('\n')
   return lines.map((line, i) => {
@@ -51,7 +54,7 @@ function renderHeroTitle(raw: string, highlight: string) {
     return {parts, br: i < lines.length - 1}
   })
 }
-const heroLines = renderHeroTitle(c.heroTitle, c.heroHighlight)
+const heroLines = isDraftPreview ? null : renderHeroTitle(c.heroTitle, c.heroHighlight)
 
 const runtimeConfig = {
   price: {com: c.priceCommercial, ind: c.priceIndustrial},
@@ -81,18 +84,22 @@ const runtimeConfig = {
         height="40"
       />
       <h1 class="header_title">
-        {heroLines.map((line) => (
-          <>
-            {line.parts.map((part) =>
-              part.highlight ? (
-                <span style="color: var(--_brands---green)">{part.text}</span>
-              ) : (
-                part.text
-              ),
-            )}
-            {line.br ? <br /> : null}
-          </>
-        ))}
+        {isDraftPreview ? (
+          c.heroTitle
+        ) : (
+          heroLines!.map((line) => (
+            <>
+              {line.parts.map((part) =>
+                part.highlight ? (
+                  <span style="color: var(--_brands---green)">{part.text}</span>
+                ) : (
+                  part.text
+                ),
+              )}
+              {line.br ? <br /> : null}
+            </>
+          ))
+        )}
       </h1>
       <p style="color: rgba(255,255,255,0.65); font-size: 1rem; max-width: 36rem; margin: 0.75rem auto 0;">
         {c.heroSubtitle}
