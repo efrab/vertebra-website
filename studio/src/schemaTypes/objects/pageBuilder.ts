@@ -8,6 +8,7 @@ export default defineType({
     defineArrayMember({type: 'heroHome'}),
     defineArrayMember({type: 'hero'}),
     defineArrayMember({type: 'benefitsGrid'}),
+    defineArrayMember({type: 'benefitsRoles'}),
     defineArrayMember({type: 'roiStats'}),
     defineArrayMember({type: 'solutionsByRole'}),
     defineArrayMember({type: 'howItWorks'}),
@@ -20,5 +21,10 @@ export default defineType({
     defineArrayMember({type: 'formSection'}),
     defineArrayMember({type: 'ctaBanner'}),
     defineArrayMember({type: 'faqSection'}),
+    defineArrayMember({type: 'aboutIntro'}),
+    defineArrayMember({type: 'evaFeatures'}),
+    defineArrayMember({type: 'helpTopics'}),
+    defineArrayMember({type: 'pricingTable'}),
+    defineArrayMember({type: 'thanksHero'}),
   ],
 })

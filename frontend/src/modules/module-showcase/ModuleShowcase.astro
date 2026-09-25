@@ -1,4 +1,5 @@
 ---
+import {stegaClean} from '@sanity/client/stega'
 import ChevronIcon from '../../components/ui/ChevronIcon.astro'
 
 interface Card {
@@ -53,13 +54,16 @@ interface Props {
 
 const {
   heading,
-  headerIconSrc = '/assets/webflow/images/Frame-1000005709.svg',
-  headerBgSrc = '/assets/webflow/images/Frame-1000005625.png',
-  headerBgSrcSet,
   tabs = [],
   cta,
   modules = [],
 } = Astro.props
+
+const headerIconSrc =
+  Astro.props.headerIconSrc ?? '/assets/webflow/images/Frame-1000005709.svg'
+const headerBgSrc =
+  Astro.props.headerBgSrc ?? '/assets/webflow/images/Frame-1000005625.png'
+const headerBgSrcSet = Astro.props.headerBgSrcSet
 
 const resolvedTabs: ModuleTab[] =
   tabs.length > 0
@@ -178,7 +182,7 @@ const mantenimientoPaths = [
                           <img src={tab.iconSrc} alt="" width="18" height="18" />
                         ) : null}
                       </div>
-                      <div>{tab.label}</div>
+                      <div>{stegaClean(tab.label)}</div>
                     </button>
                   ))
                 }

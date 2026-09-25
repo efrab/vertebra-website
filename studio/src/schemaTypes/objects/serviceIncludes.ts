@@ -1,6 +1,6 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import {localizedPreviewValue} from '../../lib/localized'
-import {localizedStringField} from '../fields/localizedFields'
+import {localizedStringField, localizedTextField} from '../fields/localizedFields'
 
 export default defineType({
   name: 'serviceIncludes',
@@ -20,7 +20,7 @@ export default defineType({
         layout: 'radio',
       },
     }),
-    localizedStringField('heading', 'Heading'),
+    localizedTextField('heading', 'Heading', {rows: 3}),
     defineField({
       name: 'items',
       title: 'Items',
@@ -28,7 +28,8 @@ export default defineType({
       of: [defineArrayMember({type: 'internationalizedArrayString'})],
       validation: (Rule) => Rule.min(1),
     }),
-    localizedStringField('secondaryHeading', 'Secondary heading', {
+    localizedTextField('secondaryHeading', 'Secondary heading', {
+      rows: 3,
       hidden: ({parent}) => parent?.layout !== 'dualColumns',
       validation: (Rule) =>
         Rule.custom((value, context) => {

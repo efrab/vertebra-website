@@ -1,12 +1,14 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {localizedPreviewValue} from '../../lib/localized'
 
 export default defineType({
-  name: 'benefitsGrid',
-  title: 'Benefits grid',
+  name: 'evaFeatures',
+  title: 'Eva features',
   type: 'object',
   fields: [
-    defineField({name: 'eyebrow', type: 'internationalizedArrayString'}),
     defineField({name: 'heading', type: 'internationalizedArrayText'}),
+    defineField({name: 'subheading', type: 'internationalizedArrayText'}),
+    defineField({name: 'introLabel', type: 'internationalizedArrayString'}),
     defineField({
       name: 'items',
       type: 'array',
@@ -14,16 +16,13 @@ export default defineType({
         defineArrayMember({
           type: 'object',
           fields: [
-            defineField({name: 'title', type: 'internationalizedArrayString'}),
             defineField({name: 'description', type: 'internationalizedArrayText'}),
             defineField({name: 'iconSrc', type: 'string', title: 'Icon path'}),
-            defineField({name: 'icon', type: 'image'}),
+            defineField({name: 'icon', type: 'string', title: 'Icon key (optional)'}),
           ],
           preview: {
-            select: {title: 'title'},
-            prepare: ({title}) => ({
-              title: Array.isArray(title) ? title[0]?.value || 'Item' : 'Item',
-            }),
+            select: {title: 'description'},
+            prepare: ({title}) => ({title: localizedPreviewValue(title, 'Feature')}),
           },
         }),
       ],
@@ -31,8 +30,6 @@ export default defineType({
   ],
   preview: {
     select: {title: 'heading'},
-    prepare: ({title}) => ({
-      title: Array.isArray(title) ? title[0]?.value || 'Benefits grid' : 'Benefits grid',
-    }),
+    prepare: ({title}) => ({title: localizedPreviewValue(title, 'Eva features')}),
   },
 })

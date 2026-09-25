@@ -12,6 +12,7 @@ export function aiFixtures(locale: Locale): PageSection[] {
       _type: 'headerInternal',
       variant: 'base',
       heading: 'AI',
+      iconSrc: `${WF}/Frame-1000005709.svg`,
       personSrc: `${WF}/Group-1000005377-1.png`,
       personSrcSet: `${WF}/Group-1000005377-1-p-500.png 500w, ${WF}/Group-1000005377-1.png 704w`,
       bgSrc: `${WF}/background-1.png`,

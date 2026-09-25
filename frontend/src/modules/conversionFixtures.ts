@@ -16,7 +16,7 @@ function agendaFormExtras(locale: Locale) {
     contactLinks: [
       {
         label: isEn ? 'Write us on WhatsApp' : 'Escríbenos por WhatsApp',
-        href: 'https://wa.me/+51983723379',
+        href: 'https://wa.me/+17866207272',
         iconSrc: `${WF}/whatsapp-1.svg`,
         variant: 'outline' as const,
       },

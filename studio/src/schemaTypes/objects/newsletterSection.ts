@@ -7,7 +7,7 @@ export default defineType({
   title: 'Newsletter section',
   type: 'object',
   fields: [
-    localizedStringField('heading', 'Heading'),
+    localizedTextField('heading', 'Heading', {rows: 3}),
     localizedTextField('intro', 'Intro'),
   ],
   preview: {

@@ -2,14 +2,14 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 import {localizedPreviewValue} from '../../lib/localized'
 
 export default defineType({
-  name: 'securityFeatures',
-  title: 'Security features',
+  name: 'benefitsRoles',
+  title: 'Benefits by role',
   type: 'object',
   fields: [
     defineField({name: 'heading', type: 'internationalizedArrayText'}),
     defineField({name: 'subheading', type: 'internationalizedArrayText'}),
     defineField({
-      name: 'items',
+      name: 'cards',
       type: 'array',
       of: [
         defineArrayMember({
@@ -18,11 +18,24 @@ export default defineType({
             defineField({name: 'title', type: 'internationalizedArrayString'}),
             defineField({name: 'description', type: 'internationalizedArrayText'}),
             defineField({name: 'iconSrc', type: 'string', title: 'Icon path'}),
-            defineField({name: 'icon', type: 'image'}),
+            defineField({
+              name: 'items',
+              type: 'array',
+              of: [
+                defineArrayMember({
+                  type: 'object',
+                  fields: [defineField({name: 'text', type: 'internationalizedArrayString'})],
+                  preview: {
+                    select: {title: 'text'},
+                    prepare: ({title}) => ({title: localizedPreviewValue(title, 'Item')}),
+                  },
+                }),
+              ],
+            }),
           ],
           preview: {
             select: {title: 'title'},
-            prepare: ({title}) => ({title: localizedPreviewValue(title, 'Feature')}),
+            prepare: ({title}) => ({title: localizedPreviewValue(title, 'Role card')}),
           },
         }),
       ],
@@ -30,6 +43,6 @@ export default defineType({
   ],
   preview: {
     select: {title: 'heading'},
-    prepare: ({title}) => ({title: localizedPreviewValue(title, 'Security features')}),
+    prepare: ({title}) => ({title: localizedPreviewValue(title, 'Benefits by role')}),
   },
 })

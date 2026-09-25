@@ -3,6 +3,7 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 import {localizedPreviewValue} from '../../lib/localized'
 import {
   localizedStringField,
+  localizedTextField,
 } from '../fields/localizedFields'
 
 export default defineType({
@@ -14,14 +15,14 @@ export default defineType({
     localizedStringField('title', 'Title', {validation: (Rule) => Rule.required()}),
     defineField({name: 'hero', title: 'Hero', type: 'hero'}),
     defineField({name: 'paths', title: 'Paths copy', type: 'contactPathsCopy'}),
-    localizedStringField('channelsHeading', 'Channels heading'),
+    localizedTextField('channelsHeading', 'Channels heading', {rows: 3}),
     defineField({
       name: 'channels',
       title: 'Channels',
       type: 'array',
       of: [{type: 'contactChannelItem'}],
     }),
-    localizedStringField('reasonsHeading', 'Reasons heading'),
+    localizedTextField('reasonsHeading', 'Reasons heading', {rows: 3}),
     defineField({
       name: 'reasons',
       title: 'Reasons',

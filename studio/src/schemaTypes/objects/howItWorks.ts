@@ -5,8 +5,8 @@ export default defineType({
   title: 'How it works',
   type: 'object',
   fields: [
-    defineField({name: 'eyebrow', type: 'string'}),
-    defineField({name: 'heading', type: 'string'}),
+    defineField({name: 'eyebrow', type: 'internationalizedArrayString'}),
+    defineField({name: 'heading', type: 'internationalizedArrayText'}),
     defineField({
       name: 'steps',
       type: 'array',
@@ -15,11 +15,15 @@ export default defineType({
           type: 'object',
           fields: [
             defineField({name: 'number', type: 'string'}),
-            defineField({name: 'title', type: 'string'}),
-            defineField({name: 'description', type: 'text'}),
+            defineField({name: 'title', type: 'internationalizedArrayString'}),
+            defineField({name: 'description', type: 'internationalizedArrayText'}),
           ],
         }),
       ],
     }),
   ],
+  preview: {
+    select: {title: 'heading'},
+    prepare: ({title}) => ({title: Array.isArray(title) ? title[0]?.value || 'How it works' : 'How it works'}),
+  },
 })

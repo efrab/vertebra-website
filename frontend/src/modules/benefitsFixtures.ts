@@ -28,7 +28,7 @@ export function demoCtaSection(
         : 'Vértebra se adapta a las necesidades específicas de propietarios, inquilinos y administradores, unificando la comunicación y los procesos en una sola plataforma.'),
     secondaryCta: {
       label: isEn ? 'Message us on WhatsApp' : 'Escríbenos por WhatsApp',
-      href: 'https://wa.me/+51983723379',
+      href: 'https://wa.me/+17866207272',
     },
     cta: {
       label: opts?.primaryLabel ?? (isEn ? 'Free Vertebra trial' : 'Prueba gratis Vértebra'),

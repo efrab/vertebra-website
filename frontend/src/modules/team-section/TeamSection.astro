@@ -89,18 +89,30 @@ const {heading, members} = Astro.props
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 16px;
+    gap: 1.5rem 2rem;
+    width: 100%;
   }
 
   .layout-3--center > .card_linkedin {
-    flex: 0 1 calc((100% - 32px) / 3);
-    max-width: calc((100% - 32px) / 3);
+    flex: 0 1 18rem;
+    min-width: min(100%, 16rem);
+    max-width: 22rem;
+  }
+
+  .layout-3--center .card_linkedin-info h4,
+  .layout-3--center .card_linkedin-info > div:not(.text-size-small) {
+    white-space: nowrap;
   }
 
   @media screen and (max-width: 767px) {
     .layout-3--center > .card_linkedin {
-      flex-basis: calc((100% - 16px) / 2);
-      max-width: calc((100% - 16px) / 2);
+      flex-basis: calc((100% - 1.5rem) / 2);
+      max-width: calc((100% - 1.5rem) / 2);
+    }
+
+    .layout-3--center .card_linkedin-info h4,
+    .layout-3--center .card_linkedin-info > div:not(.text-size-small) {
+      white-space: normal;
     }
   }
 

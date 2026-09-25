@@ -39,6 +39,7 @@ interface Props {
 }
 
 const {locale, routeKey} = Astro.props
+const perspectiveCookie = Astro.locals.perspectiveCookie
 
 type PageBundle = {
   sections: PageSection[]
@@ -128,15 +129,17 @@ const registry: Partial<Record<Exclude<PathnameKey, 'home' | 'blogPost'>, () => 
   }),
 }
 
-/* Try Sanity first, fall back to fixtures */
+/* Try Sanity first; draft mode never falls back to fixtures (stega required for overlays) */
 let sections: PageSection[]
 let meta: {title: string; description: string}
 let lcpImage: string | undefined
+const isDraft = Boolean(perspectiveCookie)
 
 try {
   const sanityPage = await loadQuery<{pageBuilder: PageSection[]; seo: {metaTitle?: string; metaDescription?: string}}>(
     pageByRouteKeyQuery,
     {locale, routeKey},
+    {perspectiveCookie},
   )
 
   if (sanityPage?.pageBuilder?.length) {
@@ -146,10 +149,16 @@ try {
       description: sanityPage.seo?.metaDescription || '',
     }
     lcpImage = registry[routeKey]?.().lcpImage
+  } else if (isDraft) {
+    throw new Error(`Draft preview requires Sanity pageBuilder for routeKey=${routeKey}`)
   } else {
     throw new Error('No Sanity data, using fixtures')
   }
-} catch {
+} catch (error) {
+  if (isDraft) {
+    console.error('[sanity] draft fetch failed', error)
+    throw error
+  }
   const bundled = registry[routeKey]?.()
   sections = bundled?.sections ?? marketingPageFixtures(locale, routeKey)
   meta = bundled?.meta ?? pageMeta(locale, routeKey)

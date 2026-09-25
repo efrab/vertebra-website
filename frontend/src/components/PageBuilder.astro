@@ -1,6 +1,7 @@
 ---
 import type {Locale} from '../i18n/routes'
 import type {PageSection} from '../modules/fixtures'
+import {resolveCta} from '../lib/links'
 import HeroHome from '../modules/hero-home/HeroHome.astro'
 import BenefitsGrid from '../modules/benefits-grid/BenefitsGrid.astro'
 import RoiStats from '../modules/roi-stats/RoiStats.astro'
@@ -27,6 +28,24 @@ interface Props {
 }
 
 const {locale, sections} = Astro.props
+
+function asStrings(items: unknown): string[] {
+  if (!Array.isArray(items)) return []
+  return items
+    .map((item) => {
+      if (typeof item === 'string') return item
+      if (item && typeof item === 'object' && 'text' in item) {
+        const text = (item as {text?: unknown}).text
+        return typeof text === 'string' ? text : ''
+      }
+      return ''
+    })
+    .filter(Boolean)
+}
+
+function flatCta(cta: unknown) {
+  return resolveCta(cta as {label?: string; href?: string; link?: {href?: string}} | null, locale)
+}
 ---
 
 {
@@ -40,7 +59,7 @@ const {locale, sections} = Astro.props
             headingBold={section.headingBold}
             headingLight={section.headingLight}
             subheading={section.subheading}
-            primaryCta={section.primaryCta}
+            primaryCta={flatCta(section.primaryCta)}
             gifSrc={section.gifSrc}
             pressLabel={section.pressLabel}
             pressLogos={section.pressLogos}
@@ -114,7 +133,10 @@ const {locale, sections} = Astro.props
           <BenefitsRoles
             heading={section.heading}
             subheading={section.subheading}
-            cards={section.cards}
+            cards={(section.cards || []).map((card) => ({
+              ...card,
+              items: asStrings(card.items),
+            }))}
           />
         )
       case 'moduleShowcase':
@@ -159,8 +181,8 @@ const {locale, sections} = Astro.props
             annualNote={section.annualNote}
             badge={section.badge}
             paymentNote={section.paymentNote}
-            primaryCta={section.primaryCta}
-            secondaryCta={section.secondaryCta}
+            primaryCta={flatCta(section.primaryCta)!}
+            secondaryCta={flatCta(section.secondaryCta)}
             featuresHeading={section.featuresHeading}
             features={section.features}
           />
@@ -175,8 +197,8 @@ const {locale, sections} = Astro.props
             backLabel={section.backLabel}
             imageSrc={section.imageSrc}
             imageSrcSet={section.imageSrcSet}
-            primaryCta={section.primaryCta}
-            secondaryCta={section.secondaryCta}
+            primaryCta={flatCta(section.primaryCta)}
+            secondaryCta={flatCta(section.secondaryCta)}
           />
         )
       case 'ctaBanner':
@@ -184,8 +206,8 @@ const {locale, sections} = Astro.props
           <CtaBanner
             heading={section.heading}
             subheading={section.subheading}
-            cta={section.cta}
-            secondaryCta={section.secondaryCta}
+            cta={flatCta(section.cta)}
+            secondaryCta={flatCta(section.secondaryCta)}
             bgSrc={section.bgSrc}
             bgSrcSet={section.bgSrcSet}
             wrapped={section.wrapped}
@@ -216,7 +238,10 @@ const {locale, sections} = Astro.props
             heading={section.heading}
             searchPlaceholder={section.searchPlaceholder}
             searchAction={section.searchAction}
-            topics={section.topics}
+            topics={(section.topics || []).map((topic) => ({
+              ...topic,
+              items: asStrings(topic.items),
+            }))}
           />
         )
       default:

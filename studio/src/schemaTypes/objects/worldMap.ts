@@ -1,6 +1,6 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import {localizedPreviewValue} from '../../lib/localized'
-import {localizedStringField} from '../fields/localizedFields'
+import {localizedStringField, localizedTextField} from '../fields/localizedFields'
 
 const COUNTRY_PRESETS = [
   {title: 'Estados Unidos', value: 'us'},
@@ -20,7 +20,7 @@ export default defineType({
   title: 'World map',
   type: 'object',
   fields: [
-    localizedStringField('heading', 'Heading', {validation: (Rule) => Rule.required()}),
+    localizedTextField('heading', 'Heading', {rows: 3, validation: (Rule) => Rule.required()}),
     localizedStringField('intro', 'Introduction'),
     defineField({
       name: 'mapImage',

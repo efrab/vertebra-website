@@ -85,6 +85,15 @@
   display: flex;
 }
 
+/* Webflow base h4 — Tailwind preflight resets heading sizes to inherit */
+.card_linkedin-info h4 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
 .card_linkedin-icon {
   width: 3rem;
 }
@@ -101,6 +110,10 @@
 
 .regular-flex {
     flex-flow: wrap;
+  }
+
+.card_linkedin-info h4 {
+    font-size: 1rem;
   }
 }
 

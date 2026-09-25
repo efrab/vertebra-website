@@ -424,7 +424,7 @@ export function modulesFixtures(locale: Locale): PageSection[] {
         },
         secondary: {
           label: isEn ? 'Message us on WhatsApp' : 'Escríbenos por WhatsApp',
-          href: 'https://wa.me/+51983723379',
+          href: 'https://wa.me/+17866207272',
         },
         bgSrc: `${WF}/Frame-1000005638-1.png`,
         bgSrcSet: `${WF}/Frame-1000005638-1-p-500.png 500w, ${WF}/Frame-1000005638-1-p-800.png 800w, ${WF}/Frame-1000005638-1.png 1200w`,

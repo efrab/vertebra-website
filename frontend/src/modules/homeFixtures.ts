@@ -277,7 +277,7 @@ export function homeFixtures(locale: Locale): PageSection[] {
         : 'Optimiza tus propiedades con nosotros',
       secondaryCta: {
         label: isEn ? 'Message us on WhatsApp' : 'Escríbenos por WhatsApp',
-        href: 'https://wa.me/+51983723379',
+        href: 'https://wa.me/+17866207272',
       },
       cta: {
         label: isEn ? 'Free Vertebra trial' : 'Prueba gratis Vértebra',

@@ -2,13 +2,12 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 import {localizedPreviewValue} from '../../lib/localized'
 
 export default defineType({
-  name: 'trustLogos',
-  title: 'Trust logos',
+  name: 'aboutIntro',
+  title: 'About intro',
   type: 'object',
   fields: [
-    defineField({name: 'eyebrow', type: 'internationalizedArrayString'}),
     defineField({name: 'heading', type: 'internationalizedArrayText'}),
-    defineField({name: 'moreLabel', type: 'internationalizedArrayString'}),
+    defineField({name: 'description', type: 'internationalizedArrayText'}),
     defineField({
       name: 'logos',
       type: 'array',
@@ -17,15 +16,19 @@ export default defineType({
           type: 'object',
           fields: [
             defineField({name: 'name', type: 'string'}),
-            defineField({name: 'image', type: 'image', title: 'Logo (optional CMS upload)'}),
-            defineField({name: 'src', type: 'string', title: 'Logo image path'}),
+            defineField({name: 'src', type: 'string', title: 'Image path'}),
+            defineField({name: 'image', type: 'image', title: 'Image (optional CMS upload)'}),
           ],
+          preview: {
+            select: {title: 'name', media: 'image'},
+            prepare: ({title, media}) => ({title: title || 'Logo', media}),
+          },
         }),
       ],
     }),
   ],
   preview: {
     select: {title: 'heading'},
-    prepare: ({title}) => ({title: localizedPreviewValue(title, 'Trust logos')}),
+    prepare: ({title}) => ({title: localizedPreviewValue(title, 'About intro')}),
   },
 })

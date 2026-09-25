@@ -1,9 +1,12 @@
 /**
  * Webflow-style tabs for the modules page (`[data-vf-tabs]`).
  * Matches Webflow IX: fade/slide pane content on enter (duration-in 300).
+ * Idempotent — safe to call again after Presentation soft-refresh.
  */
 
 const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+const isPreview = () => document.documentElement.classList.contains('vf-preview')
 
 function durationIn(root: HTMLElement) {
   return Number(root.dataset.durationIn) || 300
@@ -28,7 +31,7 @@ function playReveal(el: HTMLElement, delayMs = 0) {
 
 /** Replay Webflow-like enter animation inside an active tab pane. */
 function playPaneEnter(pane: HTMLElement, root: HTMLElement) {
-  if (reduceMotion()) {
+  if (isPreview() || reduceMotion()) {
     pane.querySelectorAll<HTMLElement>('[data-vf-reveal]').forEach((el) => el.classList.add('is-in'))
     return
   }
@@ -77,21 +80,29 @@ function activateTab(root: HTMLElement, next: HTMLElement) {
   playPaneEnter(incoming, root)
 }
 
-function initTabs() {
-  document.documentElement.classList.add('vf-motion-ready')
+export function initTabs() {
+  // Draft / Presentation: keep content visible; do not arm entrance motion
+  if (!isPreview()) {
+    document.documentElement.classList.add('vf-motion-ready')
+  }
 
   for (const root of document.querySelectorAll<HTMLElement>('[data-vf-tabs]')) {
+    if (root.dataset.vfTabsReady === '1') continue
+    root.dataset.vfTabsReady = '1'
+
     const menu = root.querySelector('.w-tab-menu')
     if (!menu) continue
 
     const firstPane = root.querySelector<HTMLElement>('.w-tab-pane.w--tab-active')
-    if (firstPane && !reduceMotion()) {
-      // Let CSS paint opacity:0 first, then enter (matches Webflow page-load IX)
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => playPaneEnter(firstPane, root))
-      })
-    } else if (firstPane) {
-      playPaneEnter(firstPane, root)
+    if (firstPane) {
+      if (isPreview() || reduceMotion()) {
+        playPaneEnter(firstPane, root)
+      } else {
+        // Let CSS paint opacity:0 first, then enter (matches Webflow page-load IX)
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => playPaneEnter(firstPane, root))
+        })
+      }
     }
 
     menu.addEventListener('click', (event) => {
@@ -142,5 +153,3 @@ window.setTimeout(() => {
     el.classList.add('is-in')
   })
 }, 2500)
-
-export {}

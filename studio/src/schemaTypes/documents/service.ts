@@ -1,11 +1,7 @@
 import {BulbOutlineIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import {localizedPreviewValue} from '../../lib/localized'
-import {
-  localizedSlugField,
-  localizedStringField,
-  localizedTextField,
-} from '../fields/localizedFields'
+import {localizedSlugField, localizedStringField, localizedTextField} from '../fields/localizedFields'
 
 export default defineType({
   name: 'service',
@@ -40,7 +36,7 @@ export default defineType({
       hidden: true,
       fields: [
         defineField({name: 'eyebrow', title: 'Eyebrow', type: 'string'}),
-        defineField({name: 'heading', title: 'Heading', type: 'string'}),
+        defineField({name: 'heading', title: 'Heading', type: 'text', rows: 3}),
         defineField({name: 'subheading', title: 'Subheading', type: 'text', rows: 3}),
         defineField({
           name: 'image',

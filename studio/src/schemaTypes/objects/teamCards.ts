@@ -7,7 +7,7 @@ export default defineType({
   title: 'Team cards',
   type: 'object',
   fields: [
-    localizedStringField('heading', 'Heading', {validation: (Rule) => Rule.required()}),
+    localizedTextField('heading', 'Heading', {rows: 3, validation: (Rule) => Rule.required()}),
     localizedTextField('intro', 'Introduction'),
     defineField({
       name: 'members',

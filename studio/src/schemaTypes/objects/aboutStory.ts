@@ -7,9 +7,9 @@ export default defineType({
   title: 'About story',
   type: 'object',
   fields: [
-    localizedStringField('heading', 'Heading', {validation: (Rule) => Rule.required()}),
+    localizedTextField('heading', 'Heading', {rows: 3, validation: (Rule) => Rule.required()}),
     localizedTextField('body', 'Body', {validation: (Rule) => Rule.required()}),
-    localizedStringField('purposeTitle', 'Purpose title', {validation: (Rule) => Rule.required()}),
+    localizedTextField('purposeTitle', 'Purpose title', {rows: 3, validation: (Rule) => Rule.required()}),
     localizedTextField('purposeBody', 'Purpose body', {validation: (Rule) => Rule.required()}),
     defineField({
       name: 'image',

@@ -16,8 +16,9 @@ interface Props {
 
 const {locale} = Astro.props
 const perspectiveCookie = Astro.locals.perspectiveCookie
+const isDraft = Boolean(perspectiveCookie)
 
-let sections: PageSection[] = homeFixtures(locale)
+let sections: PageSection[]
 let title = 'Vertebra'
 let description =
   locale === 'es'
@@ -33,14 +34,23 @@ try {
     pageBuilder?: PageSection[]
   } | null>(homePageQuery, {locale}, {perspectiveCookie})
 
-  if (data?.pageBuilder?.length) {
+  if (!data?.pageBuilder?.length) {
+    if (isDraft) {
+      throw new Error('Draft preview requires Sanity homePage.pageBuilder (no fixture fallback)')
+    }
+    sections = homeFixtures(locale)
+  } else {
     sections = data.pageBuilder
     seo = data.seo
     title = data.seo?.metaTitle || data.title || title
     description = data.seo?.metaDescription || description
   }
-} catch {
-  // fixtures
+} catch (error) {
+  if (isDraft) {
+    console.error('[sanity] draft fetch failed', error)
+    throw error
+  }
+  sections = homeFixtures(locale)
 }
 
 const meta = resolvePageSeo({seo, title, description, origin: Astro.url.origin})

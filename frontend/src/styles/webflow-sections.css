@@ -1978,6 +1978,19 @@ html.vf-text-ready [text-split] {
   }
 }
 
+/* Draft / Presentation: never hide content (soft-refresh swaps DOM without re-initing motion) */
+html.vf-preview [data-vf-reveal],
+html.vf-preview [text-split],
+html.vf-preview [words-slide-from-right] .word {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html.vf-preview [text-split] {
+  opacity: 1 !important;
+}
+
 /* Mobile: skip entrance animations (SI + CLS); desktop keeps Webflow reveals */
 @media (max-width: 767px) {
   [text-split],

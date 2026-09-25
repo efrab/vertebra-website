@@ -22,7 +22,8 @@ export default defineType({
     }),
     localizedStringField('title', 'Title'),
     localizedTextField('intro', 'Intro'),
-    localizedStringField('featuredTitle', 'Featured card title', {
+    localizedTextField('featuredTitle', 'Featured card title', {
+      rows: 3,
       hidden: ({parent}) => parent?.layout !== 'grid',
     }),
     localizedTextField('featuredDescription', 'Featured card description', {

@@ -9,7 +9,7 @@ export default defineType({
   title: 'Related services',
   type: 'object',
   fields: [
-    localizedStringField('heading', 'Heading', {validation: (Rule) => Rule.required()}),
+    localizedTextField('heading', 'Heading', {rows: 3, validation: (Rule) => Rule.required()}),
     defineField({
       name: 'items',
       title: 'Items',

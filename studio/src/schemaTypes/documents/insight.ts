@@ -1,12 +1,7 @@
 import {BookIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import {localizedPreviewValue} from '../../lib/localized'
-import {
-  localizedPortableTextField,
-  localizedSlugField,
-  localizedStringField,
-  localizedTextField,
-} from '../fields/localizedFields'
+import {localizedPortableTextField, localizedSlugField, localizedStringField, localizedTextField} from '../fields/localizedFields'
 
 export default defineType({
   name: 'insight',

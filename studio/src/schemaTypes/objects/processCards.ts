@@ -7,7 +7,7 @@ export default defineType({
   title: 'Process cards',
   type: 'object',
   fields: [
-    localizedStringField('heading', 'Heading', {validation: (Rule) => Rule.required()}),
+    localizedTextField('heading', 'Heading', {rows: 3, validation: (Rule) => Rule.required()}),
     defineField({
       name: 'layout',
       title: 'Layout',

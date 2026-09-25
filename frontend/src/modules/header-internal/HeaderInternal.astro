@@ -13,20 +13,17 @@ interface Props {
   imageSrc?: string
 }
 
+const DEFAULT_ICON = '/assets/webflow/images/Frame-1000005709.svg'
 const DEFAULT_BG = '/assets/webflow/images/background-1.png'
 const DEFAULT_BG_SRCSET =
   '/assets/webflow/images/background-1-p-500.png 500w, /assets/webflow/images/background-1-p-800.png 800w, /assets/webflow/images/background-1-p-1080.png 1080w, /assets/webflow/images/background-1.png 1440w'
 
-const {
-  variant = 'base',
-  heading,
-  iconSrc = '/assets/webflow/images/Frame-1000005709.svg',
-  personSrc,
-  personSrcSet,
-  bgSrc = DEFAULT_BG,
-  bgSrcSet = DEFAULT_BG_SRCSET,
-  imageSrc,
-} = Astro.props
+const { variant = 'base', heading, personSrc, personSrcSet, imageSrc } = Astro.props
+
+/** Sanity often sends explicit null — defaults only apply to undefined */
+const iconSrc = Astro.props.iconSrc ?? DEFAULT_ICON
+const bgSrc = Astro.props.bgSrc ?? DEFAULT_BG
+const bgSrcSet = Astro.props.bgSrcSet ?? DEFAULT_BG_SRCSET
 
 const resolvedPerson = personSrc || imageSrc
 const isInterna = variant === 'interna'

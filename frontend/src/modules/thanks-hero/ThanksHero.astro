@@ -17,12 +17,15 @@ const {
   description,
   backHref = '/',
   backLabel = 'Volver',
-  imageSrc = '/assets/webflow/images/Group-1000005378.png',
-  imageSrcSet =
-    '/assets/webflow/images/Group-1000005378-p-500.png 500w, /assets/webflow/images/Group-1000005378.png 591w',
   primaryCta,
   secondaryCta,
 } = Astro.props
+
+const imageSrc =
+  Astro.props.imageSrc ?? '/assets/webflow/images/Group-1000005378.png'
+const imageSrcSet =
+  Astro.props.imageSrcSet ??
+  '/assets/webflow/images/Group-1000005378-p-500.png 500w, /assets/webflow/images/Group-1000005378.png 591w'
 
 const titleParts =
   highlight && heading.includes(highlight)

@@ -10,7 +10,7 @@ export default defineType({
   icon: CheckmarkCircleIcon,
   fields: [
     localizedStringField('title', 'Title', {validation: (Rule) => Rule.required()}),
-    localizedStringField('heroHeading', 'Hero heading'),
+    localizedTextField('heroHeading', 'Hero heading', {rows: 3}),
     localizedTextField('heroMessage', 'Hero message', {rows: 3}),
     defineField({
       name: 'heroImage',

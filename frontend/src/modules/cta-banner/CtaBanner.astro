@@ -15,18 +15,24 @@ interface Props {
 
 const {
   heading,
-  subheading,
+  subheading: rawSubheading,
   cta,
   secondaryCta,
   bgSrc,
   bgSrcSet,
   wrapped = true,
 } = Astro.props
+
+/** Sanity may store empty i18n arrays; only render real strings */
+const subheading = typeof rawSubheading === 'string' ? rawSubheading : undefined
+
+/** Sanity may store `wrapped: null`; treat only explicit `false` as unwrapped */
+const isWrapped = wrapped !== false
 ---
 
-<section class={wrapped ? 'optimiza' : undefined}>
-  <div class:list={[wrapped && 'vf-padding-global', 'padding-global']}>
-    <div class:list={[wrapped && 'vf-container-large', 'container-large']}>
+<section class={isWrapped ? 'optimiza' : undefined}>
+  <div class:list={[isWrapped && 'vf-padding-global', 'padding-global']}>
+    <div class:list={[isWrapped && 'vf-container-large', 'container-large']}>
       <div class="padding-section-medium">
         <div class="cta_content" data-vf-reveal="30">
           <div class="title_component">

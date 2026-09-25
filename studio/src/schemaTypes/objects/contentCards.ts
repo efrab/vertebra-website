@@ -25,7 +25,7 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     localizedStringField('eyebrow', 'Eyebrow'),
-    localizedStringField('heading', 'Heading', {validation: (Rule) => Rule.required()}),
+    localizedTextField('heading', 'Heading', {rows: 3, validation: (Rule) => Rule.required()}),
     localizedTextField('intro', 'Introduction'),
     defineField({
       name: 'cards',
