@@ -8,10 +8,6 @@ import {benefitsFixtures, benefitsPageMeta} from '../modules/benefitsFixtures'
 import {aiFixtures, aiPageMeta} from '../modules/aiFixtures'
 import {aboutFixtures, aboutPageMeta} from '../modules/aboutFixtures'
 import {
-  inspectionsLandingFixtures,
-  inspectionsLandingPageMeta,
-} from '../modules/inspectionsLandingFixtures'
-import {
   agendaFixtures,
   contactFixtures,
   pricingFixtures,
@@ -105,11 +101,6 @@ const registry: Partial<Record<Exclude<PathnameKey, 'home' | 'blogPost'>, () => 
     sections: landingFixtures(locale, 'landingServices'),
     meta: conversionPageMeta(locale, 'landingServices'),
     lcpImage: '/assets/webflow/images/background-1.png',
-  }),
-  landingInspections: () => ({
-    sections: inspectionsLandingFixtures(locale),
-    meta: inspectionsLandingPageMeta(locale),
-    lcpImage: '/assets/inspections/hero-loop-poster.jpg',
   }),
   thanksDemo: () => ({
     sections: thanksFixtures(locale, 'thanksDemo'),

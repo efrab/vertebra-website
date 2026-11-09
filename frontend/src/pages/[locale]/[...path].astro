@@ -3,6 +3,7 @@ import {isLocale, resolveRoute} from '../../i18n/routes'
 import HomePage from '../../views/HomePage.astro'
 import MarketingPage from '../../views/MarketingPage.astro'
 import BlogPage from '../../views/BlogPage.astro'
+import InspectionsLandingPage from '../../views/InspectionsLandingPage.astro'
 
 const {locale: raw, path} = Astro.params
 
@@ -42,7 +43,6 @@ const marketingKeys = [
   'freeTrial',
   'landingContracts',
   'landingServices',
-  'landingInspections',
   'thankYou',
 ] as const
 
@@ -52,6 +52,7 @@ const isMarketing = (marketingKeys as readonly string[]).includes(route.kind)
 
 {route.kind === 'home' && <HomePage locale={locale} />}
 {route.kind === 'blog' && <BlogPage locale={locale} />}
+{route.kind === 'landingInspections' && <InspectionsLandingPage locale={locale} />}
 {route.kind === 'blogPost' && <BlogPage locale={locale} slug={route.slug} />}
 {
   isMarketing && (

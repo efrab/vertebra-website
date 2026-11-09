@@ -30,6 +30,8 @@ Notas de producción:
 
 ## Copy de la landing (`/es/landing-inspecciones`)
 
+La página es una vista propia (`frontend/src/views/InspectionsLandingPage.astro`) con el copy en `frontend/src/modules/inspectionsLandingCopy.ts`; ese archivo es la fuente final del texto. Lo de abajo es el borrador original.
+
 ### Hero
 - Eyebrow: Nuevo módulo
 - Título: Inspecciones que se programan solas y se documentan completas
@@ -60,7 +62,6 @@ Capturas reales generadas con `scripts/capture-inspections.mjs` sobre una empres
 
 ### Preguntas frecuentes
 
-> No se muestran todavía: el módulo `faqSection` del sitio está desactivado (`PageBuilder` devuelve `null`). Quedan listas para cuando exista un diseño de FAQ con la marca.
 
 - ¿Tiene costo adicional? → *(pendiente: confirmar con Martin)*
 - ¿Un proveedor externo puede hacer la inspección? Sí, se asigna como responsable externo y usa el modo checklist o sube sus archivos.

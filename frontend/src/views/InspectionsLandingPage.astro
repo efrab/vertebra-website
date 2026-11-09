@@ -1,0 +1,461 @@
+---
+import type {Locale} from '../i18n/routes'
+import {getLocalizedPath} from '../i18n/routes'
+import Layout from '../layouts/Layout.astro'
+import Button from '../components/ui/Button.astro'
+import Container from '../components/ui/Container.astro'
+import ChevronIcon from '../components/ui/ChevronIcon.astro'
+import {singletonBreadcrumbs} from '../lib/seo/breadcrumbs'
+import {INSPECTIONS_MEDIA, inspectionsLandingCopy} from '../modules/inspectionsLandingCopy'
+
+interface Props {
+  locale: Locale
+}
+
+const {locale} = Astro.props
+const c = inspectionsLandingCopy(locale)
+const agenda = getLocalizedPath(locale, 'agenda')
+const appUrl = 'https://app.vertebra.co'
+const whatsapp = 'https://wa.me/+17866207272'
+
+const toneDot = {
+  success: 'bg-success',
+  warning: 'bg-warning',
+  critical: 'bg-critical',
+} as const
+---
+
+<Layout
+  locale={locale}
+  title={c.meta.title}
+  description={c.meta.description}
+  routeKey="landingInspections"
+  lcpImage={`${INSPECTIONS_MEDIA}/run.webp`}
+  faqItems={c.faq.items}
+  breadcrumbs={singletonBreadcrumbs(locale, c.meta.title, Astro.url.pathname)}
+>
+  <main class="insp overflow-x-clip bg-white text-ink">
+    <section class="insp-hero relative isolate overflow-hidden bg-dark-blue pb-20 pt-32 text-white sm:pt-40 lg:pb-28">
+      <div class="insp-hero__glow" aria-hidden="true"></div>
+      <Container class="relative grid items-center gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
+        <div data-insp-reveal>
+          <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-sm font-medium text-white/90">
+            <span class="size-2 rounded-full bg-accent shadow-[0_0_0_4px_rgba(67,234,81,0.2)]"></span>
+            {c.hero.eyebrow}
+          </span>
+          <h1 class="mt-6 text-[clamp(2.3rem,4.4vw,3.6rem)] font-semibold leading-[1.06] tracking-[-0.02em]">
+            {c.hero.titleLead}
+            <span class="block text-accent">{c.hero.titleAccent}</span>
+          </h1>
+          <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/75">{c.hero.body}</p>
+          <div class="mt-9 flex flex-wrap items-center gap-3">
+            <Button href={agenda} variant="accent" size="lg">
+              {c.hero.primaryCta}
+              <ChevronIcon />
+            </Button>
+            <Button href="#en-accion" variant="secondary" tone="dark" size="lg">
+              {c.hero.secondaryCta}
+            </Button>
+          </div>
+          <ul class="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-sm text-white/70">
+            {
+              c.hero.proof.map((item) => (
+                <li class="flex items-center gap-2">
+                  <svg class="size-4 text-accent" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="relative" data-insp-reveal style="--insp-delay: 120ms">
+          <div class="insp-frame">
+            <div class="insp-frame__bar" aria-hidden="true"><span></span><span></span><span></span></div>
+            <img
+              src={`${INSPECTIONS_MEDIA}/run.webp`}
+              alt={c.hero.screenshotAlt}
+              width="1440"
+              height="900"
+              loading="eager"
+              fetchpriority="high"
+              class="block w-full"
+            />
+          </div>
+
+          <div class="insp-float insp-float--status">
+            <p class="text-xs font-medium uppercase tracking-wider text-muted">{c.hero.statusLabel}</p>
+            <div class="mt-2 flex flex-wrap gap-1.5">
+              {
+                c.hero.statuses.map((s) => (
+                  <span class="inline-flex items-center gap-1.5 rounded-full bg-neutral-50 px-2.5 py-1 text-xs font-medium text-dark-blue">
+                    <span class:list={['size-2 rounded-full', toneDot[s.tone]]} />
+                    {s.label}
+                  </span>
+                ))
+              }
+            </div>
+          </div>
+
+          <div class="insp-float insp-float--ai">
+            <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand">
+              <svg class="size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2l1.9 5.6L19.5 9.5l-5.6 1.9L12 17l-1.9-5.6L4.5 9.5l5.6-1.9L12 2zm7 12l.9 2.6 2.6.9-2.6.9L19 21l-.9-2.6-2.6-.9 2.6-.9L19 14z" />
+              </svg>
+              {c.hero.aiCardLabel}
+            </p>
+            <p class="mt-2 text-sm leading-snug text-dark-blue">{c.hero.aiCardText}</p>
+          </div>
+        </div>
+      </Container>
+    </section>
+
+    <section class="py-20 sm:py-28">
+      <Container>
+        <h2 class="mx-auto max-w-2xl text-center text-[clamp(1.75rem,3.2vw,2.6rem)] font-semibold leading-tight text-dark-blue" data-insp-reveal>
+          {c.contrast.title}
+        </h2>
+        <div class="mt-12 grid gap-5 md:grid-cols-2">
+          <div class="rounded-3xl border border-black/5 bg-neutral-50 p-8 sm:p-10" data-insp-reveal>
+            <p class="text-sm font-semibold uppercase tracking-wider text-muted">{c.contrast.before.label}</p>
+            <ul class="mt-6 space-y-4">
+              {
+                c.contrast.before.items.map((item) => (
+                  <li class="flex gap-3 text-base text-ink/70">
+                    <span class="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-critical/10 text-critical" aria-hidden="true">
+                      <svg class="size-3.5" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg>
+                    </span>
+                    {item}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <div class="rounded-3xl bg-brand p-8 text-white shadow-[0_24px_60px_-20px_rgba(0,66,241,0.55)] sm:p-10" data-insp-reveal style="--insp-delay: 100ms">
+            <p class="text-sm font-semibold uppercase tracking-wider text-white/70">{c.contrast.after.label}</p>
+            <ul class="mt-6 space-y-4">
+              {
+                c.contrast.after.items.map((item) => (
+                  <li class="flex gap-3 text-base font-medium">
+                    <span class="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-accent text-dark-blue" aria-hidden="true">
+                      <svg class="size-3.5" viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </span>
+                    {item}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </Container>
+    </section>
+
+    <section id="en-accion" class="scroll-mt-24 bg-neutral-50 py-20 sm:py-28">
+      <Container>
+        <div class="mx-auto max-w-2xl text-center" data-insp-reveal>
+          <p class="text-sm font-semibold uppercase tracking-wider text-brand">{c.video.eyebrow}</p>
+          <h2 class="mt-3 text-[clamp(1.75rem,3.2vw,2.6rem)] font-semibold leading-tight text-dark-blue">{c.video.title}</h2>
+          <p class="mt-4 text-lg text-ink/70">{c.video.body}</p>
+        </div>
+        <div class="insp-frame mx-auto mt-12 max-w-5xl" data-insp-reveal>
+          <div class="insp-frame__bar" aria-hidden="true"><span></span><span></span><span></span></div>
+          <video
+            class="block w-full"
+            src={`${INSPECTIONS_MEDIA}/hero-loop.mp4`}
+            poster={`${INSPECTIONS_MEDIA}/hero-loop-poster.jpg`}
+            width="1280"
+            height="800"
+            muted
+            loop
+            playsinline
+            controls
+            preload="none"
+            data-insp-autoplay
+          ></video>
+        </div>
+      </Container>
+    </section>
+
+    <section class="py-20 sm:py-28">
+      <Container>
+        <h2 class="mx-auto max-w-2xl text-center text-[clamp(1.75rem,3.2vw,2.6rem)] font-semibold leading-tight text-dark-blue" data-insp-reveal>
+          {c.featuresTitle}
+        </h2>
+        <div class="mt-16 space-y-24 sm:space-y-32">
+          {
+            c.features.map((f, i) => (
+              <article
+                class:list={[
+                  'grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16',
+                  i % 2 === 1 && 'lg:[&>*:first-child]:order-2 lg:grid-cols-[1.15fr_0.85fr]',
+                ]}
+              >
+                <div data-insp-reveal>
+                  <span
+                    class:list={[
+                      'inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold',
+                      f.highlight ? 'bg-accent text-dark-blue' : 'bg-ghost text-brand',
+                    ]}
+                  >
+                    <span class="tabular-nums opacity-60">0{i + 1}</span>
+                    {f.tag}
+                  </span>
+                  <h3 class="mt-5 text-[clamp(1.5rem,2.6vw,2.1rem)] font-semibold leading-tight text-dark-blue">{f.title}</h3>
+                  <p class="mt-4 text-lg leading-relaxed text-ink/70">{f.body}</p>
+                  <ul class="mt-6 space-y-3">
+                    {f.bullets.map((b) => (
+                      <li class="flex items-start gap-3 text-base text-dark-blue">
+                        <svg class="mt-1 size-4 shrink-0 text-brand" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                          <path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div data-insp-reveal style="--insp-delay: 100ms">
+                  <div class:list={['insp-frame', f.highlight && 'insp-frame--ai']}>
+                    <div class="insp-frame__bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                    <img src={f.image} alt={f.alt} width="1440" height="900" loading="lazy" decoding="async" class="block w-full" />
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </Container>
+    </section>
+
+    <section class="bg-dark-blue py-20 text-white sm:py-28">
+      <Container>
+        <div class="max-w-2xl" data-insp-reveal>
+          <h2 class="text-[clamp(1.75rem,3.2vw,2.6rem)] font-semibold leading-tight">{c.roles.title}</h2>
+          <p class="mt-4 text-lg text-white/70">{c.roles.body}</p>
+        </div>
+        <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {
+            c.roles.items.map((r, i) => (
+              <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-6" data-insp-reveal style={`--insp-delay: ${i * 70}ms`}>
+                <span class="grid size-10 place-items-center rounded-xl bg-accent/15 text-sm font-semibold text-accent">0{i + 1}</span>
+                <h3 class="mt-5 text-lg font-semibold">{r.title}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-white/70">{r.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </Container>
+    </section>
+
+    <section class="py-20 sm:py-28">
+      <Container>
+        <div class="grid gap-12 rounded-[2rem] bg-ghost p-8 sm:p-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:p-16">
+          <div data-insp-reveal>
+            <h2 class="text-[clamp(1.6rem,3vw,2.4rem)] font-semibold leading-tight text-dark-blue">{c.start.title}</h2>
+            <p class="mt-4 text-lg text-ink/70">{c.start.body}</p>
+            <div class="mt-8">
+              <Button href={appUrl} variant="primary" size="lg" external>
+                {c.start.cta}
+                <ChevronIcon />
+              </Button>
+            </div>
+          </div>
+          <ol class="space-y-4">
+            {
+              c.start.steps.map((s, i) => (
+                <li class="flex gap-5 rounded-2xl bg-white p-5 shadow-[0_8px_24px_-12px_rgba(20,27,77,0.15)]" data-insp-reveal style={`--insp-delay: ${i * 80}ms`}>
+                  <span class="grid size-11 shrink-0 place-items-center rounded-full bg-brand text-base font-semibold text-white">{i + 1}</span>
+                  <div>
+                    <p class="font-semibold text-dark-blue">{s.title}</p>
+                    <p class="mt-1 text-sm text-ink/70">{s.body}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </Container>
+    </section>
+
+    <section class="pb-20 sm:pb-28">
+      <Container narrow>
+        <h2 class="text-center text-[clamp(1.6rem,3vw,2.4rem)] font-semibold leading-tight text-dark-blue" data-insp-reveal>{c.faq.title}</h2>
+        <div class="mt-10 divide-y divide-dark-blue/10 border-y border-dark-blue/10">
+          {
+            c.faq.items.map((item) => (
+              <details class="insp-faq group py-5">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-6 text-left text-lg font-medium text-dark-blue">
+                  {item.question}
+                  <span class="grid size-8 shrink-0 place-items-center rounded-full bg-ghost text-brand transition-transform duration-300 group-open:rotate-45" aria-hidden="true">
+                    <svg class="size-4" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /></svg>
+                  </span>
+                </summary>
+                <p class="mt-3 pr-12 text-base leading-relaxed text-ink/70">{item.answer}</p>
+              </details>
+            ))
+          }
+        </div>
+      </Container>
+    </section>
+
+    <section class="px-5 pb-20 sm:px-8 sm:pb-28">
+      <div class="insp-cta relative isolate mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-dark-blue px-8 py-16 text-center text-white sm:px-16 sm:py-20">
+        <div class="insp-hero__glow" aria-hidden="true"></div>
+        <h2 class="relative mx-auto max-w-3xl text-[clamp(1.8rem,3.6vw,3rem)] font-semibold leading-tight" data-insp-reveal>{c.finalCta.title}</h2>
+        <p class="relative mx-auto mt-4 max-w-xl text-lg text-white/75">{c.finalCta.body}</p>
+        <div class="relative mt-9 flex flex-wrap justify-center gap-3">
+          <Button href={agenda} variant="accent" size="lg">
+            {c.finalCta.primary}
+            <ChevronIcon />
+          </Button>
+          <Button href={whatsapp} variant="secondary" tone="dark" size="lg" external>
+            {c.finalCta.secondary}
+          </Button>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .insp-hero__glow {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(60% 55% at 80% 30%, rgba(0, 66, 241, 0.55), transparent 70%),
+      radial-gradient(40% 45% at 15% 85%, rgba(67, 234, 81, 0.22), transparent 70%);
+  }
+
+  .insp-frame {
+    overflow: hidden;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid rgba(20, 27, 77, 0.08);
+    box-shadow:
+      0 40px 80px -30px rgba(20, 27, 77, 0.45),
+      0 0 0 6px rgba(255, 255, 255, 0.06);
+  }
+
+  .insp-frame--ai {
+    box-shadow:
+      0 40px 80px -30px rgba(20, 27, 77, 0.45),
+      0 0 0 4px #43ea51;
+  }
+
+  .insp-frame__bar {
+    display: flex;
+    gap: 6px;
+    padding: 10px 14px;
+    background: #f2f7ff;
+    border-bottom: 1px solid rgba(20, 27, 77, 0.06);
+  }
+
+  .insp-frame__bar span {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: #b6cffc;
+  }
+
+  .insp-float {
+    position: absolute;
+    border-radius: 16px;
+    background: #fff;
+    padding: 14px 16px;
+    box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.45);
+  }
+
+  .insp-float--status {
+    top: -22px;
+    right: -10px;
+  }
+
+  .insp-float--ai {
+    bottom: -34px;
+    left: -18px;
+    max-width: 300px;
+  }
+
+  @media (max-width: 640px) {
+    .insp-float {
+      position: static;
+      margin-top: 12px;
+      max-width: none;
+    }
+  }
+
+  .insp-faq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-insp-reveal] {
+      opacity: 0;
+      transform: translateY(24px);
+      transition:
+        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--insp-delay, 0ms),
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--insp-delay, 0ms);
+    }
+
+    [data-insp-reveal].is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .insp-float--status {
+      animation: insp-bob 6s ease-in-out infinite;
+    }
+
+    .insp-float--ai {
+      animation: insp-bob 7s ease-in-out infinite reverse;
+    }
+  }
+
+  @keyframes insp-bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+</style>
+
+<script>
+  const revealables = document.querySelectorAll<HTMLElement>('[data-insp-reveal]')
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            observer.unobserve(entry.target)
+          }
+        }
+      },
+      {rootMargin: '0px 0px -10% 0px'},
+    )
+    revealables.forEach((el) => observer.observe(el))
+  } else {
+    revealables.forEach((el) => el.classList.add('is-visible'))
+  }
+
+  const video = document.querySelector<HTMLVideoElement>('[data-insp-autoplay]')
+  if (video && 'IntersectionObserver' in window) {
+    const videoObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.preload = 'auto'
+          void video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      },
+      {threshold: 0.4},
+    )
+    videoObserver.observe(video)
+  }
+</script>

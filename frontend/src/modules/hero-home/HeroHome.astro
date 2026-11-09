@@ -36,8 +36,6 @@ interface Props {
   /** Optimized hero video (preferred over GIF) */
   videoSrc?: string
   posterSrc?: string
-  mobileVideoSrc?: string
-  mobilePosterSrc?: string
   partnerLogos?: {name: string; src?: string}[]
 }
 
@@ -52,9 +50,7 @@ const {
   pressLogos = [],
   investorLogos = [],
   videoSrc = '/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd.mp4',
-  posterSrc = '/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-720.jpg',
-  mobileVideoSrc = '/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-mobile.mp4',
-  mobilePosterSrc = '/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-480.jpg',
+  posterSrc: _posterSrc = '/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-720.jpg',
 } = Astro.props
 
 const boldPart = headingBold ?? heading
@@ -109,9 +105,9 @@ const MARK_SRC = '/assets/webflow/images/icon_title.svg'
                   playsinline
                   preload="none"
                   data-hero-video
-                  data-poster-desktop={posterSrc}
-                  data-poster-mobile={mobilePosterSrc}
-                  data-src-mobile={mobileVideoSrc}
+                  data-poster-desktop="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-720.jpg"
+                  data-poster-mobile="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-poster-480.jpg"
+                  data-src-mobile="/assets/optimized/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd-mobile.mp4"
                   data-src-desktop={videoSrc}
                 >
                   {/* Desktop source only in HTML — mobile injects after first paint for SI */}

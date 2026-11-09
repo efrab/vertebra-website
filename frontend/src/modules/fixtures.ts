@@ -19,8 +19,6 @@ export type PageSection =
       investorLogos?: {name: string; src?: string; label?: string; href?: string}[]
       videoSrc?: string
       posterSrc?: string
-      mobileVideoSrc?: string
-      mobilePosterSrc?: string
       partnerLogos?: {name: string; src?: string}[]
     }
   | {
