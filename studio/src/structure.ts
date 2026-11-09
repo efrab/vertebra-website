@@ -24,6 +24,7 @@ const marketingPages: {id: string; title: string; routeKey: string}[] = [
   {id: 'page-freeTrial', title: 'Free Trial', routeKey: 'freeTrial'},
   {id: 'page-landingContracts', title: 'Landing Contratos', routeKey: 'landingContracts'},
   {id: 'page-landingServices', title: 'Landing Servicios', routeKey: 'landingServices'},
+  {id: 'page-landingInspections', title: 'Landing Inspecciones', routeKey: 'landingInspections'},
   {id: 'page-thanksDemo', title: 'Gracias (demo)', routeKey: 'thanksDemo'},
   {id: 'page-thankYou', title: 'Gracias', routeKey: 'thankYou'},
   {id: 'page-helpCenter', title: 'Centro de ayuda', routeKey: 'helpCenter'},

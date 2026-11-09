@@ -30,6 +30,7 @@ export default defineType({
           {title: 'Free Trial', value: 'freeTrial'},
           {title: 'Landing Contratos', value: 'landingContracts'},
           {title: 'Landing Servicios', value: 'landingServices'},
+          {title: 'Landing Inspecciones', value: 'landingInspections'},
           {title: 'Gracias (demo)', value: 'thanksDemo'},
           {title: 'Gracias', value: 'thankYou'},
           {title: 'Centro de ayuda', value: 'helpCenter'},

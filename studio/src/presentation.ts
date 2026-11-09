@@ -23,6 +23,7 @@ const routeKeyPaths: Record<string, {es: string; en: string}> = {
     en: 'landing-contracts-documents',
   },
   landingServices: {es: 'landing-servicios', en: 'landing-services'},
+  landingInspections: {es: 'landing-inspecciones', en: 'landing-inspections'},
   thankYou: {es: 'gracias', en: 'thank-you'},
 }
 

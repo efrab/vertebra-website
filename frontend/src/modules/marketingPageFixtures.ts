@@ -88,6 +88,10 @@ const copy: Record<
     es: {heading: 'Servicios Vertebra', description: 'Soluciones SaaS para administrar bodegas y portafolios.'},
     en: {heading: 'Vertebra services', description: 'SaaS solutions to manage warehouses and portfolios.'},
   },
+  landingInspections: {
+    es: {heading: 'Módulo de Inspecciones', description: 'Programa inspecciones periódicas y obtén reportes con conclusión por IA.'},
+    en: {heading: 'Inspections module', description: 'Schedule recurring inspections and get reports with an AI conclusion.'},
+  },
   thankYou: {
     es: {heading: '¡Gracias!', description: 'Recibimos tu solicitud. Te contactaremos pronto.'},
     en: {heading: 'Thank you!', description: 'We received your request. We will contact you soon.'},
@@ -130,6 +134,7 @@ export function marketingPageFixtures(locale: Locale, key: PageKey): PageSection
     'freeTrial',
     'landingContracts',
     'landingServices',
+    'landingInspections',
     'thanksDemo',
     'thankYou',
     'helpCenter',

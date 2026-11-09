@@ -27,6 +27,7 @@ export const pathnames = {
     en: 'landing-contracts-documents',
   },
   landingServices: {es: 'landing-servicios', en: 'landing-services'},
+  landingInspections: {es: 'landing-inspecciones', en: 'landing-inspections'},
   thankYou: {es: 'gracias', en: 'thank-you'},
   roiCalculator: {es: 'calculadora-roi', en: 'roi-calculator'},
 } as const
@@ -53,6 +54,7 @@ export const indexKeys = new Set<PathnameKey>([
   'freeTrial',
   'landingContracts',
   'landingServices',
+  'landingInspections',
   'thankYou',
   'roiCalculator',
 ])
@@ -174,6 +176,7 @@ export type ResolvedRoute =
   | {kind: 'freeTrial'}
   | {kind: 'landingContracts'}
   | {kind: 'landingServices'}
+  | {kind: 'landingInspections'}
   | {kind: 'thankYou'}
   | {kind: 'roiCalculator'}
   | {kind: 'notFound'}
@@ -205,6 +208,8 @@ export function resolveRoute(locale: Locale, segments: string[]): ResolvedRoute 
     'freeTrial',
     'landingContracts',
     'landingServices',
+    'landingInspections',
+  'landingInspections',
     'thankYou',
     'roiCalculator',
   ]
