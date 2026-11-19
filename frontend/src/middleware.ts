@@ -12,6 +12,15 @@ export const onRequest = defineMiddleware(async (context, next) => {
   context.locals.draftMode = isEnabled
   context.locals.perspectiveCookie = perspectiveCookie
 
+  // Agents asking for markdown on the home get the text version
+  if (context.request.method === 'GET' && !isEnabled) {
+    const accept = context.request.headers.get('accept') || ''
+    const m = context.url.pathname.match(/^\/(es|en)\/?$/)
+    if (m && /text\/markdown/i.test(accept) && !/text\/html/i.test(accept.split('text/markdown')[0])) {
+      return Response.redirect(new URL(`/${m[1]}/index.md`, context.url), 307)
+    }
+  }
+
   const response = await next()
 
   response.headers.set('Vary', 'Cookie, Sec-Fetch-Dest, Referer')

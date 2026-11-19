@@ -1,6 +1,7 @@
 ---
 import type {Locale} from '../i18n/routes'
 import Layout from '../layouts/Layout.astro'
+import StickyCta from '../components/StickyCta.astro'
 import PageBuilder from '../components/PageBuilder.astro'
 import {homeFixtures, type PageSection} from '../modules/fixtures'
 import {loadQuery} from '../lib/sanity/loadQuery'
@@ -22,8 +23,8 @@ let sections: PageSection[]
 let title = 'Vertebra'
 let description =
   locale === 'es'
-    ? 'Automatiza la administración de tus propiedades comerciales e industriales con nuestra inteligencia artificial'
-    : 'Automate commercial and industrial property management with our artificial intelligence'
+    ? 'Administra tus propiedades comerciales e industriales con IA, sin hojas de cálculo. Contratos, mantenimientos, facturación y pagos en un solo lugar.'
+    : 'Manage your commercial and industrial properties with AI, no spreadsheets. Contracts, maintenance, billing and payments in one place.'
 
 let seo: PageSeo | undefined
 
@@ -69,4 +70,5 @@ const meta = resolvePageSeo({seo, title, description, origin: Astro.url.origin})
   breadcrumbs={singletonBreadcrumbs(locale, meta.title, Astro.url.pathname)}
 >
   <PageBuilder locale={locale} sections={sections} />
+  <StickyCta locale={locale} />
 </Layout>

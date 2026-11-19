@@ -13,13 +13,13 @@ export const SINGLETON_PAGE_SEO: Record<string, LocalizedSeoCopy> = {
     es: {
       metaTitle: 'Vertebra',
       metaDescription:
-        'Automatiza la administración de tus propiedades comerciales e industriales con nuestra inteligencia artificial.',
+        'Administra tus propiedades comerciales e industriales con IA, sin hojas de cálculo. Contratos, mantenimientos, facturación y pagos en un solo lugar.',
       ogImage: '/assets/home/Dashboards-v2-poster-00001.jpg',
     },
     en: {
       metaTitle: 'Vertebra',
       metaDescription:
-        'Automate commercial and industrial property management with our artificial intelligence.',
+        'Manage your commercial and industrial properties with AI, no spreadsheets. Contracts, maintenance, billing and payments in one place.',
       ogImage: '/assets/home/Dashboards-v2-poster-00001.jpg',
     },
   },

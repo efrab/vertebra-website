@@ -13,6 +13,7 @@ Disallow: /*/thank-you
 Disallow: /*/gracias-agenda
 Disallow: /*/thanks-demo
 
+# LLM guide: ${siteUrl}/llms.txt
 Sitemap: ${siteUrl}/sitemap.xml
 `
 

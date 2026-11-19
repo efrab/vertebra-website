@@ -55,12 +55,11 @@ const homeHref = getLocalizedPath(locale, 'home')
             <LocaleSwitch locale={locale} />
             <a
               href={loginHref}
-              class="vf-btn vf-btn--ghost"
+              class="vf-menu__login"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span>{t(locale, 'nav.login')}</span>
-              <ChevronIcon />
+              {t(locale, 'nav.login')}
             </a>
             <a href={ctaHref} class="vf-btn vf-btn--blue">
               <span>{t(locale, 'nav.cta')}</span>
@@ -98,9 +97,8 @@ const homeHref = getLocalizedPath(locale, 'home')
         <a href={helpHref} class="vf-menu__link" target="_blank" rel="noopener noreferrer">
           {t(locale, 'nav.help')}
         </a>
-        <a href={loginHref} class="vf-btn vf-btn--ghost" target="_blank" rel="noopener noreferrer">
-          <span>{t(locale, 'nav.login')}</span>
-          <ChevronIcon />
+        <a href={loginHref} class="vf-menu__login" target="_blank" rel="noopener noreferrer">
+          {t(locale, 'nav.login')}
         </a>
         <a href={ctaHref} class="vf-btn vf-btn--blue">
           <span>{t(locale, 'nav.cta')}</span>

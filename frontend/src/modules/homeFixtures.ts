@@ -12,17 +12,17 @@ export function homeFixtures(locale: Locale): PageSection[] {
     {
       _type: 'heroHome',
       heading: isEn
-        ? 'Automate your property management with our artificial intelligence'
-        : 'Automatiza la administración de tus propiedades con nuestra inteligencia artificial',
-      headingBold: isEn ? 'Automate your property management' : 'Automatiza la administración',
-      headingLight: isEn
-        ? 'with our artificial intelligence'
-        : 'de tus propiedades con nuestra inteligencia artificial',
+        ? 'Manage your commercial and industrial properties with AI, no spreadsheets'
+        : 'Administra tus propiedades comerciales e industriales con IA, sin hojas de cálculo',
+      headingBold: isEn
+        ? 'Manage your commercial and industrial properties'
+        : 'Administra tus propiedades comerciales e industriales',
+      headingLight: isEn ? 'with AI, no spreadsheets' : 'con IA, sin hojas de cálculo',
       subheading: isEn
-        ? 'Manage contracts, maintenance, billing, payments and many other tasks in one place'
-        : 'Gestiona tus contratos, mantenimientos, facturación, pagos y muchas otras tareas en un sólo lugar',
+        ? 'Manage contracts, maintenance, billing and payments in one place, and win back hours every week'
+        : 'Gestiona contratos, mantenimientos, facturación y pagos en un solo lugar, y recupera horas cada semana',
       primaryCta: {
-        label: isEn ? 'Request a free demo' : 'Solicita una demo gratis',
+        label: isEn ? 'See how to automate my properties' : 'Ver cómo automatizar mis propiedades',
         href: agenda,
       },
       gifSrc: `${WF}/63b53ac878b6419d7db66ce4f56d11d3d4aee2bd.gif`,

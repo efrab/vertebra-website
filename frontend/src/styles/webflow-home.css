@@ -97,6 +97,54 @@
   font-weight: 600;
 }
 
+.vf-menu__login {
+  color: #fff;
+  opacity: 0.8;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.25rem;
+}
+
+.vf-menu__login:hover,
+.vf-menu__login:focus-visible {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.vf-sticky-cta {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .vf-sticky-cta {
+    display: block;
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 80;
+    padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+    background: rgba(20, 27, 77, 0.96);
+    box-shadow: 0 -8px 24px rgba(20, 27, 77, 0.25);
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+  .vf-sticky-cta.is-visible {
+    transform: translateY(0);
+  }
+  .vf-sticky-cta .vf-btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vf-sticky-cta {
+    transition: none;
+  }
+}
+
 .vf-menu__actions {
   display: flex;
   align-items: center;
@@ -1116,4 +1164,29 @@
 .vf-footer__legal a {
   color: #a7acc1;
   text-decoration: none;
+}
+
+/* WCAG 2.2 AA — target size (2.5.8) */
+.vf-footer__links a,
+.vf-footer__legal a,
+.vf-footer__social a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  min-width: 24px;
+}
+.vf-footer__links a,
+.vf-footer__legal a {
+  padding-block: 0.25rem;
+}
+.vf-locale-switch a,
+.vf-locale-switch button {
+  min-height: 24px;
+  min-width: 24px;
+}
+.vf-beneficios__track:focus-visible,
+.vf-testimonios__slider:focus-visible,
+[data-vf-slider-track]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }

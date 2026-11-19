@@ -25,10 +25,17 @@ export function organizationSchema(
 ): JsonLd {
   const name = settings?.title || 'Vertebra'
   const email = settings?.footer?.contactInfo?.email
-  const sameAs =
+  const fromSettings =
     settings?.footer?.socialLinks
       ?.map((item) => item.link?.href)
       .filter((href): href is string => Boolean(href && href.startsWith('http'))) ?? []
+  const sameAs =
+    fromSettings.length > 0
+      ? fromSettings
+      : [
+          'https://www.linkedin.com/company/vertebra-capital/',
+          'https://www.instagram.com/vertebramex/',
+        ]
 
   return {
     '@type': 'Organization',
