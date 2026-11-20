@@ -62,7 +62,7 @@ const {
 const siteUrl = getSiteUrl(Astro.url.origin)
 const pathname = Astro.url.pathname
 const canonicalURL = buildCanonicalUrl({pathname, siteUrl})
-const ogImage = absoluteUrl(image || '/assets/home/Dashboards-v2-poster-00001.jpg', siteUrl)
+const ogImage = absoluteUrl(image || '/assets/brand/og-image.jpg', siteUrl)
 const markdownHref = pageType === 'home' ? `/${locale}/index.md` : undefined
 const draftMode = Astro.locals.draftMode
 const perspectiveCookie = Astro.locals.perspectiveCookie
@@ -208,6 +208,9 @@ const fontFaces = `@font-face{font-family:'Poppins';font-style:normal;font-displ
     ))}
     {cleanDescription && <meta property="og:description" content={cleanDescription} />}
     <meta property="og:image" content={ogImage} />
+    {!image && <meta property="og:image:width" content="1200" />}
+    {!image && <meta property="og:image:height" content="630" />}
+    <meta property="og:image:alt" content="Vertebra — plataforma de administración de propiedades con IA" />
 
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
     {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
