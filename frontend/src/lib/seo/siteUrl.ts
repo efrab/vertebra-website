@@ -1,5 +1,5 @@
 /** Canonical production origin. */
-export const PRODUCTION_SITE_URL = 'https://vertebra.co'
+export const PRODUCTION_SITE_URL = 'https://www.vertebra.co'
 
 /**
  * Absolute site origin, without trailing slash.
