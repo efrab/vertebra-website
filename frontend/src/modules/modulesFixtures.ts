@@ -450,8 +450,8 @@ function tabs(isEn: boolean): ModuleTab[] {
           ? 'Eva proposes work orders and inspections'
           : 'Eva propone las órdenes de trabajo e inspecciones',
         highlight: isEn
-          ? 'before maintenance is due, based on your history and actual usage.'
-          : 'antes de que venzan, según tu historial y uso real.',
+          ? 'before service is due, based on actual use.'
+          : 'antes de que venzan, según tu uso real.',
       },
     },
   ]
