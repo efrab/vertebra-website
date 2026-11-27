@@ -110,8 +110,9 @@
   border-radius: 1rem;
   justify-content: space-between;
   align-items: center;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  gap: 2rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
   display: flex;
 }
 
@@ -127,8 +128,13 @@
   color: var(--_brands---white);
 }
 
+.message_txt h4 {
+  text-wrap: balance;
+}
+
 .message_person {
-  margin-right: 10rem;
+  flex-shrink: 0;
+  margin-right: 4rem;
   transform: translate(0, -11px)scale(1.2);
 }
 
@@ -266,6 +272,10 @@
   border-bottom: 1px solid #e1e3ee;
 }
 
+.modulos_subtitle h2 {
+  text-wrap: balance;
+}
+
 .modulos_section {
   grid-column-gap: var(--_spacing---tw-6);
   grid-row-gap: var(--_spacing---tw-6);
@@ -342,7 +352,10 @@
     }
     .message-component {
       flex-flow: column;
-      padding-top: 1rem;
+      gap: 0;
+      padding-top: 1.5rem;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
     }
     .message_box {
       flex-flow: column;
