@@ -398,6 +398,62 @@ function tabs(isEn: boolean): ModuleTab[] {
         highlight: isEn ? 'extend the useful life of your properties.' : 'extiende la vida útil de tus inmuebles.',
       },
     },
+    {
+      id: 'sugerencias',
+      label: isEn ? 'Suggestions' : 'Sugerencias',
+      iconSrc: '',
+      heading: isEn
+        ? 'Predictive and corrective maintenance with Eva'
+        : 'Mantenimiento predictivo y correctivo con Eva',
+      sections: [
+        {
+          description: isEn
+            ? 'Eva reviews your assets every day and proposes work orders and inspections before they are due, based on your history, mileage, hours of use and service dates.'
+            : 'Eva revisa tus activos cada día y propone las órdenes de trabajo e inspecciones antes de que venzan, según tu historial, kilometraje, horas de uso y fechas de servicio.',
+          imageSrc: '/assets/modules/sugerencias.mp4',
+          cards: [
+            {
+              largeText: true,
+              description: isEn
+                ? 'Urgent, upcoming and resolved suggestions.'
+                : 'Sugerencias urgentes, próximas y atendidas.',
+            },
+            {
+              largeText: true,
+              description: isEn
+                ? 'A confidence level on every suggestion.'
+                : 'Nivel de confianza en cada sugerencia.',
+            },
+            {
+              largeText: true,
+              description: isEn
+                ? 'Create the work order or inspection in one click.'
+                : 'Crea la orden de trabajo o inspección en un clic.',
+            },
+            {
+              largeText: true,
+              description: isEn
+                ? 'Suggestions inside each asset record.'
+                : 'Sugerencias dentro de la ficha de cada activo.',
+            },
+            {
+              largeText: true,
+              description: isEn
+                ? 'Spot assets with no maintenance assigned.'
+                : 'Detecta activos sin mantenimiento asignado.',
+            },
+          ],
+        },
+      ],
+      message: {
+        line: isEn
+          ? 'Eva proposes work orders and inspections'
+          : 'Eva propone las órdenes de trabajo e inspecciones',
+        highlight: isEn
+          ? 'before they are due, based on your real usage.'
+          : 'antes de que venzan, según tu historial y uso real.',
+      },
+    },
   ]
 }
 
