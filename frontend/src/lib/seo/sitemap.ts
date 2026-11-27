@@ -35,6 +35,7 @@ const STATIC_INDEX_KEYS: PathnameKey[] = [
   'freeTrial',
   'landingContracts',
   'landingServices',
+  'landingInspections',
 ]
 
 const BLOG_FIXTURE_SLUGS = ['automatiza-cobranza', 'ia-en-proptech', 'contratos-sin-caos']
