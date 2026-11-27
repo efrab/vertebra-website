@@ -408,14 +408,14 @@ function tabs(isEn: boolean): ModuleTab[] {
       sections: [
         {
           description: isEn
-            ? 'Eva reviews your assets every day and proposes work orders and inspections before they are due, based on your history, mileage, hours of use and service dates.'
+            ? 'Eva reviews your assets every day and proposes work orders and inspections before maintenance is due, based on your maintenance history, mileage, hours of use and service dates.'
             : 'Eva revisa tus activos cada día y propone las órdenes de trabajo e inspecciones antes de que venzan, según tu historial, kilometraje, horas de uso y fechas de servicio.',
           imageSrc: '/assets/modules/sugerencias.mp4',
           cards: [
             {
               largeText: true,
               description: isEn
-                ? 'Urgent, upcoming and resolved suggestions.'
+                ? 'Urgent, upcoming and addressed suggestions.'
                 : 'Sugerencias urgentes, próximas y atendidas.',
             },
             {
@@ -433,13 +433,13 @@ function tabs(isEn: boolean): ModuleTab[] {
             {
               largeText: true,
               description: isEn
-                ? 'Suggestions inside each asset record.'
+                ? "Suggestions right in each asset's record."
                 : 'Sugerencias dentro de la ficha de cada activo.',
             },
             {
               largeText: true,
               description: isEn
-                ? 'Spot assets with no maintenance assigned.'
+                ? 'Spot assets that have no maintenance assigned.'
                 : 'Detecta activos sin mantenimiento asignado.',
             },
           ],
@@ -450,7 +450,7 @@ function tabs(isEn: boolean): ModuleTab[] {
           ? 'Eva proposes work orders and inspections'
           : 'Eva propone las órdenes de trabajo e inspecciones',
         highlight: isEn
-          ? 'before they are due, based on your real usage.'
+          ? 'before maintenance is due, based on your history and actual usage.'
           : 'antes de que venzan, según tu historial y uso real.',
       },
     },
